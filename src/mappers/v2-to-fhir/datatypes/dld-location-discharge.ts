@@ -1,5 +1,5 @@
-import type { DLD } from "@healthsamurai/interbox/hl7v2";
-import type { CodeableConcept } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { DLD } from "@health-samurai/interbox/hl7v2";
+import type { CodeableConcept } from "@health-samurai/interbox/fhir/4.0.1";
 
 /** Partial Location data for discharge location */
 interface LocationDischargeData {

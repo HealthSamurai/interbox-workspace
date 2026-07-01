@@ -3,9 +3,9 @@
  * Based on: HL7 v2.5.1 OBX segment specification
  */
 
-import type { Observation, CodeableConcept } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { Observation, CodeableConcept } from "@health-samurai/interbox/fhir/4.0.1";
 import type { WrappedOBX } from "../wrappers/obx.ts";
-import { domainError } from "@healthsamurai/interbox";
+import { domainError } from "@health-samurai/interbox";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertDTMToDateTime, convertDTMToDate } from "../support/datetime.ts";
 import {

@@ -1,5 +1,5 @@
-import { env, pipeline } from "@healthsamurai/interbox";
-import { aidboxSender, hl7v2Parser, mllpSource } from "@healthsamurai/interbox/builtins";
+import { env, pipeline } from "@health-samurai/interbox";
+import { aidboxSender, hl7v2Parser, mllpSource } from "@health-samurai/interbox/builtins";
 
 import { v2ToFhirMapper } from "../../mappers/v2-to-fhir/index.ts";
 

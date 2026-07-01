@@ -3,13 +3,13 @@
  * Based on: HL7 Data Type - FHIR R4_ XON[Organization]
  */
 
-import type { XON } from "@healthsamurai/interbox/hl7v2";
+import type { XON } from "@health-samurai/interbox/hl7v2";
 import type {
   Organization,
   Identifier,
   Extension,
   Coding,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertHDToUri } from "./hd-converters.ts";
 
 // ============================================================================

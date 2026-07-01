@@ -3,7 +3,7 @@
  * Based on: HL7 Segment - FHIR R4_ PV1[Encounter] - PV1.csv
  */
 
-import type { PV1, XCN, PL, CWE, CE } from "@healthsamurai/interbox/hl7v2";
+import type { PV1, XCN, PL, CWE, CE } from "@health-samurai/interbox/hl7v2";
 import type {
   Encounter,
   EncounterParticipant,
@@ -13,8 +13,8 @@ import type {
   CodeableConcept,
   Identifier,
   Extension,
-} from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { convertCXToIdentifier } from "../datatypes/cx-identifier.ts";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertXCNToPractitioner } from "../datatypes/xcn-practitioner.ts";

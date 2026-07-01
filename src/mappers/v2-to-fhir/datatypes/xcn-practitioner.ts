@@ -3,7 +3,7 @@
  * Based on: HL7 Data Type - FHIR R4_ XCN[Practitioner]
  */
 
-import type { XCN } from "@healthsamurai/interbox/hl7v2";
+import type { XCN } from "@health-samurai/interbox/hl7v2";
 import type {
   Practitioner,
   PractitionerQualification,
@@ -11,7 +11,7 @@ import type {
   Identifier,
   Extension,
   Period,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertHDToUri } from "./hd-converters.ts";
 import { convertDRToPeriod } from "./dr-datetime.ts";
 import { sanitizeForId } from "../support/string.ts";

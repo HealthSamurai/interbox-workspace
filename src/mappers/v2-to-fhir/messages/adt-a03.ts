@@ -15,7 +15,7 @@
  * Key difference from A01: Encounter.status = "finished" (unconditional), not derived from PV1-2.
  */
 
-import type { HL7v2Segment } from "@healthsamurai/interbox/hl7v2";
+import type { HL7v2Segment } from "@health-samurai/interbox/hl7v2";
 import {
   fromMSH,
   fromPID,
@@ -27,7 +27,7 @@ import {
   fromIN1,
   type DG1,
   type AL1,
-} from "@healthsamurai/interbox/hl7v2";
+} from "@health-samurai/interbox/hl7v2";
 import type {
   Encounter,
   RelatedPerson,
@@ -35,8 +35,8 @@ import type {
   AllergyIntolerance,
   Coverage,
   DomainResource,
-} from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { findSegment, findAllSegments, requirePid } from "../support/segments.ts";
 import { senderFromMsh } from "../support/msh.ts";
 import { patientIdFromPid, encounterIdFromPv1 } from "../support/identity.ts";

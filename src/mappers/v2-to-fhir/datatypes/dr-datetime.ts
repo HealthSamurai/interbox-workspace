@@ -1,5 +1,5 @@
-import type { DR } from "@healthsamurai/interbox/hl7v2";
-import type { Period } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { DR } from "@health-samurai/interbox/hl7v2";
+import type { Period } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Converts DR (Date/Time Range) to FHIR dateTime.

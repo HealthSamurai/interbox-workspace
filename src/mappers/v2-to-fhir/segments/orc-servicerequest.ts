@@ -6,12 +6,12 @@
  * OBR or RXO fields on top and sets subject/encounter references.
  */
 
-import type { ORC, XCN } from "@healthsamurai/interbox/hl7v2";
+import type { ORC, XCN } from "@health-samurai/interbox/hl7v2";
 import type {
   ServiceRequest,
   Identifier,
   Reference,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import {
   convertEIToTypedIdentifier,
   convertEIToIdentifierExtension,

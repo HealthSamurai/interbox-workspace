@@ -10,10 +10,10 @@
  * no Encounter is emitted.
  */
 
-import type { HL7v2Segment } from "@healthsamurai/interbox/hl7v2";
-import { fromMSH, fromPID } from "@healthsamurai/interbox/hl7v2";
-import type { DomainResource } from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+import type { HL7v2Segment } from "@health-samurai/interbox/hl7v2";
+import { fromMSH, fromPID } from "@health-samurai/interbox/hl7v2";
+import type { DomainResource } from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { findSegment, requirePid } from "../support/segments.ts";
 import { senderFromMsh } from "../support/msh.ts";
 import { patientIdFromPid } from "../support/identity.ts";

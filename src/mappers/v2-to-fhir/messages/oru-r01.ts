@@ -19,7 +19,7 @@
 import type {
   HL7v2Message,
   HL7v2Segment,
-} from "@healthsamurai/interbox/hl7v2";
+} from "@health-samurai/interbox/hl7v2";
 import {
   fromMSH,
   fromNTE,
@@ -29,7 +29,7 @@ import {
   fromSPM,
   type OBR,
   type SPM,
-} from "@healthsamurai/interbox/hl7v2";
+} from "@health-samurai/interbox/hl7v2";
 import type {
   DiagnosticReport,
   DomainResource,
@@ -37,8 +37,8 @@ import type {
   Observation,
   Reference,
   Specimen,
-} from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { findSegment, findAllSegments, requirePid } from "../support/segments.ts";
 import { senderFromMsh } from "../support/msh.ts";
 import { patientIdFromPid, encounterIdFromPv1 } from "../support/identity.ts";
@@ -52,7 +52,7 @@ import {
 } from "../segments/obx-observation.ts";
 import { convertOBRToDiagnosticReport } from "../segments/obr-diagnosticreport.ts";
 import { convertNTEsToAnnotation } from "../segments/nte-annotation.ts";
-import type { MapperContext } from "@healthsamurai/interbox";
+import type { MapperContext } from "@health-samurai/interbox";
 import type { CodeMappingContext } from "../code-mapping/observation-code-resolver.ts";
 
 interface OBRGroup {

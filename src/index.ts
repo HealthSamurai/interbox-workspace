@@ -4,4 +4,4 @@
 import "./mappers";
 import "./pipelines";
 
-export { MapperRegistry, PipelineRegistry } from "@healthsamurai/interbox";
+export { MapperRegistry, PipelineRegistry } from "@health-samurai/interbox";

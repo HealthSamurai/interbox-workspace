@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
-import type { MapperContext } from "@healthsamurai/interbox";
-import type { CE } from "@healthsamurai/interbox/hl7v2";
+import type { MapperContext } from "@health-samurai/interbox";
+import type { CE } from "@health-samurai/interbox/hl7v2";
 import { resolveObservationCode } from "../src/mappers/v2-to-fhir/code-mapping/observation-code-resolver.ts";
 import { generateConceptMapId } from "../src/mappers/v2-to-fhir/code-mapping/mapping-types.ts";
 

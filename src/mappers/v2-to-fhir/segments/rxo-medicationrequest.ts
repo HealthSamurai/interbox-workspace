@@ -8,7 +8,7 @@
  * MedicationRequest type compatibility.
  */
 
-import type { RXO } from "@healthsamurai/interbox/hl7v2";
+import type { RXO } from "@health-samurai/interbox/hl7v2";
 import type {
   MedicationRequest,
   MedicationRequestDispenseRequest,
@@ -17,7 +17,7 @@ import type {
   Dosage,
   Quantity,
   Range,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 
 type DosageDoseAndRate = NonNullable<Dosage["doseAndRate"]>[number];

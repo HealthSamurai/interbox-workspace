@@ -1,8 +1,8 @@
 import type {
   HL7v2Message,
   HL7v2Segment,
-} from "@healthsamurai/interbox/hl7v2";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/hl7v2";
+import { domainError } from "@health-samurai/interbox";
 
 export function findSegment(
   message: HL7v2Message,

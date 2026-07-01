@@ -3,8 +3,8 @@
  * NTE segments typically follow OBX segments and contain notes/comments
  */
 
-import type { NTE } from "@healthsamurai/interbox/hl7v2";
-import type { Annotation } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { NTE } from "@health-samurai/interbox/hl7v2";
+import type { Annotation } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Convert multiple NTE segments to a single FHIR Annotation

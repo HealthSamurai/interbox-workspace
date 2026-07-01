@@ -1,5 +1,5 @@
-import type { PID, PV1 } from "@healthsamurai/interbox/hl7v2";
-import { domainError } from "@healthsamurai/interbox";
+import type { PID, PV1 } from "@health-samurai/interbox/hl7v2";
+import { domainError } from "@health-samurai/interbox";
 import { toKebabCase } from "./string.ts";
 
 /**

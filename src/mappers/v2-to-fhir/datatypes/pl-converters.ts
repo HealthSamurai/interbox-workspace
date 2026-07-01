@@ -1,5 +1,5 @@
-import type { PL, HD } from "@healthsamurai/interbox/hl7v2";
-import type { Identifier, CodeableConcept, Reference } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { PL, HD } from "@health-samurai/interbox/hl7v2";
+import type { Identifier, CodeableConcept, Reference } from "@health-samurai/interbox/fhir/4.0.1";
 import { convertHDToIdentifiers } from "./hd-converters.ts";
 
 const LOCATION_PHYSICAL_TYPE_SYSTEM = "http://terminology.hl7.org/CodeSystem/location-physical-type";

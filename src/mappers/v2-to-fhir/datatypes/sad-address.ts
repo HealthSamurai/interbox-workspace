@@ -3,8 +3,8 @@
  * Based on: HL7 Data Type - FHIR R4_ SAD[Address]
  */
 
-import type { SAD } from "@healthsamurai/interbox/hl7v2";
-import type { Address } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { SAD } from "@health-samurai/interbox/hl7v2";
+import type { Address } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Convert HL7v2 SAD (Street Address) to FHIR Address

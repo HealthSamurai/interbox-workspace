@@ -1,5 +1,5 @@
-import type { EI } from "@healthsamurai/interbox/hl7v2";
-import type { Coding, Identifier, Reference } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { EI } from "@health-samurai/interbox/hl7v2";
+import type { Coding, Identifier, Reference } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Converts EI (Entity Identifier) to FHIR Coding.

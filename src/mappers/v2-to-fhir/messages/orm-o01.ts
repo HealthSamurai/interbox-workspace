@@ -20,7 +20,7 @@
 import type {
   HL7v2Message,
   HL7v2Segment,
-} from "@healthsamurai/interbox/hl7v2";
+} from "@health-samurai/interbox/hl7v2";
 import {
   fromMSH,
   fromNTE,
@@ -31,7 +31,7 @@ import {
   fromRXO,
   type EI,
   type ORC,
-} from "@healthsamurai/interbox/hl7v2";
+} from "@health-samurai/interbox/hl7v2";
 import type {
   Annotation,
   DomainResource,
@@ -39,8 +39,8 @@ import type {
   Observation,
   Reference,
   ServiceRequest,
-} from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { findSegment, requirePid } from "../support/segments.ts";
 import { senderFromMsh } from "../support/msh.ts";
 import { patientIdFromPid, encounterIdFromPv1 } from "../support/identity.ts";

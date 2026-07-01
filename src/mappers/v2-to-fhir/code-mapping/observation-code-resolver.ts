@@ -1,6 +1,6 @@
-import type { CE } from "@healthsamurai/interbox/hl7v2";
-import type { CodeableConcept, Coding } from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError, type MapperContext } from "@healthsamurai/interbox";
+import type { CE } from "@health-samurai/interbox/hl7v2";
+import type { CodeableConcept, Coding } from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError, type MapperContext } from "@health-samurai/interbox";
 import type { Sender } from "../support/msh.ts";
 import { generateConceptMapId, LOINC_SYSTEM } from "./mapping-types.ts";
 

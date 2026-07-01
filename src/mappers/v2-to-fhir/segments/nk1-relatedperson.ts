@@ -3,7 +3,7 @@
  * Based on: HL7 Segment - FHIR R4_ NK1[RelatedPerson] - Sheet1.csv
  */
 
-import type { NK1 } from "@healthsamurai/interbox/hl7v2";
+import type { NK1 } from "@health-samurai/interbox/hl7v2";
 import type {
   RelatedPerson,
   RelatedPersonCommunication,
@@ -13,7 +13,7 @@ import type {
   Address,
   ContactPoint,
   Period,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCXToIdentifier } from "../datatypes/cx-identifier.ts";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertXPNToHumanName } from "../datatypes/xpn-humanname.ts";

@@ -3,11 +3,11 @@
  * Based on: HL7 Segment - FHIR R4_ AL1[AllergyIntolerance] - AL1.csv
  */
 
-import type { AL1 } from "@healthsamurai/interbox/hl7v2";
+import type { AL1 } from "@health-samurai/interbox/hl7v2";
 import type {
   AllergyIntolerance,
   AllergyIntoleranceReaction,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 
 // ============================================================================

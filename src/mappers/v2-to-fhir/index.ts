@@ -8,9 +8,9 @@
  * segments and a MapperContext (terminology). One mapper drains ALL received
  * rows (mappers compete via SKIP LOCKED), so routing lives here.
  */
-import { defineMapper, domainError, type MapperContext } from "@healthsamurai/interbox";
-import { fromMSH, type HL7v2Segment } from "@healthsamurai/interbox/hl7v2";
-import { hl7v2Parser } from "@healthsamurai/interbox/builtins";
+import { defineMapper, domainError, type MapperContext } from "@health-samurai/interbox";
+import { fromMSH, type HL7v2Segment } from "@health-samurai/interbox/hl7v2";
+import { hl7v2Parser } from "@health-samurai/interbox/builtins";
 import { convertADT_A01 } from "./messages/adt-a01.ts";
 import { convertADT_A03 } from "./messages/adt-a03.ts";
 import { convertADT_A08 } from "./messages/adt-a08.ts";

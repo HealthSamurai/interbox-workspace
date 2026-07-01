@@ -8,11 +8,11 @@
 #   aidbox     the FHIR server the pipeline's sender targets (+ its own db).
 #
 # Everything here is a PULLED image — you do NOT need the engine source. The
-# interbox image is published to GHCR; pg/aidbox are stock. Set the engine
-# version with INTERBOX_VERSION in .env (default `edge`).
+# interbox image is published to Docker Hub; pg/aidbox are stock. Set the
+# engine version with INTERBOX_VERSION in .env (default `edge`).
 #
 # Quick start:
-#   1. cp .env.example .env   and fill in the tokens (see that file).
+#   1. cp .env.example .env   and fill in the license (see that file).
 #   2. docker compose up
 #   3. open http://localhost:3001  → the dashboard.
 #      The image is LICENSED: the pipeline stays paused until you either set
@@ -50,7 +50,7 @@ services:
     # engine source). INTERBOX_VERSION (.env) is the engine version knob; in the
     # dev image the SDK rides along, so this one tag pins engine + SDK together.
     # To update: bump INTERBOX_VERSION, then `docker compose pull interbox && up -d`.
-    image: ${INTERBOX_REGISTRY:-ghcr.io/healthsamurai}/interbox:${INTERBOX_VERSION:-edge}
+    image: ${INTERBOX_REGISTRY:-healthsamurai}/interbox:${INTERBOX_VERSION:-edge}
     depends_on:
       pg:
         condition: service_healthy
@@ -64,8 +64,6 @@ services:
       # Run THIS checkout in local mode — the bind mount below is the live tree.
       INTERBOX_WORKSPACE_GIT_URL: file:///workspace
       INTERBOX_WORKSPACE_POLL_MS: "2000" # snappy hot reload in dev
-      # Private @healthsamurai SDK install (workspace .npmrc reads this).
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
       # Pipeline sender target.
       AIDBOX_URL: http://aidbox:8080
       AIDBOX_SECRET: ${AIDBOX_SECRET:-secret}

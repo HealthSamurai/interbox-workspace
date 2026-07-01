@@ -1,5 +1,5 @@
-import type { CE } from "@healthsamurai/interbox/hl7v2";
-import type { CodeableConcept, Coding } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { CE } from "@health-samurai/interbox/hl7v2";
+import type { CodeableConcept, Coding } from "@health-samurai/interbox/fhir/4.0.1";
 
 export function convertCEToCodeableConcept(
   ce: CE | undefined,

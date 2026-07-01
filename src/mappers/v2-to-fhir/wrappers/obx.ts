@@ -12,10 +12,10 @@
  *    the structured CE in $5_observationValueCE.
  */
 
-import type { HL7v2Segment, FieldValue } from "@healthsamurai/interbox/hl7v2";
-import { getComponent } from "@healthsamurai/interbox/hl7v2";
-import type { OBX, CE } from "@healthsamurai/interbox/hl7v2";
-import { fromOBX as fromOBXGenerated } from "@healthsamurai/interbox/hl7v2";
+import type { HL7v2Segment, FieldValue } from "@health-samurai/interbox/hl7v2";
+import { getComponent } from "@health-samurai/interbox/hl7v2";
+import type { OBX, CE } from "@health-samurai/interbox/hl7v2";
+import { fromOBX as fromOBXGenerated } from "@health-samurai/interbox/hl7v2";
 
 /**
  * Extended OBX with a structured CE field for coded observation values.

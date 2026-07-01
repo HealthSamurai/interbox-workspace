@@ -3,8 +3,8 @@
  * Based on: HL7 Data Type - FHIR R4_ XAD[Address]
  */
 
-import type { XAD } from "@healthsamurai/interbox/hl7v2";
-import type { Address, Extension, Period } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { XAD } from "@health-samurai/interbox/hl7v2";
+import type { Address, Extension, Period } from "@health-samurai/interbox/fhir/4.0.1";
 import { convertSADToAddress } from "./sad-address.ts";
 import { convertDRToPeriod } from "./dr-datetime.ts";
 

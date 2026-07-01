@@ -1,5 +1,5 @@
-import type { CX } from "@healthsamurai/interbox/hl7v2";
-import type { Identifier, CodeableConcept, Period } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { CX } from "@health-samurai/interbox/hl7v2";
+import type { Identifier, CodeableConcept, Period } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Converts CX (Extended Composite ID with Check Digit) to FHIR Identifier.

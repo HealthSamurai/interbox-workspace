@@ -14,20 +14,20 @@
  * maps to Immunization.programEligibility / education.
  */
 
-import type { HL7v2Segment } from "@healthsamurai/interbox/hl7v2";
+import type { HL7v2Segment } from "@health-samurai/interbox/hl7v2";
 import {
   fromORC,
   fromPID,
   fromRXA,
   fromRXR,
   type RXA,
-} from "@healthsamurai/interbox/hl7v2";
+} from "@health-samurai/interbox/hl7v2";
 import type {
   DomainResource,
   Immunization,
   Reference,
-} from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { requirePid } from "../support/segments.ts";
 import { patientIdFromPid } from "../support/identity.ts";
 import { toKebabCase } from "../support/string.ts";

@@ -1,5 +1,5 @@
-import type { HD } from "@healthsamurai/interbox/hl7v2";
-import type { Identifier, CodeableConcept } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { HD } from "@health-samurai/interbox/hl7v2";
+import type { Identifier, CodeableConcept } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Converts HD (Hierarchic Designator) to URI.

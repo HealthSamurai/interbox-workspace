@@ -3,13 +3,13 @@
  * Based on: HL7 Segment - FHIR R4_ DG1[Condition] - Sheet1.csv
  */
 
-import type { DG1, EI } from "@healthsamurai/interbox/hl7v2";
+import type { DG1, EI } from "@health-samurai/interbox/hl7v2";
 import type {
   Condition,
   Identifier,
   Extension,
   Reference,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertXCNToPractitioner } from "../datatypes/xcn-practitioner.ts";
 

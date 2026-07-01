@@ -1,5 +1,5 @@
-import type { DLN } from "@healthsamurai/interbox/hl7v2";
-import type { Identifier } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { DLN } from "@health-samurai/interbox/hl7v2";
+import type { Identifier } from "@health-samurai/interbox/fhir/4.0.1";
 
 const DRIVER_LICENSE_TYPE_SYSTEM = "http://terminology.hl7.org/CodeSystem/v2-0203";
 const DRIVER_LICENSE_TYPE_CODE = "DL";

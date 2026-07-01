@@ -3,8 +3,8 @@
  * Based on: HL7 Data Type - FHIR R4_ XPN[HumanName]
  */
 
-import type { XPN, DR } from "@healthsamurai/interbox/hl7v2";
-import type { HumanName, Period, Extension } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { XPN, DR } from "@health-samurai/interbox/hl7v2";
+import type { HumanName, Period, Extension } from "@health-samurai/interbox/fhir/4.0.1";
 
 // ============================================================================
 // Name Type Code Mapping (HL7 Table 0200 -> FHIR name-use)

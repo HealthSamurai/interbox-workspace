@@ -3,8 +3,8 @@
  * Based on: HL7 v2.5.1 OBR segment specification
  */
 
-import type { OBR } from "@healthsamurai/interbox/hl7v2";
-import type { DiagnosticReport } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { OBR } from "@health-samurai/interbox/hl7v2";
+import type { DiagnosticReport } from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertDTMToDateTime } from "../support/datetime.ts";
 import { sanitizeForId } from "../support/string.ts";

@@ -3,7 +3,7 @@
  * Based on: HL7 Segment - FHIR R4_ PID[Patient] - PID.csv
  */
 
-import type { PID, CWE, CE } from "@healthsamurai/interbox/hl7v2";
+import type { PID, CWE, CE } from "@health-samurai/interbox/hl7v2";
 import type {
   Patient,
   PatientCommunication,
@@ -13,8 +13,8 @@ import type {
   ContactPoint,
   CodeableConcept,
   Extension,
-} from "@healthsamurai/interbox/fhir/4.0.1";
-import { domainError } from "@healthsamurai/interbox";
+} from "@health-samurai/interbox/fhir/4.0.1";
+import { domainError } from "@health-samurai/interbox";
 import { convertCXToIdentifier } from "../datatypes/cx-identifier.ts";
 import { convertXPNToHumanName, convertXPNToString } from "../datatypes/xpn-humanname.ts";
 import { convertXADToAddress } from "../datatypes/xad-address.ts";

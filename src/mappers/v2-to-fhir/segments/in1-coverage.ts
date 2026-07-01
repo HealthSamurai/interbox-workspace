@@ -3,13 +3,13 @@
  * Based on: HL7 Segment - FHIR R4_ IN1[Coverage] - Sheet1.csv
  */
 
-import type { IN1, CE, CX, XON } from "@healthsamurai/interbox/hl7v2";
+import type { IN1, CE, CX, XON } from "@health-samurai/interbox/hl7v2";
 import type {
   Coverage,
   Identifier,
   Period,
   Reference,
-} from "@healthsamurai/interbox/fhir/4.0.1";
+} from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertXONToOrganization } from "../datatypes/xon-organization.ts";
 import { toKebabCase } from "../support/string.ts";

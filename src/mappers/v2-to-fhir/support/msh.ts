@@ -1,5 +1,5 @@
-import type { MSH } from "@healthsamurai/interbox/hl7v2";
-import { domainError } from "@healthsamurai/interbox";
+import type { MSH } from "@health-samurai/interbox/hl7v2";
+import { domainError } from "@health-samurai/interbox";
 
 export interface Sender {
   sendingApplication: string;

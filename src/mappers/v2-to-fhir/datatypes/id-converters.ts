@@ -1,4 +1,4 @@
-import type { CodeableConcept, Coding } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { CodeableConcept, Coding } from "@health-samurai/interbox/fhir/4.0.1";
 
 /**
  * Converts ID (Coded Value) to boolean.

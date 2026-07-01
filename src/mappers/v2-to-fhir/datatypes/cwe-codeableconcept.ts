@@ -1,5 +1,5 @@
-import type { CWE } from "@healthsamurai/interbox/hl7v2";
-import type { Annotation, CodeableConcept, Coding, Duration, Identifier } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { CWE } from "@health-samurai/interbox/hl7v2";
+import type { Annotation, CodeableConcept, Coding, Duration, Identifier } from "@health-samurai/interbox/fhir/4.0.1";
 
 export function convertCWEToCodeableConcept(cwe: CWE | undefined): CodeableConcept | undefined {
   if (!cwe) {return undefined;}

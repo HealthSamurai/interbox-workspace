@@ -6,8 +6,8 @@
  * Separate from obr-diagnosticreport.ts which produces DiagnosticReport for ORU.
  */
 
-import type { OBR, ORC } from "@healthsamurai/interbox/hl7v2";
-import type { ServiceRequest } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { OBR, ORC } from "@health-samurai/interbox/hl7v2";
+import type { ServiceRequest } from "@health-samurai/interbox/fhir/4.0.1";
 import { convertCEToCodeableConcept } from "../datatypes/ce-codeableconcept.ts";
 import { convertDTMToDateTime } from "../datatypes/dtm-datetime.ts";
 import { convertEIToTypedIdentifier } from "../datatypes/ei-coding.ts";

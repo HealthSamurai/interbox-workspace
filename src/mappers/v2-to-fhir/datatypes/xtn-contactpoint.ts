@@ -3,8 +3,8 @@
  * Based on: HL7 Data Type - FHIR R4_ XTN[ContactPoint]
  */
 
-import type { XTN } from "@healthsamurai/interbox/hl7v2";
-import type { ContactPoint, Extension } from "@healthsamurai/interbox/fhir/4.0.1";
+import type { XTN } from "@health-samurai/interbox/hl7v2";
+import type { ContactPoint, Extension } from "@health-samurai/interbox/fhir/4.0.1";
 
 // ============================================================================
 // Telecommunication Equipment Type Mapping (HL7 Table 0202)
