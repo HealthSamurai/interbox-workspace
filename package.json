@@ -1,0 +1,21 @@
+{
+  "name": "interbox-workspace",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "interbox-cli": "interbox",
+    "sync": "bun run interbox-cli sync",
+    "postinstall": "bun run interbox-cli sync || true"
+  },
+  "dependencies": {
+    "@healthsamurai/interbox": "^0.1.7"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "^5.9.3"
+  }
+}

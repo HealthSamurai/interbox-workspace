@@ -1,0 +1,126 @@
+# ── Interbox dev stack ───────────────────────────────────────────────────────
+# Runs the whole product against THIS workspace checkout, with hot reload:
+#
+#   interbox   the all-in-one image (engine + API + dashboard). Mounts this repo
+#              at /workspace and runs it in local mode (file:///workspace), so
+#              edits to src/ hot-reload into the running pipeline.
+#   pg         stock Postgres 18 (same image as aidbox-db) — Interbox's store.
+#   aidbox     the FHIR server the pipeline's sender targets (+ its own db).
+#
+# Everything here is a PULLED image — you do NOT need the engine source. The
+# interbox image is published to GHCR; pg/aidbox are stock. Set the engine
+# version with INTERBOX_VERSION in .env (default `edge`).
+#
+# Quick start:
+#   1. cp .env.example .env   and fill in the tokens (see that file).
+#   2. docker compose up
+#   3. open http://localhost:3001  → the dashboard.
+#      The image is LICENSED: the pipeline stays paused until you either set
+#      INTERBOX_LICENSE in .env or click through the dashboard's activation
+#      screen (portal OAuth). Until then the dashboard shows the activation gate.
+#   4. send HL7v2 over MLLP to localhost:2575 and watch messages flow.
+
+services:
+  pg:
+    # Stock Postgres 18 (same image as aidbox-db) — Interbox needs only pg_trgm +
+    # btree_gist (bundled contrib), no custom image.
+    image: postgres:18
+    # Postgres parallel query allocates DSM segments in /dev/shm; Docker's 64MB
+    # default overflows when the dashboard fans out parallel facet aggregates.
+    shm_size: "1g"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    command: >
+      postgres
+      -c max_wal_size=4GB
+      -c wal_compression=on
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+
+  interbox:
+    # All-in-one engine + API + dashboard — published image (you don't need the
+    # engine source). INTERBOX_VERSION (.env) is the engine version knob; in the
+    # dev image the SDK rides along, so this one tag pins engine + SDK together.
+    # To update: bump INTERBOX_VERSION, then `docker compose pull interbox && up -d`.
+    image: ${INTERBOX_REGISTRY:-ghcr.io/healthsamurai}/interbox:${INTERBOX_VERSION:-edge}
+    depends_on:
+      pg:
+        condition: service_healthy
+    ports:
+      - "3001:3001" # dashboard + API (same origin)
+      - "2575:2575" # MLLP ingest
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@pg:5432/postgres
+      MLLP_HOST: 0.0.0.0
+      MLLP_PORT: "2575"
+      # Run THIS checkout in local mode — the bind mount below is the live tree.
+      INTERBOX_WORKSPACE_GIT_URL: file:///workspace
+      INTERBOX_WORKSPACE_POLL_MS: "2000" # snappy hot reload in dev
+      # Private @healthsamurai SDK install (workspace .npmrc reads this).
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      # Pipeline sender target.
+      AIDBOX_URL: http://aidbox:8080
+      AIDBOX_SECRET: ${AIDBOX_SECRET:-secret}
+      # License: env activation (or use the dashboard's activation screen instead).
+      INTERBOX_LICENSE: ${INTERBOX_LICENSE:-}
+    volumes:
+      - .:/workspace
+      # Keep the container's (linux) workspace deps in a volume so they don't
+      # clobber — or get clobbered by — the host's node_modules on the bind mount.
+      - workspace-node-modules:/workspace/node_modules
+      # Optional — the dashboard assistant is Claude Code over ACP, which auths
+      # with your Claude Code login (the container has no ~/.claude of its own).
+      # To enable it, mount your Claude Code config in (adjust the host path);
+      # without it the dashboard still works, the assistant just can't answer:
+      #   - ${HOME}/.claude:/root/.claude:ro
+
+  aidbox-db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: aidbox
+    volumes:
+      - aidbox-db-data:/var/lib/postgresql/18/docker:delegated
+
+  aidbox:
+    image: healthsamurai/aidboxone:latest
+    depends_on:
+      - aidbox-db
+    ports:
+      - "8080:8080"
+    environment:
+      AIDBOX_LICENSE: ${AIDBOX_LICENSE}
+      BOX_ADMIN_PASSWORD: admin
+      BOX_ROOT_CLIENT_SECRET: ${AIDBOX_SECRET:-secret}
+      BOX_BOOTSTRAP_FHIR_PACKAGES: hl7.fhir.r4.core#4.0.1
+      BOX_FHIR_SCHEMA_VALIDATION: "true"
+      BOX_FHIR_COMPLIANT_MODE: "true"
+      BOX_DB_DATABASE: aidbox
+      BOX_DB_HOST: aidbox-db
+      BOX_DB_PASSWORD: postgres
+      BOX_DB_PORT: "5432"
+      BOX_DB_USER: postgres
+      BOX_SECURITY_DEV_MODE: "true"
+      BOX_SETTINGS_MODE: read-write
+      BOX_WEB_BASE_URL: http://localhost:8080
+      BOX_WEB_PORT: 8080
+    healthcheck:
+      test: curl -f http://localhost:8080/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 90
+      start_period: 30s
+
+volumes:
+  pg-data:
+  aidbox-db-data:
+  workspace-node-modules:
