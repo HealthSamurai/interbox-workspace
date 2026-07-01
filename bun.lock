@@ -5,7 +5,7 @@
     "": {
       "name": "@interbox-examples/custom-pipeline",
       "dependencies": {
-        "@healthsamurai/interbox": "^0.1.7",
+        "@health-samurai/interbox": "^1.0.0",
       },
       "devDependencies": {
         "@types/bun": "^1.3.14",
@@ -16,7 +16,7 @@
   "packages": {
     "@atomic-ehr/hl7v2": ["@atomic-ehr/hl7v2@0.0.1", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-qUOYUX6lI9cdb98ThXBcCWqruFVFzG8H6NnOTlS2Rgg7kSenjxwpDEBh8pjvmhaiWAfUqY/B7W0+agmxIoJRWg=="],
 
-    "@healthsamurai/interbox": ["@healthsamurai/interbox@0.1.7", "https://npm.pkg.github.com/download/@healthsamurai/interbox/0.1.7/1fcd0ee83b33e21a00cb87c4d1ef834ea4928ff3", { "dependencies": { "@atomic-ehr/hl7v2": "^0.0.1" }, "peerDependencies": { "typescript": "^5" }, "bin": { "interbox": "dist/cli.js" } }, "sha512-76RAk+0Tydt4MjXCuKNRhnWaO5VAvgUKp+8FRvkjFDM246Yas4k4optw/LTifSSHOeERSvZheuxzxiDmQfBFMg=="],
+    "@health-samurai/interbox": ["@health-samurai/interbox@1.0.0", "", { "dependencies": { "@atomic-ehr/hl7v2": "^0.0.1" }, "peerDependencies": { "typescript": "^5" }, "bin": { "interbox": "dist/cli.js" } }, "sha512-iI/kGHZhW7q36KepPJVSvunjfbkX9UElStgLofa4gW2ziXllMYabd0VSJA8YPkTY5a/d8J7ui0KkV0SObldYfw=="],
 
     "@types/bun": ["@types/bun@1.3.14", "", { "dependencies": { "bun-types": "1.3.14" } }, "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw=="],
 
