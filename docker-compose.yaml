@@ -9,7 +9,8 @@
 #
 # Everything here is a PULLED image — you do NOT need the engine source. The
 # interbox image is published to Docker Hub; pg/aidbox are stock. Set the
-# engine version with INTERBOX_VERSION in .env (default `edge`).
+# engine version with INTERBOX_VERSION in .env (the shipped .env.example pins a
+# released version; `edge` = latest main build).
 #
 # Quick start:
 #   1. cp .env.example .env   and fill in the license (see that file).
