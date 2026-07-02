@@ -1,7 +1,7 @@
 # interbox-workspace
 
 [![npm version](https://img.shields.io/npm/v/@health-samurai/interbox)](https://www.npmjs.com/package/@health-samurai/interbox)
-[![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver)](https://hub.docker.com/r/healthsamurai/interbox)
+[![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver&label=docker)](https://hub.docker.com/r/healthsamurai/interbox)
 [![CI](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml)
 
 Reference pipeline for [Interbox](https://www.health-samurai.io/interbox), an
