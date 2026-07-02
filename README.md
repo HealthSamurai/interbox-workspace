@@ -4,6 +4,27 @@
 [![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver)](https://hub.docker.com/r/healthsamurai/interbox)
 [![CI](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml)
 
+Reference pipeline for [Interbox](https://www.health-samurai.io/interbox), an
+extensible integration engine. Fork this repo, adjust the pipeline for your
+own data, and deploy.
+
+## Quick start
+
+```bash
+cp .env.example .env   # fill in the license — see that file for options
+docker compose up
+```
+
+Open http://localhost:3001 for the dashboard. The image is **licensed**: the
+pipeline stays paused until you set `INTERBOX_LICENSE` in `.env`, or activate
+through the dashboard itself (portal OAuth) — until then you'll see an
+activation screen there.
+
+Send HL7v2 over MLLP to `localhost:2575` and watch messages flow through to
+the FHIR server.
+
+## Author pipelines
+
 Pipeline definitions for the Interbox engine. The engine has no built-in
 topology — it loads the pipelines declared here at boot.
 
