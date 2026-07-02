@@ -1,0 +1,117 @@
+name: Release
+
+# interbox-workspace releases. package.json's `version` is "<engine version>+N":
+# interbox's own release pipeline bumps this to "+0" whenever the engine
+# releases (baseline, no workspace-only changes yet — see interbox's
+# publish.yml, "Sync workspace version" step); a workspace-only fix (no engine
+# change involved) bumps N via a normal PR here instead. One continuous
+# release sequence either way — this workflow doesn't care which kind of bump
+# it is, it just reacts to package.json's version changing.
+#
+# Triggered on every PR merge into main (this repo requires PR review to land
+# anything). A merge that doesn't touch the version is a no-op.
+#
+# This file is visible in customer forks (that's fine, it's harmless) but only
+# actually does anything in the canonical repo — see the repository guard on
+# create-release below.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # Repo guard on every job (not just create-release) — GitHub Actions has no
+  # single workflow-level switch, so this is the closest thing to "the whole
+  # workflow is a no-op outside the canonical repo": nothing runs at all in a
+  # fork, not even the version check.
+  version:
+    if: github.event.pull_request.merged == true && github.repository == 'HealthSamurai/interbox-workspace'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+      is_new: ${{ steps.check.outputs.is_new }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # need tags to check what's already released
+
+      - name: Check if this version already has a release
+        id: check
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Version $VERSION already released. Skipping."
+            echo "is_new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Version $VERSION is new. Will create a release."
+            echo "is_new=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  create-release:
+    needs: version
+    # Repeats the repo guard (redundant with version's, since a skipped version
+    # job leaves needs.version.outputs empty anyway — kept explicit rather than
+    # relying on that side effect).
+    if: |
+      github.event.pull_request.merged == true &&
+      needs.version.outputs.is_new == 'true' &&
+      github.repository == 'HealthSamurai/interbox-workspace'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # git-cliff needs full history + tags to diff since the last release
+
+      # Generated here instead of a committed cliff.toml — this is a customer-
+      # facing repo, keep the file count down. tag_pattern is anchored on
+      # "v<digit>" so this only ever diffs against this repo's own release tags
+      # (v1.2.0+0, v1.2.0+1, ...).
+      - name: Write git-cliff config
+        run: |
+          cat > cliff.toml <<'EOF'
+          [changelog]
+          header = ""
+          body = """
+          {% for group, commits in commits | group_by(attribute="group") %}
+          ### {{ group | upper_first }}
+          {% for commit in commits %}
+          - {{ commit.message | upper_first | trim }} ({{ commit.id | truncate(length=7, end="") }})
+          {% endfor %}
+          {% endfor %}
+          """
+          trim = true
+          footer = ""
+
+          [git]
+          conventional_commits = true
+          filter_unconventional = false
+          commit_parsers = [
+            { message = "^feat", group = "Features" },
+            { message = "^fix", group = "Bug Fixes" },
+            { message = "^perf", group = "Performance" },
+            { message = "^refactor", group = "Refactor" },
+            { message = "^docs", group = "Documentation" },
+            { message = "^chore\\(deps\\)", group = "Dependencies" },
+            { message = "^chore", group = "Miscellaneous" },
+            { message = ".*", group = "Other" },
+          ]
+          filter_commits = false
+          tag_pattern = "v[0-9]*"
+          EOF
+
+      - uses: orhun/git-cliff-action@v4
+        with:
+          args: --tag v${{ needs.version.outputs.version }} --unreleased --strip header
+        env:
+          OUTPUT: CHANGES.md
+
+      - run: gh release create "v${{ needs.version.outputs.version }}" --notes-file CHANGES.md --target main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
