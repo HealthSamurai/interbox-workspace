@@ -96,6 +96,17 @@ services:
       - aidbox-db
     ports:
       - "8080:8080"
+    # Strip a blank AIDBOX_LICENSE before Aidbox starts. Compose's `environment:`
+    # mapping always sets the var, even to "" when .env leaves it blank — and
+    # Aidbox's classic license check treats a present-but-empty value as a
+    # malformed JWT and refuses to boot instead of degrading into activation mode.
+    # Unsetting it when blank lets a fresh box boot unlicensed so the dashboard's
+    # activation flow can license it. $$ (not $) defers expansion to the container's
+    # shell so Compose doesn't bake the real JWT into the command args.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - '[ -z "$$AIDBOX_LICENSE" ] && unset AIDBOX_LICENSE; exec /aidbox.sh'
     environment:
       AIDBOX_LICENSE: ${AIDBOX_LICENSE}
       BOX_ADMIN_PASSWORD: admin
