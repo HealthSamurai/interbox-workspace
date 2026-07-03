@@ -14,3 +14,26 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
+
+  # Guard the version scheme: N=0 (`<engine>+0`) is the engine-mirrored baseline,
+  # created only by interbox's publish.yml via a direct push. Humans land changes
+  # through PRs and must bump the workspace-only counter (+1, +2, …), never +0.
+  # PR-only so it never fires on the engine's direct +0 push. Compares head vs the
+  # PR base so it rejects a *bump to* +0, not the normal resting state (which IS
+  # `<engine>+0` between workspace-only changes) — otherwise every PR would fail.
+  guard-version:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # need the PR base commit to diff the version
+      - name: Reject a +0 version bump
+        run: |
+          HEAD=$(jq -r .version package.json)
+          BASE=$(git show "${{ github.event.pull_request.base.sha }}:package.json" | jq -r .version)
+          if [[ "$HEAD" != "$BASE" && "$HEAD" == *"+0" ]]; then
+            echo "::error::Version bumped $BASE -> $HEAD. N=0 (+0) is reserved for engine-mirrored baselines created by interbox's publish.yml. For a workspace-only release, bump the +N counter (+1, +2, …) instead."
+            exit 1
+          fi
+          echo "version ok ($BASE -> $HEAD)"

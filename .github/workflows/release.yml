@@ -25,11 +25,12 @@ name: Release
 # move the version to an unreleased value is a no-op — the is_new tag check
 # below gates it.
 #
-# NOTE on the engine-mirrored +0 bump: interbox's publish.yml both pushes here
-# AND creates the "+0" release itself in the same job, right after the push.
-# That direct create runs immediately while this workflow is still spinning up a
-# runner, so it wins the tag — this workflow then sees is_new=false and skips.
-# No duplicate release.
+# NOTE on the engine-mirrored +0 bump: +0 releases are OWNED by interbox's
+# publish.yml (it pushes the version bump here AND cuts `v<ver>+0` itself). This
+# workflow explicitly SKIPS any `+0` version (see the version check) so the two
+# never race over the same tag — release.yml only ever cuts workspace-only `+N`
+# (N>=1) releases. The invariant "N=0 <=> engine-created" is also enforced on
+# the authoring side: ci.yml rejects a PR that bumps the version to a +0 value.
 #
 # This file is visible in customer forks (that's fine, it's harmless) but only
 # actually does anything in the canonical repo — see the repository guard on
@@ -112,7 +113,10 @@ jobs:
         run: |
           VERSION=$(jq -r .version package.json)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+          if [[ "$VERSION" == *"+0" ]]; then
+            echo "Version $VERSION is an engine-mirrored +0 baseline — interbox's publish.yml owns +0 releases. Skipping here."
+            echo "is_new=false" >> "$GITHUB_OUTPUT"
+          elif git rev-parse "v$VERSION" >/dev/null 2>&1; then
             echo "Version $VERSION already released. Skipping."
             echo "is_new=false" >> "$GITHUB_OUTPUT"
           else
