@@ -4,16 +4,26 @@ name: Release
 # interbox's own release pipeline bumps this to "+0" whenever the engine
 # releases (baseline, no workspace-only changes yet — see interbox's
 # publish.yml, "Sync workspace version" step); a workspace-only fix (no engine
-# change involved) bumps N via a normal PR here instead. One continuous
-# release sequence either way — this workflow doesn't care which kind of bump
-# it is, it just reacts to package.json's version changing.
+# change involved) bumps N. One continuous release sequence either way — this
+# workflow doesn't care which kind of bump it is, it just reacts to a new
+# version.
 #
-# Triggered on every push to main that touches package.json — whether from a
-# merged PR (this repo requires PR review to land human changes) or a direct
-# push (e.g. interbox's publish.yml "Sync workspace version" step). A push that
-# doesn't move the version to an unreleased value is a no-op — the is_new tag
-# check below gates it. A PR merge is itself a push to main, so `push` covers
-# both; no separate pull_request trigger needed.
+# Two ways a workspace-only "+N" release happens:
+#   - Bundled in the fix: a PR (this repo prefers PR review for human changes)
+#     bumps N alongside the fix; merging it pushes package.json → releases.
+#   - Manual button: the "Release" workflow_dispatch runs the `bump` job below,
+#     which increments N, commits `chore(release): interbox-workspace <ver>`,
+#     and direct-pushes to main. main's ruleset blocks force-push / deletion /
+#     non-linear history but does NOT require a PR, so a single fast-forward
+#     commit is allowed. Same-run: the push uses GITHUB_TOKEN (which by design
+#     does NOT trigger a fresh push-event run — no duplicate release), and the
+#     downstream jobs check out that exact commit (needs.version.outputs.sha).
+#
+# The `push` trigger still fires on every push to main that touches
+# package.json — a merged PR OR interbox's publish.yml "Sync workspace version"
+# step (which pushes with a PAT, so it DOES trigger this). A push that doesn't
+# move the version to an unreleased value is a no-op — the is_new tag check
+# below gates it.
 #
 # NOTE on the engine-mirrored +0 bump: interbox's publish.yml both pushes here
 # AND creates the "+0" release itself in the same job, right after the push.
@@ -23,31 +33,78 @@ name: Release
 #
 # This file is visible in customer forks (that's fine, it's harmless) but only
 # actually does anything in the canonical repo — see the repository guard on
-# create-release below.
+# every job below.
 
 on:
   push:
     branches: [main]
     paths:
       - 'package.json' # only a version bump can create a release
+  workflow_dispatch: # the manual "Release" button — runs the bump job below
 
 permissions:
   contents: read
 
 jobs:
+  # Manual "Release" button only: increment the "+N" suffix (engine base
+  # untouched — that only moves via interbox's mirror push), commit, push to
+  # main. Skipped on `push` events (the version bump already happened there,
+  # bundled in a PR or the engine mirror). package.json stays the ONE source of
+  # truth — this just writes the number a human would otherwise edit by hand.
+  bump:
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'HealthSamurai/interbox-workspace'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the release commit to main
+    outputs:
+      sha: ${{ steps.bump.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Bump "+N" and push
+        id: bump
+        run: |
+          CUR=$(jq -r .version package.json)
+          if [[ "$CUR" != *+* ]]; then
+            echo "::error::version '$CUR' has no +N suffix — the engine mirror must baseline it to +0 first" >&2
+            exit 1
+          fi
+          BASE="${CUR%+*}"          # engine version, e.g. 1.2.0
+          N="${CUR#*+}"             # workspace counter, e.g. 3
+          NEW="${BASE}+$((N + 1))"  # e.g. 1.2.0+4
+          echo "Bumping $CUR -> $NEW"
+          jq --arg v "$NEW" '.version = $v' package.json > pkg.tmp
+          mv pkg.tmp package.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore(release): interbox-workspace $NEW"
+          # Single fast-forward commit — satisfies main's linear-history ruleset.
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
   # Repo guard on every job (not just create-release) — GitHub Actions has no
   # single workflow-level switch, so this is the closest thing to "the whole
   # workflow is a no-op outside the canonical repo": nothing runs at all in a
   # fork, not even the version check.
   version:
-    if: github.repository == 'HealthSamurai/interbox-workspace'
+    needs: [bump]
+    # Runs whether bump ran (the button) or was skipped (push events). Only a
+    # real bump FAILURE stops the pipeline.
+    if: ${{ !failure() && !cancelled() && github.repository == 'HealthSamurai/interbox-workspace' }}
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.check.outputs.version }}
       is_new: ${{ steps.check.outputs.is_new }}
+      # The commit create-release checks out: the bump commit if the button
+      # bumped, otherwise the triggering commit.
+      sha: ${{ needs.bump.outputs.sha || github.sha }}
     steps:
       - uses: actions/checkout@v5
         with:
+          ref: ${{ needs.bump.outputs.sha || github.sha }}
           fetch-depth: 0 # need tags to check what's already released
 
       - name: Check if this version already has a release
@@ -77,6 +134,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
+          ref: ${{ needs.version.outputs.sha }} # the bump commit, if the button bumped
           fetch-depth: 0 # git-cliff needs full history + tags to diff since the last release
 
       # Generated here instead of a committed cliff.toml — this is a customer-
