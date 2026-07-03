@@ -70,16 +70,27 @@ services:
       AIDBOX_SECRET: ${AIDBOX_SECRET:-secret}
       # License: env activation (or use the dashboard's activation screen instead).
       INTERBOX_LICENSE: ${INTERBOX_LICENSE:-}
+      # Dashboard assistant (Claude Code over ACP) auth — pick ONE (all blank = the
+      # dashboard still works, the assistant just can't answer). The container has no
+      # ~/.claude of its own, so hand it credentials one of three ways:
+      #   1. CLAUDE_CODE_OAUTH_TOKEN — bills your Claude Code SUBSCRIPTION, not
+      #      per-token API usage. On a host with Claude Code + a Pro/Max plan run
+      #      `claude setup-token` and set it in .env. Works on every host OS.
+      #   2. ANTHROPIC_API_KEY — pay-per-token API billing instead of the subscription.
+      #   3. Bind-mount your existing host login — see the commented volume below.
+      CLAUDE_CODE_OAUTH_TOKEN: ${CLAUDE_CODE_OAUTH_TOKEN:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     volumes:
       - .:/workspace
       # Keep the container's (linux) workspace deps in a volume so they don't
       # clobber — or get clobbered by — the host's node_modules on the bind mount.
       - workspace-node-modules:/workspace/node_modules
-      # Optional — the dashboard assistant is Claude Code over ACP, which auths
-      # with your Claude Code login (the container has no ~/.claude of its own).
-      # To enable it, mount your Claude Code config in (adjust the host path);
-      # without it the dashboard still works, the assistant just can't answer:
-      #   - ${HOME}/.claude:/root/.claude:ro
+      # Assistant auth option 3 (dev only): mount your host Claude Code login instead
+      # of setting a token above — uses your existing session, nothing to mint. Container
+      # HOME is /root. Caveats: macOS keeps the creds in the Keychain, not this file, so
+      # this does NOT work there (use option 1); and do NOT add `:ro` if the container can
+      # outlive the token's expiry — Claude refreshes it and must write the new one back.
+      #   - ${HOME}/.claude:/root/.claude
 
   aidbox-db:
     image: postgres:18
