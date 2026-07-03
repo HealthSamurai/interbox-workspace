@@ -8,17 +8,28 @@ name: Release
 # release sequence either way — this workflow doesn't care which kind of bump
 # it is, it just reacts to package.json's version changing.
 #
-# Triggered on every PR merge into main (this repo requires PR review to land
-# anything). A merge that doesn't touch the version is a no-op.
+# Triggered on every push to main that touches package.json — whether from a
+# merged PR (this repo requires PR review to land human changes) or a direct
+# push (e.g. interbox's publish.yml "Sync workspace version" step). A push that
+# doesn't move the version to an unreleased value is a no-op — the is_new tag
+# check below gates it. A PR merge is itself a push to main, so `push` covers
+# both; no separate pull_request trigger needed.
+#
+# NOTE on the engine-mirrored +0 bump: interbox's publish.yml both pushes here
+# AND creates the "+0" release itself in the same job, right after the push.
+# That direct create runs immediately while this workflow is still spinning up a
+# runner, so it wins the tag — this workflow then sees is_new=false and skips.
+# No duplicate release.
 #
 # This file is visible in customer forks (that's fine, it's harmless) but only
 # actually does anything in the canonical repo — see the repository guard on
 # create-release below.
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [main]
+    paths:
+      - 'package.json' # only a version bump can create a release
 
 permissions:
   contents: read
@@ -29,7 +40,7 @@ jobs:
   # workflow is a no-op outside the canonical repo": nothing runs at all in a
   # fork, not even the version check.
   version:
-    if: github.event.pull_request.merged == true && github.repository == 'HealthSamurai/interbox-workspace'
+    if: github.repository == 'HealthSamurai/interbox-workspace'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.check.outputs.version }}
@@ -58,7 +69,6 @@ jobs:
     # job leaves needs.version.outputs empty anyway — kept explicit rather than
     # relying on that side effect).
     if: |
-      github.event.pull_request.merged == true &&
       needs.version.outputs.is_new == 'true' &&
       github.repository == 'HealthSamurai/interbox-workspace'
     runs-on: ubuntu-latest
