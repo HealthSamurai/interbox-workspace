@@ -29,8 +29,9 @@ name: Release
 # publish.yml (it pushes the version bump here AND cuts `v<ver>+0` itself). This
 # workflow explicitly SKIPS any `+0` version (see the version check) so the two
 # never race over the same tag — release.yml only ever cuts workspace-only `+N`
-# (N>=1) releases. The invariant "N=0 <=> engine-created" is also enforced on
-# the authoring side: ci.yml rejects a PR that bumps the version to a +0 value.
+# (N>=1) releases. The scheme is also enforced on the authoring side: ci.yml's
+# guard-version validates every version-changing PR (keep the engine core, bump
+# +N by exactly 1, engine baseline v<core>+0 must exist, never +0).
 #
 # This file is visible in customer forks (that's fine, it's harmless) but only
 # actually does anything in the canonical repo — see the repository guard on
