@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@health-samurai/interbox)](https://www.npmjs.com/package/@health-samurai/interbox)
 [![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver&label=docker)](https://hub.docker.com/r/healthsamurai/interbox)
 [![CI](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-mdBook-blue)](https://healthsamurai.github.io/interbox-workspace/)
 
 Reference pipeline for [Interbox](https://www.health-samurai.io/interbox), an
 extensible integration engine. Fork this repo, adjust the pipeline for your
