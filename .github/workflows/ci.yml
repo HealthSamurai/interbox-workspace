@@ -14,3 +14,49 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
+
+  # Guard the version scheme for workspace-only PRs. Workspace versions are
+  # `<engine X.Y.Z>+<N>`: N=0 is the engine-mirrored baseline (interbox's
+  # publish.yml direct-pushes it), N>=1 is a workspace-only release. A PR that
+  # changes the version must: keep the engine core (advancing it is the mirror's
+  # job), increment +N by exactly 1, land on an engine version that was actually
+  # released & mirrored here (the v<core>+0 tag exists), and never use +0. PR-only
+  # so it never fires on the engine's direct +0 push; skips when the version is
+  # untouched (the resting state IS <engine>+0 between workspace changes).
+  guard-version:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # need the PR base commit + all tags (engine baselines)
+      - name: Validate the version bump
+        run: |
+          HEAD=$(jq -r .version package.json)
+          BASE=$(git show "${{ github.event.pull_request.base.sha }}:package.json" | jq -r .version)
+          if [ "$HEAD" = "$BASE" ]; then echo "version unchanged ($HEAD) — ok"; exit 0; fi
+
+          if [[ ! "$HEAD" =~ ^[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+$ ]]; then
+            echo "::error::Invalid workspace version '$HEAD' — must be <engine version>+<N>, e.g. 1.2.3+1."
+            exit 1
+          fi
+          HEAD_CORE=${HEAD%+*}; HEAD_N=${HEAD##*+}
+          BASE_CORE=${BASE%+*}; BASE_N=${BASE##*+}
+
+          if [ "$HEAD_N" -eq 0 ]; then
+            echo "::error::$BASE -> $HEAD: +0 is reserved for engine-mirrored baselines (interbox's publish.yml). Bump the +N counter instead."
+            exit 1
+          fi
+          if [ "$HEAD_CORE" != "$BASE_CORE" ]; then
+            echo "::error::$BASE -> $HEAD changes the engine version ($BASE_CORE -> $HEAD_CORE). Workspace-only releases keep the engine core and bump +N; advancing the engine version is the mirror's job."
+            exit 1
+          fi
+          if [ "$HEAD_N" -ne "$((BASE_N + 1))" ]; then
+            echo "::error::+N must increase by exactly 1: $BASE -> expected ${BASE_CORE}+$((BASE_N + 1)), got $HEAD."
+            exit 1
+          fi
+          if ! git rev-parse "v${HEAD_CORE}+0" >/dev/null 2>&1; then
+            echo "::error::No engine baseline tag v${HEAD_CORE}+0 — engine $HEAD_CORE was never released & mirrored here, so there's nothing to cut a +N on."
+            exit 1
+          fi
+          echo "version bump ok: $BASE -> $HEAD"
