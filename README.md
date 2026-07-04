@@ -24,6 +24,23 @@ activation screen there.
 Send HL7v2 over MLLP to `localhost:2575` and watch messages flow through to
 the FHIR server.
 
+## Dashboard assistant on macOS
+
+The dashboard's assistant is a Claude Code agent running inside the container,
+which has no `~/.claude` of its own. On Linux/Windows you can bind-mount your
+host login (see the commented volume in `docker-compose.yaml`), but macOS keeps
+Claude Code creds in the **Keychain**, not in a file — so mint a subscription
+token instead:
+
+```bash
+./scripts/setup-claude-mac.sh   # runs `claude setup-token`, writes it to .env
+```
+
+Needs the Claude Code CLI and a Pro/Max plan; it bills the subscription, not
+per-token API usage. Prefer pay-per-token API billing? Skip the script and set
+`ANTHROPIC_API_KEY` in `.env`. The assistant is optional — leave both blank and
+the dashboard still works, the assistant just can't answer.
+
 ## Author pipelines
 
 Pipeline definitions for the Interbox engine. The engine has no built-in
