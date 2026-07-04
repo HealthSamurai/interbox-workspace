@@ -154,8 +154,8 @@ jobs:
           body = """
           {% for group, commits in commits | group_by(attribute="group") %}
           ### {{ group | upper_first }}
-          {% for commit in commits %}
-          - {{ commit.message | upper_first | trim }} ({{ commit.id | truncate(length=7, end="") }})
+          {% for commit in commits -%}
+          - {{ commit.message | upper_first | trim }}
           {% endfor %}
           {% endfor %}
           """
@@ -184,6 +184,22 @@ jobs:
           args: --tag v${{ needs.version.outputs.version }} --unreleased --strip header
         env:
           OUTPUT: CHANGES.md
+
+      # A workspace release is `<engine core>+N`; it ships no npm/image of its own —
+      # it runs on the engine SDK+image at the core version. Link those (strip +N),
+      # so every workspace release has the artifact links, not just the engine's.
+      - name: Append engine artifact links
+        run: |
+          V="${{ needs.version.outputs.version }}"
+          CORE="${V%%+*}"
+          cat >> CHANGES.md <<EOF
+
+          ---
+
+          Runs on interbox engine ${CORE}:
+          📦 [npm](https://www.npmjs.com/package/@health-samurai/interbox/v/${CORE})
+          🐳 [Docker Hub](https://hub.docker.com/r/healthsamurai/interbox/tags?name=${CORE})
+          EOF
 
       - run: gh release create "v${{ needs.version.outputs.version }}" --notes-file CHANGES.md --target main
         env:
