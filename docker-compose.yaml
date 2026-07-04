@@ -77,7 +77,7 @@ services:
       #      per-token API usage. On a host with Claude Code + a Pro/Max plan run
       #      `claude setup-token` and set it in .env. Works on every host OS.
       #   2. ANTHROPIC_API_KEY — pay-per-token API billing instead of the subscription.
-      #   3. Bind-mount your existing host login — see the commented volume below.
+      #   3. Reuse your host login — set CLAUDE_CONFIG_DIR in .env (see the volume below).
       CLAUDE_CODE_OAUTH_TOKEN: ${CLAUDE_CODE_OAUTH_TOKEN:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     volumes:
@@ -85,12 +85,15 @@ services:
       # Keep the container's (linux) workspace deps in a volume so they don't
       # clobber — or get clobbered by — the host's node_modules on the bind mount.
       - workspace-node-modules:/workspace/node_modules
-      # Assistant auth option 3 (dev only): mount your host Claude Code login instead
-      # of setting a token above — uses your existing session, nothing to mint. Container
-      # HOME is /root. Caveats: macOS keeps the creds in the Keychain, not this file, so
-      # this does NOT work there (use option 1); and do NOT add `:ro` if the container can
-      # outlive the token's expiry — Claude refreshes it and must write the new one back.
-      #   - ${HOME}/.claude:/root/.claude
+      # Assistant auth option 3 (dev only, Linux/Windows hosts): reuse your host
+      # Claude Code login instead of minting a token. Point CLAUDE_CONFIG_DIR in .env
+      # at your host login dir (e.g. ${HOME}/.claude) and it's bind-mounted here — no
+      # docker-compose edit needed. Left unset it defaults to an empty managed volume,
+      # so nothing from the host is exposed and the assistant falls back to the token/
+      # key env above. Caveats: macOS keeps creds in the Keychain (not a dir), so this
+      # can't work there — run ./scripts/setup-claude-mac.sh to mint a token instead;
+      # and do NOT append `:ro` — Claude refreshes the token and must write it back.
+      - ${CLAUDE_CONFIG_DIR:-claude-login}:/root/.claude
 
   aidbox-db:
     image: postgres:18
@@ -145,3 +148,6 @@ volumes:
   pg-data:
   aidbox-db-data:
   workspace-node-modules:
+  # Default target for the assistant's /root/.claude when CLAUDE_CONFIG_DIR is unset:
+  # an empty managed volume, so no host login is exposed unless you opt in via .env.
+  claude-login:

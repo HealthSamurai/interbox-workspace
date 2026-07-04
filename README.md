@@ -24,22 +24,28 @@ activation screen there.
 Send HL7v2 over MLLP to `localhost:2575` and watch messages flow through to
 the FHIR server.
 
-## Dashboard assistant on macOS
+## Configure the dashboard assistant
 
-The dashboard's assistant is a Claude Code agent running inside the container,
-which has no `~/.claude` of its own. On Linux/Windows you can bind-mount your
-host login (see the commented volume in `docker-compose.yaml`), but macOS keeps
-Claude Code creds in the **Keychain**, not in a file — so mint a subscription
-token instead:
+The dashboard's assistant is a Claude Code agent running **inside the container**,
+which has no `~/.claude` of its own — so you hand it credentials through `.env`.
+It's optional: leave everything blank and the dashboard still works, the assistant
+just shows a "no credentials" banner instead of answering. Pick one path:
 
-```bash
-./scripts/setup-claude-mac.sh   # runs `claude setup-token`, writes it to .env
-```
+| Path | Set in `.env` | Billing |
+| --- | --- | --- |
+| **Subscription token** (any OS) | `CLAUDE_CODE_OAUTH_TOKEN` — run `claude setup-token` on the host (macOS: `./scripts/setup-claude-mac.sh` does it for you) | Claude Pro/Max subscription |
+| **API key** | `ANTHROPIC_API_KEY=sk-ant-…` | Pay-per-token |
+| **Reuse host login** (Linux/Windows dev) | `CLAUDE_CONFIG_DIR=${HOME}/.claude` — bind-mounts your existing login into the container | Your existing session |
 
-Needs the Claude Code CLI and a Pro/Max plan; it bills the subscription, not
-per-token API usage. Prefer pay-per-token API billing? Skip the script and set
-`ANTHROPIC_API_KEY` in `.env`. The assistant is optional — leave both blank and
-the dashboard still works, the assistant just can't answer.
+Notes:
+
+- **macOS** keeps Claude Code creds in the **Keychain**, not in a file, so the
+  reuse-host-login path can't work there — use the subscription token instead
+  (`./scripts/setup-claude-mac.sh` mints one; needs the Claude Code CLI + a
+  Pro/Max plan).
+- The reuse-host-login path is `.env`-driven — no `docker-compose.yaml` edit.
+  Left unset, `CLAUDE_CONFIG_DIR` defaults to an empty managed volume, so nothing
+  from your host is exposed.
 
 ## Author pipelines
 
