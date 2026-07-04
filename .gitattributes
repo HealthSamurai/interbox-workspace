@@ -1,0 +1,2 @@
+# Shell scripts must stay LF or the shebang breaks on Unix after a Windows checkout.
+*.sh text eol=lf
