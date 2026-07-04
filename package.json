@@ -7,9 +7,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "bun test",
-    "interbox-cli": "interbox",
-    "sync": "bun run interbox-cli sync",
-    "postinstall": "bun run interbox-cli sync || true"
+    "interbox-cli": "interbox"
   },
   "dependencies": {
     "@health-samurai/interbox": "^1.0.0"
