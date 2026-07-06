@@ -4,8 +4,9 @@
 #   interbox   the all-in-one image (engine + API + dashboard). Mounts this repo
 #              at /workspace and runs it in local mode (file:///workspace), so
 #              edits to src/ hot-reload into the running pipeline.
-#   pg         stock Postgres 18 (same image as aidbox-db) — Interbox's store.
-#   aidbox     the FHIR server the pipeline's sender targets (+ its own db).
+#   pg         one stock Postgres 18 cluster, shared: Interbox and Aidbox each own
+#              a database in it (interbox, aidbox), created first-boot by compose/.
+#   aidbox     the FHIR server the pipeline's sender targets.
 #
 # Everything here is a PULLED image — you do NOT need the engine source. The
 # interbox image is published to Docker Hub; pg/aidbox are stock. Set the
@@ -23,8 +24,10 @@
 
 services:
   pg:
-    # Stock Postgres 18 (same image as aidbox-db) — Interbox needs only pg_trgm +
-    # btree_gist (bundled contrib), no custom image.
+    # Single Postgres 18 cluster shared by Interbox and Aidbox — each owns its own
+    # database (interbox, aidbox), created first-boot by compose/init-databases.sql.
+    # Interbox needs only pg_trgm + btree_gist (bundled contrib); Aidbox wants
+    # pg_stat_statements, preloaded below.
     image: postgres:18
     # Postgres parallel query allocates DSM segments in /dev/shm; Docker's 64MB
     # default overflows when the dashboard fans out parallel facet aggregates.
@@ -35,10 +38,14 @@ services:
       postgres
       -c max_wal_size=4GB
       -c wal_compression=on
+      -c shared_preload_libraries=pg_stat_statements
     ports:
       - "5432:5432"
     volumes:
-      - pg-data:/var/lib/postgresql
+      - pg-data:/var/lib/postgresql/18/docker
+      # First-boot only: creates the interbox + aidbox databases. The postgres image
+      # auto-creates only one db (POSTGRES_DB); with two peers we create both here.
+      - ./compose/init-databases.sql:/docker-entrypoint-initdb.d/10-databases.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 2s
@@ -59,7 +66,7 @@ services:
       - "3001:3001" # dashboard + API (same origin)
       - "2575:2575" # MLLP ingest
     environment:
-      DATABASE_URL: postgres://postgres:postgres@pg:5432/postgres
+      DATABASE_URL: postgres://postgres:postgres@pg:5432/interbox
       MLLP_HOST: 0.0.0.0
       MLLP_PORT: "2575"
       # Run THIS checkout in local mode — the bind mount below is the live tree.
@@ -95,19 +102,11 @@ services:
       # and do NOT append `:ro` — Claude refreshes the token and must write it back.
       - ${CLAUDE_CONFIG_DIR:-claude-login}:/root/.claude
 
-  aidbox-db:
-    image: postgres:18
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: aidbox
-    volumes:
-      - aidbox-db-data:/var/lib/postgresql/18/docker:delegated
-
   aidbox:
     image: healthsamurai/aidboxone:latest
     depends_on:
-      - aidbox-db
+      pg:
+        condition: service_healthy
     ports:
       - "8080:8080"
     # Strip a blank AIDBOX_LICENSE before Aidbox starts. Compose's `environment:`
@@ -129,7 +128,7 @@ services:
       BOX_FHIR_SCHEMA_VALIDATION: "true"
       BOX_FHIR_COMPLIANT_MODE: "true"
       BOX_DB_DATABASE: aidbox
-      BOX_DB_HOST: aidbox-db
+      BOX_DB_HOST: pg
       BOX_DB_PASSWORD: postgres
       BOX_DB_PORT: "5432"
       BOX_DB_USER: postgres
@@ -146,7 +145,6 @@ services:
 
 volumes:
   pg-data:
-  aidbox-db-data:
   workspace-node-modules:
   # Default target for the assistant's /root/.claude when CLAUDE_CONFIG_DIR is unset:
   # an empty managed volume, so no host login is exposed unless you opt in via .env.
