@@ -20,6 +20,6 @@ pipeline("hl7-to-aidbox")
   .sender(
     aidboxSender({
       url: env("AIDBOX_URL"),
-      auth: { kind: "basic", user: "root", password: env("AIDBOX_SECRET") },
+      auth: { kind: "basic", user: env("AIDBOX_CLIENT_ID", "root"), password: env("AIDBOX_CLIENT_SECRET") },
     }),
   );
