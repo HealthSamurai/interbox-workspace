@@ -1,8 +1,9 @@
 # interbox-workspace
 
-[![npm version](https://img.shields.io/npm/v/@health-samurai/interbox)](https://www.npmjs.com/package/@health-samurai/interbox)
-[![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver&label=docker)](https://hub.docker.com/r/healthsamurai/interbox)
-[![CI](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@health-samurai/interbox?logo=npm)](https://www.npmjs.com/package/@health-samurai/interbox)
+[![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver&label=docker&logo=docker&logoColor=white)](https://hub.docker.com/r/healthsamurai/interbox)
+[![Helm chart](https://img.shields.io/badge/Helm-chart-0F1689?logo=helm&logoColor=white)](https://github.com/HealthSamurai/helm-charts/tree/main/interbox)
+[![CI](https://img.shields.io/github/actions/workflow/status/HealthSamurai/interbox-workspace/ci.yml?branch=main&logo=github&logoColor=white&label=CI)](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-mdBook-blue)](https://healthsamurai.github.io/interbox-workspace/)
 
 Reference pipeline for [Interbox](https://www.health-samurai.io/interbox), an
