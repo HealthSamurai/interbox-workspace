@@ -59,6 +59,12 @@ services:
     # dev image the SDK rides along, so this one tag pins engine + SDK together.
     # To update: bump INTERBOX_VERSION, then `docker compose pull interbox && up -d`.
     image: ${INTERBOX_REGISTRY:-healthsamurai}/interbox:${INTERBOX_VERSION:-edge}
+    # The image runs as non-root (uid 1000). For local dev we mount this checkout at
+    # /workspace and keep node_modules in a named volume — both root-owned on the host
+    # side — so run the dev container as root to keep bun install / SDK-link writable.
+    # Production runs non-root via the Helm chart's securityContext; this override is
+    # dev-only convenience.
+    user: "0:0"
     depends_on:
       pg:
         condition: service_healthy
