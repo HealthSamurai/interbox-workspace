@@ -74,7 +74,9 @@ services:
       INTERBOX_WORKSPACE_POLL_MS: "2000" # snappy hot reload in dev
       # Pipeline sender target.
       AIDBOX_URL: http://aidbox:8080
-      AIDBOX_SECRET: ${AIDBOX_SECRET:-secret}
+      # Client interbox authenticates as — id defaults to root; set a scoped one for least privilege.
+      AIDBOX_CLIENT_ID: ${AIDBOX_CLIENT_ID:-root}
+      AIDBOX_CLIENT_SECRET: ${AIDBOX_CLIENT_SECRET:-secret}
       # License: env activation (or use the dashboard's activation screen instead).
       INTERBOX_LICENSE: ${INTERBOX_LICENSE:-}
       # Dashboard assistant (Claude Code over ACP) auth — pick ONE (all blank = the
@@ -123,7 +125,7 @@ services:
     environment:
       AIDBOX_LICENSE: ${AIDBOX_LICENSE}
       BOX_ADMIN_PASSWORD: admin
-      BOX_ROOT_CLIENT_SECRET: ${AIDBOX_SECRET:-secret}
+      BOX_ROOT_CLIENT_SECRET: ${AIDBOX_CLIENT_SECRET:-secret}
       BOX_BOOTSTRAP_FHIR_PACKAGES: hl7.fhir.r4.core#4.0.1
       BOX_FHIR_SCHEMA_VALIDATION: "true"
       BOX_FHIR_COMPLIANT_MODE: "true"
