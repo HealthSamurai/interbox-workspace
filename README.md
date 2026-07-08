@@ -25,6 +25,21 @@ activation screen there.
 Send HL7v2 over MLLP to `localhost:2575` and watch messages flow through to
 the FHIR server.
 
+## Deploy on Kubernetes
+
+For a cluster deployment with the dashboard properly secured — internal ingress,
+TLS, and an SSO login gate (the dashboard has no built-in auth) — see
+[`k8s/`](k8s/):
+
+- [`k8s/k3d/`](k8s/k3d/) — a **runnable, one-command** reference on
+  [k3d](https://k3d.io) (local). Stands up the full secure stack (ingress-nginx +
+  cert-manager + oauth2-proxy + Dex) so you can see it work before a real cluster.
+- [`k8s/aks/`](k8s/aks/) — **production templates** for AKS (internal LB,
+  cert-manager DNS-01 / internal CA, Entra ID SSO, managed Postgres).
+
+The Interbox Helm chart itself lives in
+[HealthSamurai/helm-charts](https://github.com/HealthSamurai/helm-charts/tree/main/interbox).
+
 ## Configure the dashboard assistant
 
 The dashboard's assistant is a Claude Code agent running **inside the container**,

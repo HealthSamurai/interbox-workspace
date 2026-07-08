@@ -1,0 +1,15 @@
+# Helm values to install ingress-nginx as an INTERNAL controller on AKS — its Azure
+# Load Balancer gets a PRIVATE IP (no public exposure). The dashboard is reached over
+# the VPN/VNet only.
+#
+#   helm install ingress-nginx ingress-nginx/ingress-nginx \
+#     -n ingress-nginx --create-namespace -f ingress-nginx.values.yaml
+controller:
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    externalTrafficPolicy: Local
+  ingressClassResource:
+    name: nginx
+    default: false
+  # replicaCount: 2   # for HA of the ingress tier

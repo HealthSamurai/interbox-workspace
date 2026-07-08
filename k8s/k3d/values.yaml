@@ -1,0 +1,49 @@
+# Interbox Helm values for the secure reference (dashboard behind nginx + TLS + SSO).
+# Local defaults; the annotations/tls block is identical in production — only the
+# class, issuer, host, IdP, and DATABASE_URL change (see README).
+image:
+  repository: healthsamurai/interbox
+  tag: "1.4.1"
+  pullPolicy: IfNotPresent
+
+config:
+  MLLP_HOST: "0.0.0.0"
+  MLLP_PORT: "2575"
+  AIDBOX_URL: "http://aidbox.placeholder.svc:8080"          # no Aidbox in this reference
+  INTERBOX_WORKSPACE_GIT_URL: "https://github.com/HealthSamurai/interbox-workspace"
+
+secrets:
+  data:
+    DATABASE_URL: "postgres://postgres:postgres@interbox-pg:5432/interbox?sslmode=disable"
+    AIDBOX_CLIENT_SECRET: "placeholder"
+    # INTERBOX_LICENSE left blank -> dashboard shows activation; pipeline parks (fine for a demo)
+
+database:
+  createDatabase: true
+
+# Dashboard/API behind the nginx ingress: cert-manager TLS + oauth2-proxy SSO gate.
+ingress:
+  enabled: true
+  className: nginx
+  host: interbox.localhost
+  path: /
+  pathType: Prefix
+  tls:
+    - hosts: [interbox.localhost]
+      secretName: interbox-tls
+  annotations:
+    cert-manager.io/cluster-issuer: local-ca
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.default.svc.cluster.local:4180/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://interbox.localhost:8443/oauth2/start?rd=$escaped_request_uri"
+
+mllp:
+  enabled: true
+  port: 2575
+  service:
+    type: LoadBalancer
+    internal: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi

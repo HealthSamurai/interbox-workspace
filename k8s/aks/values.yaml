@@ -1,0 +1,64 @@
+# Interbox Helm values — AKS, secure (internal ingress + TLS + SSO).
+# TEMPLATE: fill every <placeholder>. Not verified end-to-end (needs a real AKS +
+# Azure DNS + Entra ID + managed Postgres). The ingress annotations/tls block is
+# identical to the k3d reference — only the class target, issuer, host, IdP, and
+# DATABASE_URL differ.
+image:
+  repository: healthsamurai/interbox
+  tag: "1.4.1"                       # pin a released version
+  pullPolicy: IfNotPresent
+
+config:
+  MLLP_HOST: "0.0.0.0"
+  MLLP_PORT: "2575"
+  AIDBOX_URL: "https://<aidbox-host>"                 # sibling chart or existing Aidbox
+  INTERBOX_WORKSPACE_GIT_URL: "https://github.com/<org>/<your-workspace>"
+
+# Prefer a pre-provisioned Secret (External Secrets Operator / Key Vault CSI) in prod:
+#   secrets: { existingSecretName: interbox-secrets }
+secrets:
+  data:
+    # Azure Database for PostgreSQL Flexible Server, private endpoint, TLS required.
+    # The admin user has CREATEDB; allowlist extensions first (see README):
+    #   server param  azure.extensions = PG_TRGM,BTREE_GIST
+    DATABASE_URL: "postgres://<user>:<pass>@<pg-host>.postgres.database.azure.com:5432/interbox?sslmode=require"
+    AIDBOX_CLIENT_SECRET: "<aidbox-client-secret>"
+    INTERBOX_LICENSE: "<license-jwt-or-activate-via-dashboard>"
+
+database:
+  createDatabase: true               # false if the PG user lacks CREATEDB (pre-create it)
+
+# Dashboard/API: internal ingress-nginx + cert-manager TLS + oauth2-proxy SSO gate.
+ingress:
+  enabled: true
+  className: nginx                   # the INTERNAL ingress-nginx (see ingress-nginx.values.yaml)
+  host: interbox.internal.example
+  path: /
+  pathType: Prefix
+  tls:
+    - hosts: [interbox.internal.example]
+      secretName: interbox-tls
+  annotations:
+    # PRIMARY: cert-manager DNS-01 (public zone). Private-DNS-only? use an internal
+    # CA issuer instead (see README) and change this to its name.
+    cert-manager.io/cluster-issuer: azuredns-dns01
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.default.svc.cluster.local:4180/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://interbox.internal.example/oauth2/start?rd=$escaped_request_uri"
+
+# MLLP over a PRIVATE Azure LB (hospital reaches it over VPN/ExpressRoute).
+mllp:
+  enabled: true
+  port: 2575
+  service:
+    type: LoadBalancer
+    internal: true
+    externalTrafficPolicy: Local
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+      service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout: "30"
+    loadBalancerIP: "<free-subnet-ip>"          # pin it — stable VPN/firewall target
+    loadBalancerSourceRanges:                    # restrict to sender subnets
+      - "<hospital-cidr>"
+
+resources:
+  requests: { cpu: 250m, memory: 1Gi }
