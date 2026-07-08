@@ -1,0 +1,65 @@
+# oauth2-proxy — the login gate in front of the dashboard. nginx asks it on every
+# request (auth_url); no session -> redirect to the IdP. The client + cookie
+# secrets come from the `oauth2-proxy-secret` created by deploy.sh (not committed).
+#
+# Split endpoints: the browser-facing login URL uses the public host; the
+# server-side token/keys calls use the in-cluster Dex service (so it works without
+# resolving dex.localhost inside the cluster). In production, replace the Dex URLs
+# with your IdP's (e.g. Entra ID) and drop --ssl-insecure-skip-verify.
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: oauth2-proxy, labels: { app: oauth2-proxy } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: oauth2-proxy } }
+  template:
+    metadata: { labels: { app: oauth2-proxy } }
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.1
+          args:
+            - --provider=oidc
+            - --oidc-issuer-url=https://dex.localhost:8443/dex
+            - --skip-oidc-discovery=true
+            - --login-url=https://dex.localhost:8443/dex/auth
+            - --redeem-url=http://dex.dex.svc.cluster.local:5556/dex/token
+            - --oidc-jwks-url=http://dex.dex.svc.cluster.local:5556/dex/keys
+            - --client-id=interbox-dashboard
+            - --redirect-url=https://interbox.localhost:8443/oauth2/callback
+            - --email-domain=*
+            - --http-address=0.0.0.0:4180
+            - --reverse-proxy=true
+            - --upstream=static://200
+            - --cookie-secure=true
+            - --cookie-domain=interbox.localhost
+            - --whitelist-domain=interbox.localhost:8443
+            - --skip-provider-button=true
+            - --set-xauthrequest=true
+            - --ssl-insecure-skip-verify=true
+          env:
+            - { name: OAUTH2_PROXY_CLIENT_SECRET, valueFrom: { secretKeyRef: { name: oauth2-proxy-secret, key: client-secret } } }
+            - { name: OAUTH2_PROXY_COOKIE_SECRET, valueFrom: { secretKeyRef: { name: oauth2-proxy-secret, key: cookie-secret } } }
+          ports: [{ containerPort: 4180 }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: oauth2-proxy }
+spec:
+  selector: { app: oauth2-proxy }
+  ports: [{ port: 4180, targetPort: 4180 }]
+---
+# /oauth2/* on the dashboard host -> oauth2-proxy (start, callback, auth)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: { name: interbox-oauth2 }
+spec:
+  ingressClassName: nginx
+  tls: [{ hosts: [interbox.localhost], secretName: interbox-tls }]
+  rules:
+    - host: interbox.localhost
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend: { service: { name: oauth2-proxy, port: { number: 4180 } } }

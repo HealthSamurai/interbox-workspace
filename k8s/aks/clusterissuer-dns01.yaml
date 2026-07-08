@@ -1,0 +1,28 @@
+# PRIMARY cert issuer for AKS: cert-manager ACME with the Azure DNS DNS-01 solver.
+# Works for a PRIVATE host as long as its name lives in a PUBLIC Azure DNS zone you
+# control (the A record may point to a private IP) — DNS-01 only writes TXT records,
+# no inbound needed. Auto-issues + auto-renews publicly-trusted certs.
+#
+# Auth: AKS workload identity (recommended) — federate the cert-manager service
+# account with a managed identity that has "DNS Zone Contributor" on the zone.
+#
+# TEMPLATE: fill every <placeholder>.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: azuredns-dns01
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: <ops-email>
+    privateKeySecretRef:
+      name: azuredns-dns01-account-key
+    solvers:
+      - dns01:
+          azureDNS:
+            subscriptionID: <subscription-id>
+            resourceGroupName: <dns-zone-resource-group>
+            hostedZoneName: internal.example          # the PUBLIC zone
+            environment: AzurePublicCloud
+            managedIdentity:
+              clientID: <cert-manager-workload-identity-client-id>

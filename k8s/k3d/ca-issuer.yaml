@@ -1,0 +1,23 @@
+# Local internal CA (cert-manager). Stand-in for your org PKI / internal CA — the
+# realistic issuer for a PRIVATE dashboard host (Let's Encrypt can't validate a
+# private-only name). In production, swap this for a cert-manager DNS-01 issuer
+# (public DNS zone) or your internal CA / Key Vault cert.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata: { name: selfsigned }
+spec: { selfSigned: {} }
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata: { name: local-ca, namespace: cert-manager }
+spec:
+  isCA: true
+  commonName: interbox-local-ca
+  secretName: local-ca
+  privateKey: { algorithm: ECDSA, size: 256 }
+  issuerRef: { name: selfsigned, kind: ClusterIssuer, group: cert-manager.io }
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata: { name: local-ca }
+spec: { ca: { secretName: local-ca } }
