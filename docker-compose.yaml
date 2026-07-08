@@ -25,7 +25,8 @@
 services:
   pg:
     # Single Postgres 18 cluster shared by Interbox and Aidbox — each owns its own
-    # database (interbox, aidbox), created first-boot by compose/init-databases.sql.
+    # database (interbox, aidbox). Both apps create their own database on first boot
+    # (Aidbox always; the engine since 1.4.0), so no init SQL is needed.
     # Interbox needs only pg_trgm + btree_gist (bundled contrib); Aidbox wants
     # pg_stat_statements, preloaded below.
     image: postgres:18
@@ -43,9 +44,6 @@ services:
       - "5432:5432"
     volumes:
       - pg-data:/var/lib/postgresql/18/docker
-      # First-boot only: creates the interbox + aidbox databases. The postgres image
-      # auto-creates only one db (POSTGRES_DB); with two peers we create both here.
-      - ./compose/init-databases.sql:/docker-entrypoint-initdb.d/10-databases.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 2s
