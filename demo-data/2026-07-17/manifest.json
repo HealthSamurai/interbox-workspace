@@ -1,0 +1,7 @@
+{
+  "snapshot": "2026-07-17",
+  "files": [
+    { "name": "patients.csv", "type": "patient", "rows": 2 },
+    { "name": "organizations.csv", "type": "organization", "rows": 1 }
+  ]
+}

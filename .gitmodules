@@ -1,0 +1,3 @@
+[submodule "vendor/flatfhir"]
+	path = vendor/flatfhir
+	url = git@github.com:HealthSamurai/flatfhir.git
