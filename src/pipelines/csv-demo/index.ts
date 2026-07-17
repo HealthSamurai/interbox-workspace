@@ -1,7 +1,7 @@
 import { env, pipeline } from "@health-samurai/interbox";
 import { aidboxSender, s3CsvSnapshot } from "@health-samurai/interbox/builtins";
-import { closureFanout, closureHandler } from "../../csv/closure.ts";
-import { flatfhirBuild, type FlatfhirView } from "../../csv/flatfhir-build.ts";
+import { closureFanout, closureHandler } from "../../mappers/csv/closure.ts";
+import { flatfhirBuild, type FlatfhirView } from "../../mappers/csv/flatfhir-build.ts";
 
 // A minimal end-to-end CSV-import demo (not ElderServe) — just enough to exercise
 // the whole pipeline: two flat CSVs → two flatfhir views → a cross-view reference

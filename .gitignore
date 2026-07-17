@@ -34,3 +34,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Local test-data dumps — never committed (see project memory)
+/Elderserve - Provider June 2026/
+/Elderserve - Provider June 2026.zip
+/hl7-messages/
+/hl7-messages.zip

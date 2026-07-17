@@ -1,8 +1,8 @@
 import { scratchTableName } from "@health-samurai/interbox";
 import type { StageContext, StageHandler, StageMessage } from "@health-samurai/interbox";
-import { compileRaw } from "../../vendor/flatfhir/src/compile.ts";
-import { emptyProfile } from "../../vendor/flatfhir/src/profile.ts";
-import { expandBuildSQL } from "../../vendor/flatfhir/src/sql.ts";
+import { compileRaw } from "../../../vendor/flatfhir/src/compile.ts";
+import { emptyProfile } from "../../../vendor/flatfhir/src/profile.ts";
+import { expandBuildSQL } from "../../../vendor/flatfhir/src/sql.ts";
 
 // The `build` stage's handler — flatfhir as a workspace mapper (mapping-as-code).
 // It runs each profile-bound view's compiled SQL over the snapshot's scratch
