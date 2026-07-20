@@ -1,21 +1,22 @@
 import { scratchTableName } from "@health-samurai/interbox";
-import type { StageContext, StageHandler, StageMessage } from "@health-samurai/interbox";
+import type { StageContext, StageFanout, StageHandler, StageMessage } from "@health-samurai/interbox";
 import { compileRaw } from "../../../vendor/flatfhir/src/compile.ts";
 import { emptyProfile } from "../../../vendor/flatfhir/src/profile.ts";
 import { expandBuildSQL } from "../../../vendor/flatfhir/src/sql.ts";
 
-// The `build` stage's handler — flatfhir as a workspace mapper (mapping-as-code).
-// It runs each profile-bound view's compiled SQL over the snapshot's scratch
-// tables and lands the resources in `built_resources`. Pure workspace code: the
-// engine knows nothing of flatfhir, views, or built_resources.
+// The `build` stage — flatfhir as a workspace mapper (mapping-as-code). It runs
+// AFTER the `ingest_file` stage has loaded every scratch table (barrier). The
+// barrier fans out ONE `build` message PER resource type (view); each message
+// builds a single view's resources into `built_resources`. Pure workspace code:
+// the engine knows nothing of flatfhir, views, or built_resources.
 
 /** A flatfhir view authored against a snapshot's scratch table. `table` is the
- *  *logical* type (matches the manifest `type` = the scratch table's base name);
- *  the handler rewrites it to the snapshot-specific scratch table via
- *  {@link scratchTableName}. Everything else is passed through to flatfhir. */
+ *  *logical* type (matches the scratch table's base name); the handler rewrites
+ *  it to the snapshot-schema-local scratch table via {@link scratchTableName}.
+ *  Everything else is passed through to flatfhir. */
 export interface FlatfhirView {
   resource: string;
-  /** Logical type, e.g. "patient" — resolved to `patient_<snapshot>`. */
+  /** Logical type, e.g. "patient" — the scratch table's base name. */
   table: string;
   key: string;
   columns: Record<string, unknown>;
@@ -33,44 +34,66 @@ const BUILT_RESOURCES_DDL = `
     PRIMARY KEY (snapshot_id, resource_type, id)
   )`;
 
+/** Per-`build`-message work: which view (resource type + scratch table) to build. */
+interface BuildPayload {
+  resource: string;
+  table: string;
+}
+
 /**
- * Build handler: for each view, compile it to native SQL, run it over the
- * snapshot's scratch table, and upsert the resulting resources (+ their literal
- * references, lifted from the jsonb for the closure walk) into
- * `built_resources`. Set-based — one `build` message builds the whole snapshot.
- * Idempotent (clears the snapshot's rows first, upserts on conflict).
+ * Fan-out (runs once, single-threaded, when `ingest_file` drains for a snapshot):
+ * create `built_resources` up front — so the parallel per-view handlers only ever
+ * INSERT, never race on the DDL — then emit one `build` message per view.
+ */
+export function buildFanout(views: FlatfhirView[]): StageFanout {
+  return async (ctx: StageContext, _snapshot: string): Promise<void> => {
+    await ctx.exec(BUILT_RESOURCES_DDL);
+    for (const view of views) {
+      await ctx.emit("build", { payload: { resource: view.resource, table: view.table } satisfies BuildPayload });
+    }
+  };
+}
+
+/**
+ * Build handler: compile the ONE view named in the message payload to native SQL,
+ * run it over the snapshot's scratch table, and upsert the resulting resources
+ * (+ their literal references, lifted from the jsonb for the closure walk) into
+ * `built_resources`. Set-based. Idempotent per view (clears only this resource
+ * type's rows for the snapshot, then upserts on conflict) — so parallel views and
+ * re-drives don't clobber each other.
  */
 export function flatfhirBuild(views: FlatfhirView[]): StageHandler {
-  return async (ctx: StageContext, _msg: StageMessage): Promise<void> => {
+  return async (ctx: StageContext, msg: StageMessage): Promise<void> => {
     const snapshot = ctx.snapshot;
     if (!snapshot) throw new Error("build: message has no snapshot_id");
+    const { resource, table } = (msg.payload ?? {}) as Partial<BuildPayload>;
+    const view = views.find((v) => v.resource === resource && v.table === table);
+    if (!view) throw new Error(`build: no view for resource=${resource} table=${table}`);
 
-    await ctx.exec(BUILT_RESOURCES_DDL);
-    await ctx.exec(`DELETE FROM built_resources WHERE snapshot_id = $1`, [snapshot]);
+    const compiled = compileRaw({ ...view, table: scratchTableName(view.table) }, emptyProfile());
+    const selectSql = expandBuildSQL(compiled); // → SELECT rid, resource
 
-    for (const view of views) {
-      const compiled = compileRaw(
-        { ...view, table: scratchTableName(view.table, snapshot) },
-        emptyProfile(),
-      );
-      const selectSql = expandBuildSQL(compiled); // → SELECT rid, resource
-      // Lift resource_type + every literal reference out of the jsonb; refs are
-      // the adjacency the root stage walks. `#>> '{}'` unwraps the jsonb string.
-      const insert = `
-        INSERT INTO built_resources (snapshot_id, resource_type, id, resource, refs)
-        SELECT $1,
-               v.resource->>'resourceType',
-               v.rid,
-               v.resource,
-               COALESCE(
-                 (SELECT array_agg(r #>> '{}')
-                    FROM jsonb_path_query(v.resource, '$.**.reference') AS r),
-                 '{}')
-        FROM (${selectSql}) v
-        WHERE v.resource IS NOT NULL
-        ON CONFLICT (snapshot_id, resource_type, id)
-          DO UPDATE SET resource = EXCLUDED.resource, refs = EXCLUDED.refs`;
-      await ctx.exec(insert, [snapshot]);
-    }
+    // Clear only THIS view's rows first (parallel views own disjoint resource
+    // types), then upsert. `#>> '{}'` unwraps each jsonb reference string to text;
+    // the lifted refs are the adjacency the root stage walks.
+    await ctx.exec(`DELETE FROM built_resources WHERE snapshot_id = $1 AND resource_type = $2`, [
+      snapshot,
+      view.resource,
+    ]);
+    const insert = `
+      INSERT INTO built_resources (snapshot_id, resource_type, id, resource, refs)
+      SELECT $1,
+             v.resource->>'resourceType',
+             v.rid,
+             v.resource,
+             COALESCE(
+               (SELECT array_agg(r #>> '{}')
+                  FROM jsonb_path_query(v.resource, '$.**.reference') AS r),
+               '{}')
+      FROM (${selectSql}) v
+      WHERE v.resource IS NOT NULL
+      ON CONFLICT (snapshot_id, resource_type, id)
+        DO UPDATE SET resource = EXCLUDED.resource, refs = EXCLUDED.refs`;
+    await ctx.exec(insert, [snapshot]);
   };
 }
