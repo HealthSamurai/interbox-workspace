@@ -4,7 +4,7 @@
 [![Docker version](https://img.shields.io/docker/v/healthsamurai/interbox?sort=semver&label=docker&logo=docker&logoColor=white)](https://hub.docker.com/r/healthsamurai/interbox)
 [![Helm chart](https://img.shields.io/badge/Helm-chart-0F1689?logo=helm&logoColor=white)](https://github.com/HealthSamurai/helm-charts/tree/main/interbox)
 [![CI](https://img.shields.io/github/actions/workflow/status/HealthSamurai/interbox-workspace/ci.yml?branch=main&logo=github&logoColor=white&label=CI)](https://github.com/HealthSamurai/interbox-workspace/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-mdBook-blue)](https://healthsamurai.github.io/interbox-workspace/)
+[![Docs](https://img.shields.io/badge/docs-health--samurai.io-blue)](https://www.health-samurai.io/docs/interbox)
 
 Reference pipeline for [Interbox](https://www.health-samurai.io/interbox), an
 extensible integration engine. Fork this repo, adjust the pipeline for your
