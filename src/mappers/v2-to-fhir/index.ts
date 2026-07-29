@@ -8,9 +8,15 @@
  * segments and a MapperContext (terminology). One mapper drains ALL received
  * rows (mappers compete via SKIP LOCKED), so routing lives here.
  */
-import { defineMapper, domainError, type MapperContext } from "@health-samurai/interbox";
+import {
+  defineMapper,
+  domainError,
+  provenanceFor,
+  type MapperContext,
+} from "@health-samurai/interbox";
 import { fromMSH, type HL7v2Segment } from "@health-samurai/interbox/hl7v2";
 import { hl7v2Parser } from "@health-samurai/interbox/builtins";
+import type { Resource } from "@health-samurai/interbox/fhir";
 import { convertADT_A01 } from "./messages/adt-a01.ts";
 import { convertADT_A03 } from "./messages/adt-a03.ts";
 import { convertADT_A08 } from "./messages/adt-a08.ts";
@@ -75,6 +81,21 @@ export const v2ToFhirMapper = defineMapper({
   parser: hl7v2Parser,
   // The hl7v2Parser descriptor types `input` as HL7v2Segment[] — no cast needed.
   async map(_config, input, ctx) {
-    return convertToFhir(input, ctx);
+    const resources = await convertToFhir(input, ctx);
+
+    // Provenance the destination can hold. Interbox records which message
+    // produced each resource on the queue row itself and sends nothing of its own,
+    // so if you want that visible in your FHIR server, emit it — one Provenance
+    // per inbound message, targeting everything the message produced.
+    //
+    // Its `target` references make the sender ship it in the same bundle as those
+    // resources, and its id is derived from the message, so re-running a message
+    // overwrites its own record instead of piling up duplicates.
+    //
+    // Returns undefined when nothing addressable was produced; dropping it then
+    // matters, because a resource without resourceType + id fails the whole
+    // message. Delete this block if you don't want Provenance at the destination.
+    const provenance = provenanceFor(ctx, resources as Resource[]);
+    return provenance ? [...resources, provenance] : resources;
   },
 });
