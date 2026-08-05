@@ -25,6 +25,27 @@ activation screen there.
 Send HL7v2 over MLLP to `localhost:2575` and watch messages flow through to
 the FHIR server.
 
+## Send test traffic
+
+If you don't have a real upstream to point at it yet, the bundled HL7v2
+simulator generates synthetic traffic (ADT / ORU / SIU / MDM / RDE / RAS) from
+several independent sources at once — each with its own pace, MSH identity and
+MRN pool, so routing and per-source error handling get exercised rather than a
+single uniform stream. With the stack up:
+
+```bash
+bun run simulator
+```
+
+That installs the simulator and opens its UI on http://localhost:4003, already
+pointed at the MLLP port compose publishes. Click **Start all** and watch
+messages land in the dashboard.
+
+See [`utils/hl7v2-simulator/`](utils/hl7v2-simulator/) for targets, source types,
+fault injection, and the generator CLI. It's a self-contained package with its own
+dependencies — deliberately outside the root install, so it costs you nothing if
+you never use it.
+
 ## Deploy on Kubernetes
 
 For a cluster deployment with the dashboard properly secured — internal ingress,
@@ -111,5 +132,10 @@ Pipelines load once at engine boot; restart the engine to pick up changes.
 ```bash
 bun install
 bun run typecheck
-bun run bundle
+bun test
 ```
+
+Tests live in `test/` — `bun test` is scoped to that directory (see
+`bunfig.toml`), so a test file placed next to the code it covers will not run.
+The bundled simulator under `utils/` is a separate package with its own
+dependencies and its own suite; see its README.

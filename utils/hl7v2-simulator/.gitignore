@@ -1,0 +1,9 @@
+node_modules/
+*.log
+# UI state: persisted source definitions (recreated on next start).
+data/
+# Generated corpora — `--out-dir`, `--output`, and the UI's /export.
+out/
+out.csv
+out.jsonl
+*-out/

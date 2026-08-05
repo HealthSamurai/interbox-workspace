@@ -1,0 +1,24 @@
+{
+  "name": "hl7v2-simulator",
+  "description": "Synthetic HL7v2 generator and multi-source upstream simulator for Interbox.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "gen": "bun run src/cli.ts",
+    "send": "bun run src/send-cli.ts",
+    "selftest": "bun run src/validate/selftest.ts",
+    "ui": "bun run ui/server.ts",
+    "ui:dev": "bun --hot ui/server.ts"
+  },
+  "dependencies": {
+    "@atomic-ehr/hl7v2": "^0.0.1",
+    "@faker-js/faker": "^10.4.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "^5.9.3"
+  }
+}

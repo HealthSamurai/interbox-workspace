@@ -1,0 +1,1227 @@
+{
+  "version": 1,
+  "minSupport": 11,
+  "messageTypes": [
+    [
+      "ORU^R01",
+      0.45
+    ],
+    [
+      "ADT^A08",
+      0.4
+    ],
+    [
+      "SIU^S12",
+      0.15
+    ]
+  ],
+  "segmentReps": {
+    "ORU^R01": {
+      "OBR": [
+        [
+          1,
+          0.9
+        ],
+        [
+          2,
+          0.1
+        ]
+      ]
+    }
+  },
+  "fields": {
+    "PID-8": {
+      "kind": "categorical",
+      "dist": [
+        [
+          "F",
+          0.51
+        ],
+        [
+          "M",
+          0.48
+        ],
+        [
+          "U",
+          0.01
+        ]
+      ]
+    },
+    "PV1-2": {
+      "kind": "categorical",
+      "dist": [
+        [
+          "O",
+          0.5
+        ],
+        [
+          "I",
+          0.45
+        ],
+        [
+          "E",
+          0.05
+        ]
+      ]
+    }
+  },
+  "panels": {
+    "BMP^BASIC METABOLIC PANEL^L": {
+      "obx": [
+        "NA^SODIUM",
+        "K^POTASSIUM",
+        "CL^CHLORIDE",
+        "CO2^CARBON DIOXIDE",
+        "BUN^UREA NITROGEN",
+        "CRE^CREATININE",
+        "GLU^GLUCOSE",
+        "CA^CALCIUM"
+      ],
+      "values": {
+        "NA^SODIUM": {
+          "kind": "numeric",
+          "units": "mmol/L",
+          "ref": "136-145",
+          "mean": 140,
+          "sd": 2.5,
+          "min": 120,
+          "max": 160,
+          "abnormalRate": 0.05
+        },
+        "K^POTASSIUM": {
+          "kind": "numeric",
+          "units": "mmol/L",
+          "ref": "3.5-5.1",
+          "mean": 4.2,
+          "sd": 0.4,
+          "min": 2.5,
+          "max": 6.5,
+          "abnormalRate": 0.06
+        },
+        "CL^CHLORIDE": {
+          "kind": "numeric",
+          "units": "mmol/L",
+          "ref": "98-107",
+          "mean": 102,
+          "sd": 2.5,
+          "min": 85,
+          "max": 120,
+          "abnormalRate": 0.05
+        },
+        "CO2^CARBON DIOXIDE": {
+          "kind": "numeric",
+          "units": "mmol/L",
+          "ref": "21-31",
+          "mean": 26,
+          "sd": 2.5,
+          "min": 10,
+          "max": 40,
+          "abnormalRate": 0.05
+        },
+        "BUN^UREA NITROGEN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "7-25",
+          "mean": 15,
+          "sd": 5,
+          "min": 3,
+          "max": 80,
+          "abnormalRate": 0.1
+        },
+        "CRE^CREATININE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.6-1.2",
+          "mean": 0.9,
+          "sd": 0.25,
+          "min": 0.3,
+          "max": 5,
+          "abnormalRate": 0.08
+        },
+        "GLU^GLUCOSE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "71-99",
+          "mean": 95,
+          "sd": 25,
+          "min": 40,
+          "max": 400,
+          "abnormalRate": 0.2
+        },
+        "CA^CALCIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "8.6-10.3",
+          "mean": 9.4,
+          "sd": 0.5,
+          "min": 6,
+          "max": 13,
+          "abnormalRate": 0.05
+        }
+      }
+    },
+    "CBC^COMPLETE BLOOD COUNT^L": {
+      "obx": [
+        "WBC^WHITE BLOOD CELL",
+        "RBC^RED BLOOD CELL",
+        "HGB^HEMOGLOBIN",
+        "HCT^HEMATOCRIT",
+        "PLT^PLATELET"
+      ],
+      "values": {
+        "WBC^WHITE BLOOD CELL": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "4.0-11.0",
+          "mean": 7,
+          "sd": 2,
+          "min": 1,
+          "max": 30,
+          "abnormalRate": 0.1
+        },
+        "RBC^RED BLOOD CELL": {
+          "kind": "numeric",
+          "units": "10*6/uL",
+          "ref": "4.2-5.9",
+          "mean": 4.8,
+          "sd": 0.5,
+          "min": 2,
+          "max": 7,
+          "abnormalRate": 0.08
+        },
+        "HGB^HEMOGLOBIN": {
+          "kind": "numeric",
+          "units": "g/dL",
+          "ref": "13.5-17.5",
+          "mean": 14.5,
+          "sd": 1.5,
+          "min": 5,
+          "max": 20,
+          "abnormalRate": 0.1
+        },
+        "HCT^HEMATOCRIT": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "41-50",
+          "mean": 43,
+          "sd": 4,
+          "min": 20,
+          "max": 60,
+          "abnormalRate": 0.1
+        },
+        "PLT^PLATELET": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "150-400",
+          "mean": 250,
+          "sd": 60,
+          "min": 20,
+          "max": 700,
+          "abnormalRate": 0.08
+        }
+      }
+    }
+  },
+  "panelMix": [
+    [
+      "BMP^BASIC METABOLIC PANEL^L",
+      0.6
+    ],
+    [
+      "CBC^COMPLETE BLOOD COUNT^L",
+      0.4
+    ]
+  ],
+  "catalogs": {
+    "facility": [
+      [
+        "NORTHGATE LABORATORY",
+        0.45
+      ],
+      [
+        "CEDAR VALLEY HEALTH",
+        0.35
+      ],
+      [
+        "RIVERSIDE DIAGNOSTICS",
+        0.2
+      ]
+    ],
+    "assigningAuthority": [
+      [
+        "NORTHGATE_EHR",
+        0.5
+      ],
+      [
+        "CEDAR_MRN",
+        0.3
+      ],
+      [
+        "RIVERSIDE_REG",
+        0.2
+      ]
+    ],
+    "lis": [
+      [
+        "LABCORE",
+        0.7
+      ],
+      [
+        "PATHSYS",
+        0.3
+      ]
+    ],
+    "provider": [
+      [
+        "1001^WELLINGTON^SARAH",
+        0.3
+      ],
+      [
+        "1002^OKONKWO^DAVID",
+        0.3
+      ],
+      [
+        "1003^NAKAMURA^LENA",
+        0.2
+      ],
+      [
+        "1004^FAULKNER^OMAR",
+        0.2
+      ]
+    ],
+    "app": [
+      [
+        "LAB_IF",
+        0.5
+      ],
+      [
+        "ADT_GW",
+        0.3
+      ],
+      [
+        "SCHED_SYS",
+        0.2
+      ]
+    ]
+  },
+  "temporal": {
+    "sendYearRange": [
+      2021,
+      2026
+    ],
+    "collectToResultMins": {
+      "mean": 63,
+      "sd": 35
+    }
+  },
+  "idFormats": {
+    "mrn": "########",
+    "controlId": "GEN-##########",
+    "placer": "PL#########",
+    "filler": "FL#########",
+    "visit": "V#########"
+  },
+  "codeMap": [
+    {
+      "local": {
+        "code": "LC0O79H",
+        "system": "",
+        "text": "HPV HIGH RISK DNA WITH HPV GENOTYPES 16 AND 18"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "TX",
+        "dist": [
+          [
+            "Canceled",
+            1
+          ]
+        ]
+      },
+      "weight": 0.026
+    },
+    {
+      "local": {
+        "code": "87402",
+        "system": "",
+        "text": "PSA TOTAL"
+      },
+      "loinc": {
+        "code": "2857-1",
+        "text": "PSA SerPl-mCnc",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "ng/mL",
+        "ref": "No established reference range.",
+        "mean": 10,
+        "sd": 1,
+        "min": 10,
+        "max": 10,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "58494",
+        "system": "",
+        "text": "PSA FREE"
+      },
+      "loinc": {
+        "code": "10886-0",
+        "text": "PSA Free SerPl-mCnc",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "ng/mL",
+        "ref": "",
+        "mean": 2,
+        "sd": 1,
+        "min": 2,
+        "max": 2,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "59753",
+        "system": "",
+        "text": "% FREE PSA"
+      },
+      "loinc": {
+        "code": "12841-3",
+        "text": "PSA Free MFr SerPl",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": ">25",
+        "mean": 20,
+        "sd": 1,
+        "min": 20,
+        "max": 20,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "LCKDJ",
+        "system": "",
+        "text": "Hematology Consult Interpretation"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "CE",
+        "dist": [
+          [
+            "[result removed]",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "89094",
+        "system": "",
+        "text": "DEXAMETHASONE"
+      },
+      "loinc": {
+        "code": "14062-4",
+        "text": "Dexamethasone SerPl-mCnc",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "18",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "48722",
+        "system": "",
+        "text": "SHIGA TOXIN EIA"
+      },
+      "loinc": {
+        "code": "21262-1",
+        "text": "E coli SXT Stl Ql IA",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "In Progress",
+            0.5
+          ],
+          [
+            "Positive",
+            0.5
+          ]
+        ]
+      },
+      "weight": 0.026
+    },
+    {
+      "local": {
+        "code": "LCEM83",
+        "system": "",
+        "text": "CBC WITH DIFFERENTIAL"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "TX",
+        "dist": [
+          [
+            "Canceled",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "87611",
+        "system": "",
+        "text": "PROTIME"
+      },
+      "loinc": {
+        "code": "5902-2",
+        "text": "Prothrombin time",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "sec",
+        "ref": "9.0-13.0",
+        "mean": 56,
+        "sd": 1,
+        "min": 56,
+        "max": 56,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "72340",
+        "system": "",
+        "text": "INR"
+      },
+      "loinc": {
+        "code": "6301-6",
+        "text": "INR PPP",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "",
+        "ref": "0.93-1.29",
+        "mean": 5.74,
+        "sd": 1,
+        "min": 5.74,
+        "max": 5.74,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "45536",
+        "system": "",
+        "text": "HPV HIGH RISK"
+      },
+      "loinc": {
+        "code": "30167-1",
+        "text": "HPV I/H Risk 1 DNA Cvx Ql Probe+sig amp",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Negative",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "7722",
+        "system": "",
+        "text": "HPV 16"
+      },
+      "loinc": {
+        "code": "59263-4",
+        "text": "HPV16 DNA Cvx Ql Probe+sig amp",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Positive",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "5071",
+        "system": "",
+        "text": "HPV 18"
+      },
+      "loinc": {
+        "code": "59264-2",
+        "text": "HPV18 DNA Cvx Ql Probe+sig amp",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Negative",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "1512679595",
+        "system": "LCLAB2",
+        "text": "ALDS ALDOSTERONE, S"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "<4.0",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "5217655084",
+        "system": "LCLAB2",
+        "text": "HBA1C"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "4.0-6.0",
+        "mean": 6.2,
+        "sd": 1,
+        "min": 6.2,
+        "max": 6.2,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "1206",
+        "system": "",
+        "text": "NEUTROPHILS C MAN (DIFF)"
+      },
+      "loinc": {
+        "code": "23761-0",
+        "text": "Neutrophils NFr Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "40-75",
+        "mean": 72,
+        "sd": 1,
+        "min": 72,
+        "max": 72,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "5671",
+        "system": "",
+        "text": "BANDS C MAN (DIFF)"
+      },
+      "loinc": {
+        "code": "764-1",
+        "text": "Neuts Band NFr Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "0-5",
+        "mean": 1,
+        "sd": 1,
+        "min": 1,
+        "max": 1,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "8289",
+        "system": "",
+        "text": "LYMPHOCYTES C MAN (DIFF)"
+      },
+      "loinc": {
+        "code": "737-7",
+        "text": "Lymphocytes NFr Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "20-45",
+        "mean": 20,
+        "sd": 1,
+        "min": 20,
+        "max": 20,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "1113",
+        "system": "",
+        "text": "MONOCYTES C MAN (DIFF)"
+      },
+      "loinc": {
+        "code": "744-3",
+        "text": "Monocytes NFr Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "3-12",
+        "mean": 6,
+        "sd": 1,
+        "min": 6,
+        "max": 6,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "7052",
+        "system": "",
+        "text": "EOSINOPHILS C MAN (DIFF)"
+      },
+      "loinc": {
+        "code": "714-6",
+        "text": "Eosinophil NFr Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "0-6",
+        "mean": 1,
+        "sd": 1,
+        "min": 1,
+        "max": 1,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "7181",
+        "system": "",
+        "text": "BASOPHILS C MAN (DIFF)"
+      },
+      "loinc": {
+        "code": "707-0",
+        "text": "Basophils NFr Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "0-2",
+        "mean": 0,
+        "sd": 1,
+        "min": 0,
+        "max": 0,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "5043",
+        "system": "",
+        "text": "ABS NEUTROPHIL CT"
+      },
+      "loinc": {
+        "code": "753-4",
+        "text": "Neutrophils # Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "K/uL",
+        "ref": "1.8-7.7",
+        "mean": 5.9,
+        "sd": 1,
+        "min": 5.9,
+        "max": 5.9,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "9233",
+        "system": "",
+        "text": "ABS LYMPHOCYTE CT"
+      },
+      "loinc": {
+        "code": "732-8",
+        "text": "Lymphocytes # Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "K/uL",
+        "ref": "1.0-4.8",
+        "mean": 1.6,
+        "sd": 1,
+        "min": 1.6,
+        "max": 1.6,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "6799",
+        "system": "",
+        "text": "ABS MONOCYTE CT"
+      },
+      "loinc": {
+        "code": "743-5",
+        "text": "Monocytes # Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "K/uL",
+        "ref": "0.1-1.0",
+        "mean": 0.5,
+        "sd": 1,
+        "min": 0.5,
+        "max": 0.5,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "1047",
+        "system": "",
+        "text": "ABS EOSINOPHIL CT"
+      },
+      "loinc": {
+        "code": "712-0",
+        "text": "Eosinophil # Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "K/uL",
+        "ref": "0.0-0.5",
+        "mean": 0.1,
+        "sd": 1,
+        "min": 0.1,
+        "max": 0.1,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "5359",
+        "system": "",
+        "text": "ABS BASOPHIL CT"
+      },
+      "loinc": {
+        "code": "705-4",
+        "text": "Basophils # Bld Manual",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "numeric",
+        "units": "K/uL",
+        "ref": "0.0-0.2",
+        "mean": 0,
+        "sd": 1,
+        "min": 0,
+        "max": 0,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "87338",
+        "system": "",
+        "text": "SMEAR EVAL"
+      },
+      "loinc": {
+        "code": "9317-9",
+        "text": "Platelet Bld Ql Smear",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "[result removed]",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "79055",
+        "system": "",
+        "text": "SYPHILIS (T.PALLIDUM) IGG/IGM"
+      },
+      "loinc": {
+        "code": "34147-9",
+        "text": "T pallidum IgG+IgM Ser Ql",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "REACTIVE",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "LCNR7L",
+        "system": "",
+        "text": "ENA Screen"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "CE",
+        "dist": [
+          [
+            "[result removed]",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "LCZ6K1",
+        "system": "",
+        "text": "BF Type"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "TXT",
+        "dist": [
+          [
+            "Other",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "LCS6J",
+        "system": "",
+        "text": "pH BF"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "NUM",
+        "dist": [
+          [
+            "6.9",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "6726755",
+        "system": "LCLAB4",
+        "text": "ANA"
+      },
+      "loinc": {
+        "code": "31545-7",
+        "text": "Nuclear IgG Ab [Presence] in Serum",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Negative",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "1518893",
+        "system": "LCLAB4",
+        "text": "N gonorrhoeae, DNA Probe"
+      },
+      "loinc": {
+        "code": "24111-7",
+        "text": "Neisseria gonorrhoeae DNA [Presence] in Specimen by NAA with probe detection",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Not Detected",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "6684819",
+        "system": "LCLAB4",
+        "text": "Chlamydia, DNA Probe"
+      },
+      "loinc": {
+        "code": "21613-5",
+        "text": "Chlamydia trachomatis DNA [Presence] in Specimen by NAA with probe detection",
+        "system": "LN"
+      },
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Detected",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "LCM1A2POD6",
+        "system": "LCLAB6",
+        "text": ""
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "TX",
+        "dist": [
+          [
+            "[result removed]",
+            0.8
+          ],
+          [
+            "Microscopic Description",
+            0.067
+          ],
+          [
+            "Clinical History",
+            0.067
+          ],
+          [
+            "Gross Description",
+            0.067
+          ]
+        ]
+      },
+      "weight": 0.372
+    },
+    {
+      "local": {
+        "code": "2292462980",
+        "system": "LCLAB8",
+        "text": "JAK2 V617F"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "Detected",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "1748823727",
+        "system": "LCLAB8",
+        "text": "VARIANT ALLELE FREQUENCY (VAF) % (V617F)"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "",
+        "mean": 1,
+        "sd": 1,
+        "min": 1,
+        "max": 1,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "4592967448",
+        "system": "LCLAB8",
+        "text": "JAK2 EXONS 12, 13, 14 (NOT V617F), 15"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "[result removed]",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "8172660267",
+        "system": "LCLAB8",
+        "text": "VARIANT ALLELE FREQUENCY (VAF) % (EXONS 12-15)"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "numeric",
+        "units": "%",
+        "ref": "",
+        "mean": 1,
+        "sd": 1,
+        "min": 1,
+        "max": 1,
+        "abnormalRate": 0.15
+      },
+      "weight": 0.013
+    },
+    {
+      "local": {
+        "code": "2725081650",
+        "system": "LCLAB8",
+        "text": "JAK2 12-15 MUTATION NARRATIVE"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "ST",
+        "dist": [
+          [
+            "[result removed]",
+            1
+          ]
+        ]
+      },
+      "weight": 0.103
+    },
+    {
+      "local": {
+        "code": "LCYXMZCWF8XO2",
+        "system": "",
+        "text": "CBC WITH AUTO DIFFERENTIAL"
+      },
+      "loinc": null,
+      "value": {
+        "kind": "coded",
+        "valueType": "TX",
+        "dist": [
+          [
+            "[result removed]",
+            1
+          ]
+        ]
+      },
+      "weight": 0.013
+    }
+  ],
+  "localCodeRate": 0.4,
+  "mappedRate": 0.5
+}

@@ -1,0 +1,14 @@
+# ── Bun configuration ────────────────────────────────────────────────────────
+
+[test]
+# Confine `bun test` to this workspace's own tests.
+#
+# Left to itself, `bun test` walks the entire tree and would also collect
+# utils/hl7v2-simulator/test/. That package is deliberately NOT part of the root
+# install — it carries its own package.json and lockfile so a workspace user who
+# never touches the simulator doesn't pay for its dependencies on every
+# `bun install` — so those tests can't resolve their imports from here and fail.
+#
+# Run the simulator's suite in its own directory instead:
+#   cd utils/hl7v2-simulator && bun install && bun test
+root = "test"

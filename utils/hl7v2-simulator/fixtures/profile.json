@@ -1,0 +1,7844 @@
+{
+  "version": 1,
+  "minSupport": 1,
+  "messageTypes": [
+    [
+      "ORU^R01",
+      0.050683
+    ],
+    [
+      "ORM^O01",
+      0.000497
+    ],
+    [
+      "SIU^S12",
+      0.049689
+    ],
+    [
+      "RAS^O17",
+      0.024845
+    ],
+    [
+      "SIU^S13",
+      0.024845
+    ],
+    [
+      "SIU^S16",
+      0.023851
+    ],
+    [
+      "SIU^S14",
+      0.049689
+    ],
+    [
+      "SIU^S15",
+      0.049689
+    ],
+    [
+      "ADT^A08",
+      0.049689
+    ],
+    [
+      "ADT^A31",
+      0.074534
+    ],
+    [
+      "RDE^O01",
+      0.024845
+    ],
+    [
+      "ADT^A28",
+      0.024845
+    ],
+    [
+      "ADT^A01",
+      0.049441
+    ],
+    [
+      "ADT^A03",
+      0.047453
+    ],
+    [
+      "ADT^A02",
+      0.042733
+    ],
+    [
+      "ADT^A12",
+      0.020373
+    ],
+    [
+      "ADT^A06",
+      0.024845
+    ],
+    [
+      "ADT^A07",
+      0.020373
+    ],
+    [
+      "ADT^A13",
+      0.049689
+    ],
+    [
+      "ADT^A05",
+      0.049689
+    ],
+    [
+      "ADT^A11",
+      0.049689
+    ],
+    [
+      "RDE^O11",
+      0.024845
+    ],
+    [
+      "ADT^A04",
+      0.049689
+    ],
+    [
+      "MDM^T02",
+      0.024099
+    ],
+    [
+      "SIU^S26",
+      0.024845
+    ],
+    [
+      "SIU^S23",
+      0.024845
+    ],
+    [
+      "MDM^T11",
+      0.024845
+    ],
+    [
+      "MDM^T07",
+      0.024845
+    ]
+  ],
+  "segmentReps": {},
+  "fields": {
+    "PID-8": {
+      "kind": "categorical",
+      "dist": [
+        [
+          "M",
+          0.44336
+        ],
+        [
+          "F",
+          0.556369
+        ],
+        [
+          "U",
+          0.000271
+        ]
+      ]
+    },
+    "PV1-2": {
+      "kind": "categorical",
+      "dist": [
+        [
+          "1",
+          0.003653
+        ],
+        [
+          "O",
+          0.45175
+        ],
+        [
+          "Outreach",
+          0.000609
+        ],
+        [
+          "OP",
+          0.000304
+        ],
+        [
+          "P",
+          0.14825
+        ],
+        [
+          "I",
+          0.271233
+        ],
+        [
+          "E",
+          0.117504
+        ],
+        [
+          "R",
+          0.002435
+        ],
+        [
+          "N",
+          0.000304
+        ],
+        [
+          "B",
+          0.003957
+        ]
+      ]
+    }
+  },
+  "panels": {
+    "LC0O79H^HPV HIGH RISK DNA WITH HPV GENOTYPES 16 AND 18": {
+      "obx": [
+        "LC0O79H^HPV HIGH RISK DNA WITH HPV GENOTYPES 16 AND 18",
+        "45536^HPV HIGH RISK^^30167-1^HPV I/H Risk 1 DNA Cvx Ql Probe+sig amp",
+        "7722^HPV 16^^59263-4^HPV16 DNA Cvx Ql Probe+sig amp",
+        "5071^HPV 18^^59264-2^HPV18 DNA Cvx Ql Probe+sig amp"
+      ],
+      "values": {
+        "LC0O79H^HPV HIGH RISK DNA WITH HPV GENOTYPES 16 AND 18": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Canceled",
+              1
+            ]
+          ]
+        },
+        "45536^HPV HIGH RISK^^30167-1^HPV I/H Risk 1 DNA Cvx Ql Probe+sig amp": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Negative",
+              1
+            ]
+          ]
+        },
+        "7722^HPV 16^^59263-4^HPV16 DNA Cvx Ql Probe+sig amp": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Positive",
+              1
+            ]
+          ]
+        },
+        "5071^HPV 18^^59264-2^HPV18 DNA Cvx Ql Probe+sig amp": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Negative",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCP2RR^PSA, FREE AND TOTAL": {
+      "obx": [
+        "87402^PSA TOTAL^^2857-1^PSA SerPl-mCnc",
+        "58494^PSA FREE^^10886-0^PSA Free SerPl-mCnc",
+        "59753^% FREE PSA^^12841-3^PSA Free MFr SerPl"
+      ],
+      "values": {
+        "87402^PSA TOTAL^^2857-1^PSA SerPl-mCnc": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "No established reference range.",
+          "mean": 10,
+          "sd": 0,
+          "min": 10,
+          "max": 10,
+          "abnormalRate": 1
+        },
+        "58494^PSA FREE^^10886-0^PSA Free SerPl-mCnc": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "",
+          "mean": 2,
+          "sd": 0,
+          "min": 2,
+          "max": 2,
+          "abnormalRate": 0
+        },
+        "59753^% FREE PSA^^12841-3^PSA Free MFr SerPl": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": ">25",
+          "mean": 20,
+          "sd": 0,
+          "min": 20,
+          "max": 20,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "LCKDJ^Hematology Consult": {
+      "obx": [
+        "LCKDJ^Hematology Consult Interpretation"
+      ],
+      "values": {
+        "LCKDJ^Hematology Consult Interpretation": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "[result removed]",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCI0YT0^DEXAMETHASONE, SERUM": {
+      "obx": [
+        "89094^DEXAMETHASONE^^14062-4^Dexamethasone SerPl-mCnc"
+      ],
+      "values": {
+        "89094^DEXAMETHASONE^^14062-4^Dexamethasone SerPl-mCnc": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "18",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCURPVB^SHIGA TOXIN EIA": {
+      "obx": [
+        "48722^SHIGA TOXIN EIA^^21262-1^E coli SXT Stl Ql IA"
+      ],
+      "values": {
+        "48722^SHIGA TOXIN EIA^^21262-1^E coli SXT Stl Ql IA": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "In Progress",
+              0.5
+            ],
+            [
+              "Positive",
+              0.5
+            ]
+          ]
+        }
+      }
+    },
+    "LCEM83^CBC WITH DIFFERENTIAL": {
+      "obx": [
+        "LCEM83^CBC WITH DIFFERENTIAL"
+      ],
+      "values": {
+        "LCEM83^CBC WITH DIFFERENTIAL": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Canceled",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCMZJI^PT-INR": {
+      "obx": [
+        "87611^PROTIME^^5902-2^Prothrombin time",
+        "72340^INR^^6301-6^INR PPP"
+      ],
+      "values": {
+        "87611^PROTIME^^5902-2^Prothrombin time": {
+          "kind": "numeric",
+          "units": "sec",
+          "ref": "9.0-13.0",
+          "mean": 56,
+          "sd": 0,
+          "min": 56,
+          "max": 56,
+          "abnormalRate": 1
+        },
+        "72340^INR^^6301-6^INR PPP": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "0.93-1.29",
+          "mean": 5.74,
+          "sd": 0,
+          "min": 5.74,
+          "max": 5.74,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "LCP8KC^ALDOSTERONE^LCLAB1^^^": {
+      "obx": [
+        "1512679595^ALDS ALDOSTERONE, S^LCLAB2^^^"
+      ],
+      "values": {
+        "1512679595^ALDS ALDOSTERONE, S^LCLAB2^^^": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<4.0",
+              1
+            ]
+          ]
+        }
+      },
+      "specimen": "Blood"
+    },
+    "LCCHQ^HEMOGLOBIN A1C^LCLAB1^^^": {
+      "obx": [
+        "5217655084^HBA1C^LCLAB2^^^"
+      ],
+      "values": {
+        "5217655084^HBA1C^LCLAB2^^^": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "4.0-6.0",
+          "mean": 6.2,
+          "sd": 0,
+          "min": 6.2,
+          "max": 6.2,
+          "abnormalRate": 1
+        }
+      },
+      "specimen": "Blood"
+    },
+    "LCBIOR4^MANUAL DIFFERENTIAL - CELLAVISION": {
+      "obx": [
+        "1206^NEUTROPHILS C MAN (DIFF)^^23761-0^Neutrophils NFr Bld Manual",
+        "5671^BANDS C MAN (DIFF)^^764-1^Neuts Band NFr Bld Manual",
+        "8289^LYMPHOCYTES C MAN (DIFF)^^737-7^Lymphocytes NFr Bld Manual",
+        "1113^MONOCYTES C MAN (DIFF)^^744-3^Monocytes NFr Bld Manual",
+        "7052^EOSINOPHILS C MAN (DIFF)^^714-6^Eosinophil NFr Bld Manual",
+        "7181^BASOPHILS C MAN (DIFF)^^707-0^Basophils NFr Bld Manual",
+        "5043^ABS NEUTROPHIL CT^^753-4^Neutrophils # Bld Manual",
+        "9233^ABS LYMPHOCYTE CT^^732-8^Lymphocytes # Bld Manual",
+        "6799^ABS MONOCYTE CT^^743-5^Monocytes # Bld Manual",
+        "1047^ABS EOSINOPHIL CT^^712-0^Eosinophil # Bld Manual",
+        "5359^ABS BASOPHIL CT^^705-4^Basophils # Bld Manual",
+        "87338^SMEAR EVAL^^9317-9^Platelet Bld Ql Smear"
+      ],
+      "values": {
+        "1206^NEUTROPHILS C MAN (DIFF)^^23761-0^Neutrophils NFr Bld Manual": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "40-75",
+          "mean": 72,
+          "sd": 0,
+          "min": 72,
+          "max": 72,
+          "abnormalRate": 0
+        },
+        "5671^BANDS C MAN (DIFF)^^764-1^Neuts Band NFr Bld Manual": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-5",
+          "mean": 1,
+          "sd": 0,
+          "min": 1,
+          "max": 1,
+          "abnormalRate": 0
+        },
+        "8289^LYMPHOCYTES C MAN (DIFF)^^737-7^Lymphocytes NFr Bld Manual": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "20-45",
+          "mean": 20,
+          "sd": 0,
+          "min": 20,
+          "max": 20,
+          "abnormalRate": 0
+        },
+        "1113^MONOCYTES C MAN (DIFF)^^744-3^Monocytes NFr Bld Manual": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "3-12",
+          "mean": 6,
+          "sd": 0,
+          "min": 6,
+          "max": 6,
+          "abnormalRate": 0
+        },
+        "7052^EOSINOPHILS C MAN (DIFF)^^714-6^Eosinophil NFr Bld Manual": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-6",
+          "mean": 1,
+          "sd": 0,
+          "min": 1,
+          "max": 1,
+          "abnormalRate": 0
+        },
+        "7181^BASOPHILS C MAN (DIFF)^^707-0^Basophils NFr Bld Manual": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-2",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "5043^ABS NEUTROPHIL CT^^753-4^Neutrophils # Bld Manual": {
+          "kind": "numeric",
+          "units": "K/uL",
+          "ref": "1.8-7.7",
+          "mean": 5.9,
+          "sd": 0,
+          "min": 5.9,
+          "max": 5.9,
+          "abnormalRate": 0
+        },
+        "9233^ABS LYMPHOCYTE CT^^732-8^Lymphocytes # Bld Manual": {
+          "kind": "numeric",
+          "units": "K/uL",
+          "ref": "1.0-4.8",
+          "mean": 1.6,
+          "sd": 0,
+          "min": 1.6,
+          "max": 1.6,
+          "abnormalRate": 0
+        },
+        "6799^ABS MONOCYTE CT^^743-5^Monocytes # Bld Manual": {
+          "kind": "numeric",
+          "units": "K/uL",
+          "ref": "0.1-1.0",
+          "mean": 0.5,
+          "sd": 0,
+          "min": 0.5,
+          "max": 0.5,
+          "abnormalRate": 0
+        },
+        "1047^ABS EOSINOPHIL CT^^712-0^Eosinophil # Bld Manual": {
+          "kind": "numeric",
+          "units": "K/uL",
+          "ref": "0.0-0.5",
+          "mean": 0.1,
+          "sd": 0,
+          "min": 0.1,
+          "max": 0.1,
+          "abnormalRate": 0
+        },
+        "5359^ABS BASOPHIL CT^^705-4^Basophils # Bld Manual": {
+          "kind": "numeric",
+          "units": "K/uL",
+          "ref": "0.0-0.2",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "87338^SMEAR EVAL^^9317-9^Platelet Bld Ql Smear": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "[result removed]",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCRFTC7^SYPHILIS (T. PALLIDUM) IGG/IGM": {
+      "obx": [
+        "79055^SYPHILIS (T.PALLIDUM) IGG/IGM^^34147-9^T pallidum IgG+IgM Ser Ql"
+      ],
+      "values": {
+        "79055^SYPHILIS (T.PALLIDUM) IGG/IGM^^34147-9^T pallidum IgG+IgM Ser Ql": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "REACTIVE",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LC5Q6^Extractable Nuclear Antibodies": {
+      "obx": [
+        "LCNR7L^ENA Screen"
+      ],
+      "values": {
+        "LCNR7L^ENA Screen": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "[result removed]",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCH47^pH Body Fluid": {
+      "obx": [
+        "LCZ6K1^BF Type",
+        "LCS6J^pH BF"
+      ],
+      "values": {
+        "LCZ6K1^BF Type": {
+          "kind": "coded",
+          "valueType": "TXT",
+          "dist": [
+            [
+              "Other",
+              1
+            ]
+          ]
+        },
+        "LCS6J^pH BF": {
+          "kind": "coded",
+          "valueType": "NUM",
+          "dist": [
+            [
+              "6.9",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LC8EZBZ^Antinuclear Abs w rflx Titer and Pattern^LCLAB3^29950-3^Nuclear IgG Ab [Presence] in Serum by Immunoassay^LN": {
+      "obx": [
+        "6726755^ANA^LCLAB4^31545-7^Nuclear IgG Ab [Presence] in Serum^LN"
+      ],
+      "values": {
+        "6726755^ANA^LCLAB4^31545-7^Nuclear IgG Ab [Presence] in Serum^LN": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Negative",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCO8FDC^C. trachomatis / N. gonorrhoeae, DNA probe^LCLAB3^36902-5^Chlamydia trachomatis+Neisseria gonorrhoeae DNA [Presence] in Specimen by NAA with probe detection^LN": {
+      "obx": [
+        "1518893^N gonorrhoeae, DNA Probe^LCLAB4^24111-7^Neisseria gonorrhoeae DNA [Presence] in Specimen by NAA with probe detection^LN",
+        "6684819^Chlamydia, DNA Probe^LCLAB4^21613-5^Chlamydia trachomatis DNA [Presence] in Specimen by NAA with probe detection^LN"
+      ],
+      "values": {
+        "1518893^N gonorrhoeae, DNA Probe^LCLAB4^24111-7^Neisseria gonorrhoeae DNA [Presence] in Specimen by NAA with probe detection^LN": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "6684819^Chlamydia, DNA Probe^LCLAB4^21613-5^Chlamydia trachomatis DNA [Presence] in Specimen by NAA with probe detection^LN": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Detected",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "LCZ17F3^Surgical^LCLAB5": {
+      "obx": [
+        "LCM1A2POD6^^LCLAB6"
+      ],
+      "values": {
+        "LCM1A2POD6^^LCLAB6": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "[result removed]",
+              0.8
+            ],
+            [
+              "Microscopic Description",
+              0.067
+            ],
+            [
+              "Clinical History",
+              0.067
+            ],
+            [
+              "Gross Description",
+              0.067
+            ]
+          ]
+        }
+      }
+    },
+    "LCY3OHR^JAK 2 EXONS 12-15 MUTATION ANALYSIS (INCLUDES V617F)^LCLAB7^^^": {
+      "obx": [
+        "2725081650^JAK2 12-15 MUTATION NARRATIVE^LCLAB8^^^",
+        "2292462980^JAK2 V617F^LCLAB8^^^",
+        "1748823727^VARIANT ALLELE FREQUENCY (VAF) % (V617F)^LCLAB8^^^",
+        "4592967448^JAK2 EXONS 12, 13, 14 (NOT V617F), 15^LCLAB8^^^",
+        "8172660267^VARIANT ALLELE FREQUENCY (VAF) % (EXONS 12-15)^LCLAB8^^^"
+      ],
+      "values": {
+        "2725081650^JAK2 12-15 MUTATION NARRATIVE^LCLAB8^^^": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "[result removed]",
+              1
+            ]
+          ]
+        },
+        "2292462980^JAK2 V617F^LCLAB8^^^": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "Detected",
+              1
+            ]
+          ]
+        },
+        "1748823727^VARIANT ALLELE FREQUENCY (VAF) % (V617F)^LCLAB8^^^": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "",
+          "mean": 1,
+          "sd": 0,
+          "min": 1,
+          "max": 1,
+          "abnormalRate": 0
+        },
+        "4592967448^JAK2 EXONS 12, 13, 14 (NOT V617F), 15^LCLAB8^^^": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "[result removed]",
+              1
+            ]
+          ]
+        },
+        "8172660267^VARIANT ALLELE FREQUENCY (VAF) % (EXONS 12-15)^LCLAB8^^^": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "",
+          "mean": 1,
+          "sd": 0,
+          "min": 1,
+          "max": 1,
+          "abnormalRate": 0
+        }
+      },
+      "specimen": "Blood"
+    },
+    "LCYXMZCWF8XO2^CBC WITH AUTO DIFFERENTIAL^^^^": {
+      "obx": [
+        "LCYXMZCWF8XO2^CBC WITH AUTO DIFFERENTIAL^"
+      ],
+      "values": {
+        "LCYXMZCWF8XO2^CBC WITH AUTO DIFFERENTIAL^": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "[result removed]",
+              1
+            ]
+          ]
+        }
+      },
+      "specimen": "Blood"
+    },
+    "10054^BASIC METABOLIC PANEL^LAB": {
+      "obx": [
+        "NA^SODIUM",
+        "K^POTASSIUM",
+        "CL^CHLORIDE",
+        "CO2^CO2",
+        "AGAP^ANION GAP",
+        "GLUC^GLUCOSE",
+        "BUN^BLOOD UREA NITROGEN",
+        "CRET^CREATININE",
+        "CA^CALCIUM",
+        "GFRE^GLOMERULAR FILTRATION RATE"
+      ],
+      "values": {
+        "NA^SODIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "136-145",
+          "mean": 137.71,
+          "sd": 9.5,
+          "min": 121,
+          "max": 140,
+          "abnormalRate": 0.43
+        },
+        "K^POTASSIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "3.5-5.1",
+          "mean": 3.97,
+          "sd": 0.76,
+          "min": 3.4,
+          "max": 4.2,
+          "abnormalRate": 0.43
+        },
+        "CL^CHLORIDE": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "98-107",
+          "mean": 106.86,
+          "sd": 9.91,
+          "min": 94,
+          "max": 107,
+          "abnormalRate": 0.29
+        },
+        "CO2^CO2": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "21-31",
+          "mean": 22.71,
+          "sd": 3.45,
+          "min": 19,
+          "max": 27,
+          "abnormalRate": 0.43
+        },
+        "AGAP^ANION GAP": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "5-16",
+          "mean": 8.14,
+          "sd": 1.36,
+          "min": 7,
+          "max": 9,
+          "abnormalRate": 0
+        },
+        "GLUC^GLUCOSE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "71-99",
+          "mean": 148,
+          "sd": 53.93,
+          "min": 82,
+          "max": 190,
+          "abnormalRate": 0.86
+        },
+        "BUN^BLOOD UREA NITROGEN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "7-25",
+          "mean": 22.86,
+          "sd": 12.94,
+          "min": 9,
+          "max": 36,
+          "abnormalRate": 0.43
+        },
+        "CRET^CREATININE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.6-1.2",
+          "mean": 0.9,
+          "sd": 0.46,
+          "min": 0.6,
+          "max": 0.9,
+          "abnormalRate": 0.14
+        },
+        "CA^CALCIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "8.6-10.3",
+          "mean": 8.84,
+          "sd": 0.79,
+          "min": 7.4,
+          "max": 9.4,
+          "abnormalRate": 0.29
+        },
+        "GFRE^GLOMERULAR FILTRATION RATE": {
+          "kind": "numeric",
+          "units": "ml/min/1.73m2",
+          "ref": "",
+          "mean": 91.29,
+          "sd": 32.79,
+          "min": 34,
+          "max": 115,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "10054^BASIC METABOLIC PANEL^LAF": {
+      "obx": [
+        "NA^SODIUM",
+        "K^POTASSIUM",
+        "CL^CHLORIDE",
+        "CO2^CO2",
+        "AGAP^ANION GAP",
+        "GLUC^GLUCOSE",
+        "BUN^BLOOD UREA NITROGEN",
+        "CRET^CREATININE",
+        "CA^CALCIUM",
+        "GFRE^GLOMERULAR FILTRATION RATE"
+      ],
+      "values": {
+        "NA^SODIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "136-145",
+          "mean": 134.6,
+          "sd": 4.41,
+          "min": 126,
+          "max": 137,
+          "abnormalRate": 0.4
+        },
+        "K^POTASSIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "3.5-5.1",
+          "mean": 4.06,
+          "sd": 0.37,
+          "min": 3.4,
+          "max": 4.4,
+          "abnormalRate": 0.2
+        },
+        "CL^CHLORIDE": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "98-107",
+          "mean": 99.8,
+          "sd": 5.53,
+          "min": 90,
+          "max": 102,
+          "abnormalRate": 0.2
+        },
+        "CO2^CO2": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "21-31",
+          "mean": 24.4,
+          "sd": 2.94,
+          "min": 20,
+          "max": 26,
+          "abnormalRate": 0.2
+        },
+        "AGAP^ANION GAP": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "5-16",
+          "mean": 10.4,
+          "sd": 2.42,
+          "min": 8,
+          "max": 10,
+          "abnormalRate": 0
+        },
+        "GLUC^GLUCOSE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "71-99",
+          "mean": 129.8,
+          "sd": 33.27,
+          "min": 93,
+          "max": 164,
+          "abnormalRate": 0.8
+        },
+        "BUN^BLOOD UREA NITROGEN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "7-25",
+          "mean": 13,
+          "sd": 3.69,
+          "min": 9,
+          "max": 12,
+          "abnormalRate": 0
+        },
+        "CRET^CREATININE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.6-1.2",
+          "mean": 0.92,
+          "sd": 0.28,
+          "min": 0.6,
+          "max": 1.2,
+          "abnormalRate": 0.2
+        },
+        "CA^CALCIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "8.6-10.3",
+          "mean": 9.6,
+          "sd": 0.72,
+          "min": 8.4,
+          "max": 9.9,
+          "abnormalRate": 0.4
+        },
+        "GFRE^GLOMERULAR FILTRATION RATE": {
+          "kind": "numeric",
+          "units": "ml/min/1.73m2",
+          "ref": "",
+          "mean": 98.4,
+          "sd": 22.63,
+          "min": 63,
+          "max": 116,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "10052^LIVER (HEPATIC) FUNCTION PANEL^LAF": {
+      "obx": [
+        "TP^PROTEIN, TOTAL",
+        "ALB^ALBUMIN",
+        "OT^SGOT",
+        "SGPT^SGPT",
+        "TBIL^BILIRUBIN,TOTAL",
+        "DBIL^BILIRUBIN,DIRECT",
+        "ALKP^ALKALINE PHOSPHATASE"
+      ],
+      "values": {
+        "TP^PROTEIN, TOTAL": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "6.4-8.9",
+          "mean": 9,
+          "sd": 0.6,
+          "min": 8.4,
+          "max": 8.4,
+          "abnormalRate": 0.5
+        },
+        "ALB^ALBUMIN": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "3.5-5.7",
+          "mean": 5.45,
+          "sd": 0.35,
+          "min": 5.1,
+          "max": 5.1,
+          "abnormalRate": 0.5
+        },
+        "OT^SGOT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "13-39",
+          "mean": 18.5,
+          "sd": 2.5,
+          "min": 16,
+          "max": 16,
+          "abnormalRate": 0
+        },
+        "SGPT^SGPT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "7-52",
+          "mean": 17,
+          "sd": 1,
+          "min": 16,
+          "max": 16,
+          "abnormalRate": 0
+        },
+        "TBIL^BILIRUBIN,TOTAL": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.3-1.0",
+          "mean": 0.75,
+          "sd": 0.25,
+          "min": 0.5,
+          "max": 0.5,
+          "abnormalRate": 0
+        },
+        "DBIL^BILIRUBIN,DIRECT": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "0.0-0.2",
+          "mean": 0.1,
+          "sd": 0.06,
+          "min": 0.04,
+          "max": 0.04,
+          "abnormalRate": 0
+        },
+        "ALKP^ALKALINE PHOSPHATASE": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "34-104",
+          "mean": 89.5,
+          "sd": 19.5,
+          "min": 70,
+          "max": 70,
+          "abnormalRate": 0.5
+        }
+      }
+    },
+    "99187^TYPE AND SCREEN (HOLD XM-CONVERTIBLE)^LAB": {
+      "obx": [
+        "%UN^UNIT NUMBER",
+        "%CT^BLOOD COMPONENT TYPE",
+        "%UDIV^UNIT DIVISION",
+        "%ST^STATUS OF UNIT",
+        "%TS^TRANSFUSION STATUS",
+        "%XM^CROSSMATCH RESULT",
+        "%AO^UNIT ANTIGEN TESTING",
+        "%CM^UNIT TAG COMMENT",
+        "BBC^BLOOD BANK COMMENT-1",
+        "%EXX^CROSSMATCH EXPIRATION",
+        "%ABR^ABO/RH(D)",
+        "%AS^ANTIBODY SCREEN",
+        "XMC^NOTE",
+        "%ABI^ANTIBODY IDENTIFICATION"
+      ],
+      "values": {
+        "%UN^UNIT NUMBER": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "W186826183080",
+              0.138
+            ],
+            [
+              "W182726280846",
+              0.138
+            ],
+            [
+              "W186826181987",
+              0.138
+            ],
+            [
+              "W182726314102",
+              0.138
+            ],
+            [
+              "W186826200531",
+              0.138
+            ],
+            [
+              "W186826195920",
+              0.138
+            ],
+            [
+              "W182726308298",
+              0.069
+            ],
+            [
+              "W182226610865",
+              0.069
+            ],
+            [
+              "W186826183173",
+              0.034
+            ]
+          ]
+        },
+        "%CT^BLOOD COMPONENT TYPE": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "LEUKOREDUCED RBCS, BAG2",
+              0.414
+            ],
+            [
+              "LEUKOREDUCED RBCS ADSOL",
+              0.379
+            ],
+            [
+              "LEUKOREDUCED RBCS, BAG1",
+              0.207
+            ]
+          ]
+        },
+        "%UDIV^UNIT DIVISION": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "%ST^STATUS OF UNIT": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "ALLOCATED",
+              0.379
+            ],
+            [
+              "REL FROM ALLOC",
+              0.276
+            ],
+            [
+              "ISSUED",
+              0.207
+            ],
+            [
+              "ISSUED,FINAL",
+              0.138
+            ]
+          ]
+        },
+        "%TS^TRANSFUSION STATUS": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "OK TO TRANSFUSE",
+              1
+            ]
+          ]
+        },
+        "%XM^CROSSMATCH RESULT": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "IMMEDIATE SPIN COMPATIBLE",
+              0.966
+            ],
+            [
+              "Electronically Compatible",
+              0.034
+            ]
+          ]
+        },
+        "%AO^UNIT ANTIGEN TESTING": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "NEG FOR E ANTIGEN",
+              1
+            ]
+          ]
+        },
+        "%CM^UNIT TAG COMMENT": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "COMPATIBLE AT IGG",
+              1
+            ]
+          ]
+        },
+        "BBC^BLOOD BANK COMMENT-1": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "NORTH ER BELAK 4/5/26 0145 JEB",
+              1
+            ]
+          ]
+        },
+        "%EXX^CROSSMATCH EXPIRATION": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "04/08/2026,2359",
+              0.8
+            ],
+            [
+              "04/09/2026,2359",
+              0.2
+            ]
+          ]
+        },
+        "%ABR^ABO/RH(D)": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "O POSITIVE",
+              0.8
+            ],
+            [
+              "A POSITIVE",
+              0.2
+            ]
+          ]
+        },
+        "%AS^ANTIBODY SCREEN": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "POSITIVE",
+              0.8
+            ],
+            [
+              "NEGATIVE",
+              0.2
+            ]
+          ]
+        },
+        "XMC^NOTE": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "TYPE",
+              1
+            ]
+          ]
+        },
+        "%ABI^ANTIBODY IDENTIFICATION": {
+          "kind": "coded",
+          "valueType": "CE",
+          "dist": [
+            [
+              "ANTI-E PRESENT",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "8888^CBC/AUTOMATED DIFF^LAF": {
+      "obx": [
+        "WBC^WBC COUNT",
+        "RBC^RBC COUNT",
+        "HGB^HEMOGLOBIN",
+        "HCT^HEMATOCRIT",
+        "MCV^MCV",
+        "MCH^MCH",
+        "MCHC^MCHC",
+        "RDW^RDW",
+        "PLT^PLATELET COUNT",
+        "MPV^MPV",
+        "SEG^SEG",
+        "LY^LYMPH",
+        "MONO^MONOCYTE",
+        "EOS^EOSINOPHIL",
+        "BASO^BASOPHIL",
+        "IG^IMMATURE GRANULOCYTES",
+        "SEGNO^Abs Seg Neutrophils",
+        "LYNO^Abs Lymphocytes",
+        "EONO^Abs Eosinophils",
+        "BASONO^Abs Basophils",
+        "MONNO^Abs Monocytes",
+        "IGNO^Abs Imm Granulocytes"
+      ],
+      "values": {
+        "WBC^WBC COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "3.0-10.2",
+          "mean": 5.48,
+          "sd": 0.17,
+          "min": 5.31,
+          "max": 5.31,
+          "abnormalRate": 0
+        },
+        "RBC^RBC COUNT": {
+          "kind": "numeric",
+          "units": "10*6/uL",
+          "ref": "4.00-5.20",
+          "mean": 4.39,
+          "sd": 0.15,
+          "min": 4.25,
+          "max": 4.25,
+          "abnormalRate": 0
+        },
+        "HGB^HEMOGLOBIN": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "11.7-15.8",
+          "mean": 13.5,
+          "sd": 0.2,
+          "min": 13.3,
+          "max": 13.3,
+          "abnormalRate": 0
+        },
+        "HCT^HEMATOCRIT": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "36.6-47.7",
+          "mean": 38.55,
+          "sd": 0.35,
+          "min": 38.2,
+          "max": 38.2,
+          "abnormalRate": 0.5
+        },
+        "MCV^MCV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "81.0-101.0",
+          "mean": 87.8,
+          "sd": 3.7,
+          "min": 84.1,
+          "max": 84.1,
+          "abnormalRate": 0
+        },
+        "MCH^MCH": {
+          "kind": "numeric",
+          "units": "pg",
+          "ref": "26.0-34.0",
+          "mean": 30.75,
+          "sd": 1.45,
+          "min": 29.3,
+          "max": 29.3,
+          "abnormalRate": 0
+        },
+        "MCHC^MCHC": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "30.9-34.5",
+          "mean": 35,
+          "sd": 0.2,
+          "min": 34.8,
+          "max": 34.8,
+          "abnormalRate": 0.5
+        },
+        "RDW^RDW": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "11.5-15.5",
+          "mean": 12.3,
+          "sd": 0.2,
+          "min": 12.1,
+          "max": 12.1,
+          "abnormalRate": 0
+        },
+        "PLT^PLATELET COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "130-400",
+          "mean": 236.5,
+          "sd": 27.5,
+          "min": 209,
+          "max": 209,
+          "abnormalRate": 0
+        },
+        "MPV^MPV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "9.0-12.5",
+          "mean": 9.8,
+          "sd": 0.7,
+          "min": 9.1,
+          "max": 9.1,
+          "abnormalRate": 0
+        },
+        "SEG^SEG": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "45-65",
+          "mean": 52,
+          "sd": 6,
+          "min": 46,
+          "max": 46,
+          "abnormalRate": 0
+        },
+        "LY^LYMPH": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "20-40",
+          "mean": 30,
+          "sd": 6,
+          "min": 24,
+          "max": 24,
+          "abnormalRate": 0
+        },
+        "MONO^MONOCYTE": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "3-9",
+          "mean": 12.5,
+          "sd": 4.5,
+          "min": 8,
+          "max": 8,
+          "abnormalRate": 0.5
+        },
+        "EOS^EOSINOPHIL": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-4",
+          "mean": 4.5,
+          "sd": 4.5,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0.5
+        },
+        "BASO^BASOPHIL": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-1",
+          "mean": 1,
+          "sd": 0,
+          "min": 1,
+          "max": 1,
+          "abnormalRate": 0
+        },
+        "IG^IMMATURE GRANULOCYTES": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-0.4",
+          "mean": 0.2,
+          "sd": 0,
+          "min": 0.2,
+          "max": 0.2,
+          "abnormalRate": 0
+        },
+        "SEGNO^Abs Seg Neutrophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "2.0-6.5",
+          "mean": 2.85,
+          "sd": 0.45,
+          "min": 2.4,
+          "max": 2.4,
+          "abnormalRate": 0
+        },
+        "LYNO^Abs Lymphocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.9-4.0",
+          "mean": 1.6,
+          "sd": 0.3,
+          "min": 1.3,
+          "max": 1.3,
+          "abnormalRate": 0
+        },
+        "EONO^Abs Eosinophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.0-0.4",
+          "mean": 0.25,
+          "sd": 0.25,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0.5
+        },
+        "BASONO^Abs Basophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.0-0.1",
+          "mean": 0.1,
+          "sd": 0,
+          "min": 0.1,
+          "max": 0.1,
+          "abnormalRate": 0
+        },
+        "MONNO^Abs Monocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.1-0.9",
+          "mean": 0.7,
+          "sd": 0.3,
+          "min": 0.4,
+          "max": 0.4,
+          "abnormalRate": 0.5
+        },
+        "IGNO^Abs Imm Granulocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0-0.03",
+          "mean": 0.01,
+          "sd": 0,
+          "min": 0.01,
+          "max": 0.01,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "89048^INFLUENZA A AND B POC PCR^LAF": {
+      "obx": [
+        "POCFAR^INFLUENZA A POC PCR",
+        "POCFBR^INFLUENZA B POC PCR"
+      ],
+      "values": {
+        "POCFAR^INFLUENZA A POC PCR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "POCFBR^INFLUENZA B POC PCR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99684^GLUCOSE, POC^LAB": {
+      "obx": [
+        "PCGLUC^GLUCOSE, POC"
+      ],
+      "values": {
+        "PCGLUC^GLUCOSE, POC": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "71-99",
+          "mean": 142.27,
+          "sd": 84.9,
+          "min": 37,
+          "max": 265,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "10052^LIVER (HEPATIC) FUNCTION PANEL^LLA": {
+      "obx": [
+        "TP^PROTEIN, TOTAL",
+        "ALB^ALBUMIN",
+        "OT^SGOT",
+        "SGPT^SGPT",
+        "TBIL^BILIRUBIN,TOTAL",
+        "DBIL^BILIRUBIN,DIRECT",
+        "ALKP^ALKALINE PHOSPHATASE"
+      ],
+      "values": {
+        "TP^PROTEIN, TOTAL": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "6.4-8.9",
+          "mean": 5.5,
+          "sd": 0,
+          "min": 5.5,
+          "max": 5.5,
+          "abnormalRate": 1
+        },
+        "ALB^ALBUMIN": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "3.5-5.7",
+          "mean": 3.6,
+          "sd": 0,
+          "min": 3.6,
+          "max": 3.6,
+          "abnormalRate": 0
+        },
+        "OT^SGOT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "13-39",
+          "mean": 64,
+          "sd": 0,
+          "min": 64,
+          "max": 64,
+          "abnormalRate": 1
+        },
+        "SGPT^SGPT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "7-52",
+          "mean": 33,
+          "sd": 0,
+          "min": 33,
+          "max": 33,
+          "abnormalRate": 0
+        },
+        "TBIL^BILIRUBIN,TOTAL": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.3-1.0",
+          "mean": 0.3,
+          "sd": 0,
+          "min": 0.3,
+          "max": 0.3,
+          "abnormalRate": 0
+        },
+        "DBIL^BILIRUBIN,DIRECT": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "0.0-0.2",
+          "mean": 0.03,
+          "sd": 0,
+          "min": 0.03,
+          "max": 0.03,
+          "abnormalRate": 0
+        },
+        "ALKP^ALKALINE PHOSPHATASE": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "34-104",
+          "mean": 128,
+          "sd": 0,
+          "min": 128,
+          "max": 128,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "307^PHOSPHOROUS^LAB": {
+      "obx": [
+        "PHOS^PHOSPHOROUS"
+      ],
+      "values": {
+        "PHOS^PHOSPHOROUS": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "2.5-5.0",
+          "mean": 3.4,
+          "sd": 0,
+          "min": 3.4,
+          "max": 3.4,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "99145^TROPONIN I^LLA": {
+      "obx": [
+        "TRPI^TROPONIN I"
+      ],
+      "values": {
+        "TRPI^TROPONIN I": {
+          "kind": "numeric",
+          "units": "pg/mL",
+          "ref": "<15",
+          "mean": 441.67,
+          "sd": 611.89,
+          "min": 6,
+          "max": 12,
+          "abnormalRate": 0.33
+        }
+      }
+    },
+    "10052^LIVER (HEPATIC) FUNCTION PANEL^LAB": {
+      "obx": [
+        "TP^PROTEIN, TOTAL",
+        "ALB^ALBUMIN",
+        "OT^SGOT",
+        "SGPT^SGPT",
+        "TBIL^BILIRUBIN,TOTAL",
+        "DBIL^BILIRUBIN,DIRECT",
+        "ALKP^ALKALINE PHOSPHATASE"
+      ],
+      "values": {
+        "TP^PROTEIN, TOTAL": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "6.4-8.9",
+          "mean": 7,
+          "sd": 0,
+          "min": 7,
+          "max": 7,
+          "abnormalRate": 0
+        },
+        "ALB^ALBUMIN": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "3.5-5.7",
+          "mean": 4.2,
+          "sd": 0,
+          "min": 4.2,
+          "max": 4.2,
+          "abnormalRate": 0
+        },
+        "OT^SGOT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "13-39",
+          "mean": 64,
+          "sd": 0,
+          "min": 64,
+          "max": 64,
+          "abnormalRate": 1
+        },
+        "SGPT^SGPT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "7-52",
+          "mean": 43,
+          "sd": 0,
+          "min": 43,
+          "max": 43,
+          "abnormalRate": 0
+        },
+        "TBIL^BILIRUBIN,TOTAL": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.3-1.0",
+          "mean": 0.7,
+          "sd": 0,
+          "min": 0.7,
+          "max": 0.7,
+          "abnormalRate": 0
+        },
+        "DBIL^BILIRUBIN,DIRECT": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "0.0-0.2",
+          "mean": 0.32,
+          "sd": 0,
+          "min": 0.32,
+          "max": 0.32,
+          "abnormalRate": 1
+        },
+        "ALKP^ALKALINE PHOSPHATASE": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "34-104",
+          "mean": 89,
+          "sd": 0,
+          "min": 89,
+          "max": 89,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "89048^INFLUENZA A AND B POC PCR^LAB": {
+      "obx": [
+        "POCFAR^INFLUENZA A POC PCR",
+        "POCFBR^INFLUENZA B POC PCR"
+      ],
+      "values": {
+        "POCFAR^INFLUENZA A POC PCR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "POCFBR^INFLUENZA B POC PCR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99145^TROPONIN I^LAF": {
+      "obx": [
+        "TRPI^TROPONIN I"
+      ],
+      "values": {
+        "TRPI^TROPONIN I": {
+          "kind": "numeric",
+          "units": "pg/mL",
+          "ref": "<20",
+          "mean": 5.5,
+          "sd": 0.5,
+          "min": 5,
+          "max": 5,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "2032^Acetylcholine Receptor Blocking Antibodies^LAB": {
+      "obx": [
+        "AARB^Acetylcholine Receptor Blockin"
+      ],
+      "values": {
+        "AARB^Acetylcholine Receptor Blockin": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<15",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99698^Vitamin D, 25-Hydroxy, LC/MS/MS^LAB": {
+      "obx": [
+        "VD25T^Vitamin D, 25-OH, Total",
+        "VD25D3^Vitamin D, 25-OH, D3",
+        "VD25D2^Vitamin D, 25-OH, D2"
+      ],
+      "values": {
+        "VD25T^Vitamin D, 25-OH, Total": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "",
+          "mean": 75,
+          "sd": 0,
+          "min": 75,
+          "max": 75,
+          "abnormalRate": 0
+        },
+        "VD25D3^Vitamin D, 25-OH, D3": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "",
+          "mean": 75,
+          "sd": 0,
+          "min": 75,
+          "max": 75,
+          "abnormalRate": 0
+        },
+        "VD25D2^Vitamin D, 25-OH, D2": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<4",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99730^DRUG SCREEN, URINE^LAB": {
+      "obx": [
+        "AMPM^AMPHETAMINE",
+        "BARB^BARBITURATE",
+        "BENZ^BENZODIAZEPINES",
+        "THC^CANNABINOIDS",
+        "COCN^COCAINE",
+        "OP^OPIATES",
+        "PCP^PHENCYCLIDINE",
+        "OXY^OXYCODONE LEVEL",
+        "METD^METHADONE",
+        "FENTD^FENTANYL",
+        "DSPGR^SPECIFIC GRAVITY"
+      ],
+      "values": {
+        "AMPM^AMPHETAMINE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "BARB^BARBITURATE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "BENZ^BENZODIAZEPINES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "THC^CANNABINOIDS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "POSITIVE",
+              0.5
+            ],
+            [
+              "NEGATIVE",
+              0.5
+            ]
+          ]
+        },
+        "COCN^COCAINE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "OP^OPIATES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "PCP^PHENCYCLIDINE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "OXY^OXYCODONE LEVEL": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "METD^METHADONE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "FENTD^FENTANYL": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "DSPGR^SPECIFIC GRAVITY": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "1.003-1.030",
+          "mean": 1.02,
+          "sd": 0.01,
+          "min": 1.012,
+          "max": 1.012,
+          "abnormalRate": 0.5
+        }
+      }
+    },
+    "89096^PSA, Free and Total^LAB": {
+      "obx": [
+        "PSA^PSA TOTAL/DIAGNOSTIC",
+        "PSAFRE^PSA, Free",
+        "PSAPFR^PSA, Percent Free"
+      ],
+      "values": {
+        "PSA^PSA TOTAL/DIAGNOSTIC": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "0-4",
+          "mean": 5.9,
+          "sd": 0,
+          "min": 5.9,
+          "max": 5.9,
+          "abnormalRate": 1
+        },
+        "PSAFRE^PSA, Free": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "",
+          "mean": 0.76,
+          "sd": 0,
+          "min": 0.76,
+          "max": 0.76,
+          "abnormalRate": 0
+        },
+        "PSAPFR^PSA, Percent Free": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "",
+          "mean": 13,
+          "sd": 0,
+          "min": 13,
+          "max": 13,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "267^FERRITIN^LAB": {
+      "obx": [
+        "FERR^FERRITIN"
+      ],
+      "values": {
+        "FERR^FERRITIN": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": "11-306.8",
+          "mean": 8,
+          "sd": 0,
+          "min": 8,
+          "max": 8,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "355^MAGNESIUM^LLA": {
+      "obx": [
+        "MG^MAGNESIUM"
+      ],
+      "values": {
+        "MG^MAGNESIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "1.6-2.6",
+          "mean": 1.8,
+          "sd": 0,
+          "min": 1.8,
+          "max": 1.8,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "99145^TROPONIN I^LAB": {
+      "obx": [
+        "TRPI^TROPONIN I"
+      ],
+      "values": {
+        "TRPI^TROPONIN I": {
+          "kind": "numeric",
+          "units": "pg/mL",
+          "ref": "<20",
+          "mean": 5124,
+          "sd": 10061.11,
+          "min": 7,
+          "max": 307,
+          "abnormalRate": 0.6
+        }
+      }
+    },
+    "327^LIPASE^LAF": {
+      "obx": [
+        "LPSE^LIPASE"
+      ],
+      "values": {
+        "LPSE^LIPASE": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "11-82",
+          "mean": 15,
+          "sd": 1,
+          "min": 14,
+          "max": 14,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "99684^GLUCOSE, POC^LAF": {
+      "obx": [
+        "PCGLUC^GLUCOSE, POC"
+      ],
+      "values": {
+        "PCGLUC^GLUCOSE, POC": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "71-99",
+          "mean": 143,
+          "sd": 35,
+          "min": 108,
+          "max": 108,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "355^MAGNESIUM^LAB": {
+      "obx": [
+        "MG^MAGNESIUM"
+      ],
+      "values": {
+        "MG^MAGNESIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "1.6-2.6",
+          "mean": 1.83,
+          "sd": 0.29,
+          "min": 1.5,
+          "max": 1.8,
+          "abnormalRate": 0.33
+        }
+      }
+    },
+    "99271^HEPARIN TEST (ANTI XA)^LAB": {
+      "obx": [
+        "HEPAXA^HEPARIN TEST (ANTI XA)"
+      ],
+      "values": {
+        "HEPAXA^HEPARIN TEST (ANTI XA)": {
+          "kind": "numeric",
+          "units": "IU/ml",
+          "ref": "0.30-0.70",
+          "mean": 0.49,
+          "sd": 0.17,
+          "min": 0.25,
+          "max": 0.58,
+          "abnormalRate": 0.33
+        }
+      }
+    },
+    "99776^B-TYPE NATRIURETIC PEPTIDE^LAF": {
+      "obx": [
+        "BNP^B-TYPE NATRIURETIC PEPTIDE"
+      ],
+      "values": {
+        "BNP^B-TYPE NATRIURETIC PEPTIDE": {
+          "kind": "numeric",
+          "units": "pg/mL",
+          "ref": "<100",
+          "mean": 54,
+          "sd": 0,
+          "min": 54,
+          "max": 54,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "8888^CBC/AUTOMATED DIFF^LAB": {
+      "obx": [
+        "WBC^WBC COUNT",
+        "RBC^RBC COUNT",
+        "HGB^HEMOGLOBIN",
+        "HCT^HEMATOCRIT",
+        "MCV^MCV",
+        "MCH^MCH",
+        "MCHC^MCHC",
+        "RDW^RDW",
+        "PLT^PLATELET COUNT",
+        "MPV^MPV",
+        "SEG^SEG",
+        "LY^LYMPH",
+        "MONO^MONOCYTE",
+        "EOS^EOSINOPHIL",
+        "BASO^BASOPHIL",
+        "IG^IMMATURE GRANULOCYTES",
+        "SEGNO^Abs Seg Neutrophils",
+        "LYNO^Abs Lymphocytes",
+        "EONO^Abs Eosinophils",
+        "BASONO^Abs Basophils",
+        "MONNO^Abs Monocytes",
+        "IGNO^Abs Imm Granulocytes"
+      ],
+      "values": {
+        "WBC^WBC COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "3.0-10.2",
+          "mean": 9.87,
+          "sd": 0.96,
+          "min": 8.91,
+          "max": 8.91,
+          "abnormalRate": 0.5
+        },
+        "RBC^RBC COUNT": {
+          "kind": "numeric",
+          "units": "10*6/uL",
+          "ref": "4.00-5.20",
+          "mean": 4.1,
+          "sd": 0.16,
+          "min": 3.94,
+          "max": 3.94,
+          "abnormalRate": 0.5
+        },
+        "HGB^HEMOGLOBIN": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "11.7-15.8",
+          "mean": 12.55,
+          "sd": 0.55,
+          "min": 12,
+          "max": 12,
+          "abnormalRate": 0
+        },
+        "HCT^HEMATOCRIT": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "36.6-47.7",
+          "mean": 36.55,
+          "sd": 1.65,
+          "min": 34.9,
+          "max": 34.9,
+          "abnormalRate": 0.5
+        },
+        "MCV^MCV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "81.0-101.0",
+          "mean": 89.25,
+          "sd": 0.65,
+          "min": 88.6,
+          "max": 88.6,
+          "abnormalRate": 0
+        },
+        "MCH^MCH": {
+          "kind": "numeric",
+          "units": "pg",
+          "ref": "26.0-34.0",
+          "mean": 30.65,
+          "sd": 0.15,
+          "min": 30.5,
+          "max": 30.5,
+          "abnormalRate": 0
+        },
+        "MCHC^MCHC": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "30.9-34.5",
+          "mean": 34.35,
+          "sd": 0.05,
+          "min": 34.3,
+          "max": 34.3,
+          "abnormalRate": 0
+        },
+        "RDW^RDW": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "11.5-15.5",
+          "mean": 12.1,
+          "sd": 0.4,
+          "min": 11.7,
+          "max": 11.7,
+          "abnormalRate": 0
+        },
+        "PLT^PLATELET COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "130-400",
+          "mean": 244.5,
+          "sd": 21.5,
+          "min": 223,
+          "max": 223,
+          "abnormalRate": 0
+        },
+        "MPV^MPV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "9.0-12.5",
+          "mean": 9.4,
+          "sd": 0.5,
+          "min": 8.9,
+          "max": 8.9,
+          "abnormalRate": 0.5
+        },
+        "SEG^SEG": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "45-65",
+          "mean": 70.5,
+          "sd": 5.5,
+          "min": 65,
+          "max": 65,
+          "abnormalRate": 0.5
+        },
+        "LY^LYMPH": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "20-40",
+          "mean": 19,
+          "sd": 7,
+          "min": 12,
+          "max": 12,
+          "abnormalRate": 0.5
+        },
+        "MONO^MONOCYTE": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "3-9",
+          "mean": 10,
+          "sd": 2,
+          "min": 8,
+          "max": 8,
+          "abnormalRate": 0.5
+        },
+        "EOS^EOSINOPHIL": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-4",
+          "mean": 0.5,
+          "sd": 0.5,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "BASO^BASOPHIL": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-1",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "IG^IMMATURE GRANULOCYTES": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-0.4",
+          "mean": 0.25,
+          "sd": 0.05,
+          "min": 0.2,
+          "max": 0.2,
+          "abnormalRate": 0
+        },
+        "SEGNO^Abs Seg Neutrophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "2.0-6.5",
+          "mean": 6.95,
+          "sd": 1.15,
+          "min": 5.8,
+          "max": 5.8,
+          "abnormalRate": 0.5
+        },
+        "LYNO^Abs Lymphocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.9-4.0",
+          "mean": 1.8,
+          "sd": 0.5,
+          "min": 1.3,
+          "max": 1.3,
+          "abnormalRate": 0
+        },
+        "EONO^Abs Eosinophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.0-0.4",
+          "mean": 0.05,
+          "sd": 0.05,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "BASONO^Abs Basophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.0-0.1",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "MONNO^Abs Monocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.1-0.9",
+          "mean": 1,
+          "sd": 0.3,
+          "min": 0.7,
+          "max": 0.7,
+          "abnormalRate": 0.5
+        },
+        "IGNO^Abs Imm Granulocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0-0.03",
+          "mean": 0.03,
+          "sd": 0,
+          "min": 0.02,
+          "max": 0.02,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "439^CBC/NO DIFF^LAB": {
+      "obx": [
+        "WBC^WBC COUNT",
+        "RBC^RBC COUNT",
+        "HGB^HEMOGLOBIN",
+        "HCT^HEMATOCRIT",
+        "MCV^MCV",
+        "MCH^MCH",
+        "MCHC^MCHC",
+        "RDW^RDW",
+        "PLT^PLATELET COUNT",
+        "MPV^MPV"
+      ],
+      "values": {
+        "WBC^WBC COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "3.0-10.2",
+          "mean": 13.37,
+          "sd": 0,
+          "min": 13.37,
+          "max": 13.37,
+          "abnormalRate": 1
+        },
+        "RBC^RBC COUNT": {
+          "kind": "numeric",
+          "units": "10*6/uL",
+          "ref": "4.00-5.20",
+          "mean": 3.05,
+          "sd": 0,
+          "min": 3.05,
+          "max": 3.05,
+          "abnormalRate": 1
+        },
+        "HGB^HEMOGLOBIN": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "11.7-15.8",
+          "mean": 10.5,
+          "sd": 0,
+          "min": 10.5,
+          "max": 10.5,
+          "abnormalRate": 1
+        },
+        "HCT^HEMATOCRIT": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "36.6-47.7",
+          "mean": 30,
+          "sd": 0,
+          "min": 30,
+          "max": 30,
+          "abnormalRate": 1
+        },
+        "MCV^MCV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "81.0-101.0",
+          "mean": 98.4,
+          "sd": 0,
+          "min": 98.4,
+          "max": 98.4,
+          "abnormalRate": 0
+        },
+        "MCH^MCH": {
+          "kind": "numeric",
+          "units": "pg",
+          "ref": "26.0-34.0",
+          "mean": 34.4,
+          "sd": 0,
+          "min": 34.4,
+          "max": 34.4,
+          "abnormalRate": 1
+        },
+        "MCHC^MCHC": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "30.9-34.5",
+          "mean": 35,
+          "sd": 0,
+          "min": 35,
+          "max": 35,
+          "abnormalRate": 1
+        },
+        "RDW^RDW": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "11.5-15.5",
+          "mean": 13.2,
+          "sd": 0,
+          "min": 13.2,
+          "max": 13.2,
+          "abnormalRate": 0
+        },
+        "PLT^PLATELET COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "130-400",
+          "mean": 151,
+          "sd": 0,
+          "min": 151,
+          "max": 151,
+          "abnormalRate": 0
+        },
+        "MPV^MPV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "9.0-12.5",
+          "mean": 10.1,
+          "sd": 0,
+          "min": 10.1,
+          "max": 10.1,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "1477^BETA-HCG^LAB": {
+      "obx": [
+        "BHCG^BETA-HCG"
+      ],
+      "values": {
+        "BHCG^BETA-HCG": {
+          "kind": "numeric",
+          "units": "mIU/ml",
+          "ref": "0-5",
+          "mean": 19013,
+          "sd": 0,
+          "min": 19013,
+          "max": 19013,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "226^SMEAR FOR MORPHOLOGY^LLA": {
+      "obx": [
+        "RCOM^RBC MORPHOLOGY",
+        "PLREV^PLT MORPHOLOGY"
+      ],
+      "values": {
+        "RCOM^RBC MORPHOLOGY": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "FEW",
+              0.5
+            ],
+            [
+              "HYPOCHROMIA",
+              0.5
+            ]
+          ]
+        },
+        "PLREV^PLT MORPHOLOGY": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NO COMMENT",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "344^IRON^LAB": {
+      "obx": [
+        "FE^IRON"
+      ],
+      "values": {
+        "FE^IRON": {
+          "kind": "numeric",
+          "units": "ug/dl",
+          "ref": "50-170",
+          "mean": 58,
+          "sd": 0,
+          "min": 58,
+          "max": 58,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "9872^TSH^LAB": {
+      "obx": [
+        "TSH^TSH"
+      ],
+      "values": {
+        "TSH^TSH": {
+          "kind": "numeric",
+          "units": "uIU/ml",
+          "ref": "0.45-5.33",
+          "mean": 1.9,
+          "sd": 0,
+          "min": 1.9,
+          "max": 1.9,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "701^URINALYSIS, ROUTINE^LAB": {
+      "obx": [
+        "UCLAR^URINE CLARITY",
+        "UCOL^URINE COLOR",
+        "UPH^URINE PH",
+        "UTP^URINE TOTAL PROTEIN",
+        "UGL^URINE GLUCOSE",
+        "UKET^URINE KETONES",
+        "UBIL^URINE BILIRUBIN",
+        "UHGB^URINE HEMOGLOBIN",
+        "UROB^URINE UROBILINOGEN",
+        "ULEU^URINE LEUKOCYTES",
+        "UNIT^URINE NITRITE",
+        "USPG^URINE SPEC GRAVITY",
+        "UWBC^URINE WBC'S",
+        "URBC^URINE RBC'S",
+        "EPI^SQUAMOUS EPITH. CELLS",
+        "BACT^BACTERIA",
+        "MUCUR^MUCOUS"
+      ],
+      "values": {
+        "UCLAR^URINE CLARITY": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "CLEAR",
+              0.5
+            ],
+            [
+              "TURBID",
+              0.5
+            ]
+          ]
+        },
+        "UCOL^URINE COLOR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "PALE YELLOW",
+              0.5
+            ],
+            [
+              "YELLOW",
+              0.5
+            ]
+          ]
+        },
+        "UPH^URINE PH": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "5.0-8.0",
+          "mean": 6.75,
+          "sd": 0.75,
+          "min": 6,
+          "max": 6,
+          "abnormalRate": 0
+        },
+        "UTP^URINE TOTAL PROTEIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UGL^URINE GLUCOSE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NORMAL",
+              1
+            ]
+          ]
+        },
+        "UKET^URINE KETONES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              0.5
+            ],
+            [
+              "3+",
+              0.5
+            ]
+          ]
+        },
+        "UBIL^URINE BILIRUBIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UHGB^URINE HEMOGLOBIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              0.5
+            ],
+            [
+              "1+",
+              0.5
+            ]
+          ]
+        },
+        "UROB^URINE UROBILINOGEN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NORMAL",
+              1
+            ]
+          ]
+        },
+        "ULEU^URINE LEUKOCYTES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UNIT^URINE NITRITE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "USPG^URINE SPEC GRAVITY": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "1.003-1.030",
+          "mean": 1.02,
+          "sd": 0.01,
+          "min": 1.012,
+          "max": 1.012,
+          "abnormalRate": 0.5
+        },
+        "UWBC^URINE WBC'S": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "0-5",
+              0.5
+            ],
+            [
+              "6-10",
+              0.5
+            ]
+          ]
+        },
+        "URBC^URINE RBC'S": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "0-3",
+              1
+            ]
+          ]
+        },
+        "EPI^SQUAMOUS EPITH. CELLS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NONE SEEN",
+              0.5
+            ],
+            [
+              "SMALL",
+              0.5
+            ]
+          ]
+        },
+        "BACT^BACTERIA": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NONE SEEN",
+              1
+            ]
+          ]
+        },
+        "MUCUR^MUCOUS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "SMALL",
+              0.5
+            ],
+            [
+              "LARGE",
+              0.5
+            ]
+          ]
+        }
+      }
+    },
+    "89154^Tick Borne Disease Abs w RFLX^LAB": {
+      "obx": [
+        "APIGS^A. phagocytoph,IgG,Screen",
+        "APIMS^A.phagocytoph,IgM,Screen",
+        "BMIGS^Babesia microti Ab IgG Screen",
+        "BMIMS^Babesia microti Ab IgM Screen",
+        "ECIGS^E.chaffeensis Ab,IgG,Scr",
+        "ECIMS^E.chaffeensis Ab,IgM,Scr",
+        "LYABSC^Lyme Ab, Screen"
+      ],
+      "values": {
+        "APIGS^A. phagocytoph,IgG,Screen": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "APIMS^A.phagocytoph,IgM,Screen": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "BMIGS^Babesia microti Ab IgG Screen": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "BMIMS^Babesia microti Ab IgM Screen": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "ECIGS^E.chaffeensis Ab,IgG,Scr": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "ECIMS^E.chaffeensis Ab,IgM,Scr": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Not Detected",
+              1
+            ]
+          ]
+        },
+        "LYABSC^Lyme Ab, Screen": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<0.90",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99271^HEPARIN TEST (ANTI XA)^LLA": {
+      "obx": [
+        "HEPAXA^HEPARIN TEST (ANTI XA)"
+      ],
+      "values": {
+        "HEPAXA^HEPARIN TEST (ANTI XA)": {
+          "kind": "numeric",
+          "units": "IU/ml",
+          "ref": "0.30-0.70",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "1611^CORTISOL^LAB": {
+      "obx": [
+        "CORTS^CORTISOL"
+      ],
+      "values": {
+        "CORTS^CORTISOL": {
+          "kind": "numeric",
+          "units": "ug/dl",
+          "ref": "0.4-22.6",
+          "mean": 41.5,
+          "sd": 0,
+          "min": 41.5,
+          "max": 41.5,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "327^LIPASE^LAB": {
+      "obx": [
+        "LPSE^LIPASE"
+      ],
+      "values": {
+        "LPSE^LIPASE": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "11-82",
+          "mean": 34,
+          "sd": 0,
+          "min": 34,
+          "max": 34,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "427^PTT^LAB": {
+      "obx": [
+        "PTT^PTT"
+      ],
+      "values": {
+        "PTT^PTT": {
+          "kind": "numeric",
+          "units": "sec",
+          "ref": "25.1-36.5",
+          "mean": 52.7,
+          "sd": 4.7,
+          "min": 48,
+          "max": 48,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "894^SERUM PREGNANCY TEST^LAF": {
+      "obx": [
+        "SPRG^SERUM PREGNANCY TEST"
+      ],
+      "values": {
+        "SPRG^SERUM PREGNANCY TEST": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99947^CCMP and LFS^LAB": {
+      "obx": [
+        "NA^SODIUM",
+        "K^POTASSIUM",
+        "CL^CHLORIDE",
+        "CO2^CO2",
+        "AGAP^ANION GAP",
+        "BUN^BLOOD UREA NITROGEN",
+        "CRET^CREATININE",
+        "BCR^BUN/CREAT RATIO",
+        "GFRE^GLOMERULAR FILTRATION RATE",
+        "GLUC^GLUCOSE",
+        "COSM^OSMOLALITY, CALC",
+        "CA^CALCIUM",
+        "TP^PROTEIN, TOTAL",
+        "ALB^ALBUMIN",
+        "GLOB^GLOBULIN",
+        "ALGLR^ALB/GLOB RATIO",
+        "ALKP^ALKALINE PHOSPHATASE",
+        "OT^SGOT",
+        "SGPT^SGPT",
+        "TBIL^BILIRUBIN,TOTAL",
+        "DBIL^BILIRUBIN,DIRECT"
+      ],
+      "values": {
+        "NA^SODIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "136-145",
+          "mean": 141,
+          "sd": 0,
+          "min": 141,
+          "max": 141,
+          "abnormalRate": 0
+        },
+        "K^POTASSIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "3.5-5.1",
+          "mean": 3.8,
+          "sd": 0,
+          "min": 3.8,
+          "max": 3.8,
+          "abnormalRate": 0
+        },
+        "CL^CHLORIDE": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "98-107",
+          "mean": 109,
+          "sd": 0,
+          "min": 109,
+          "max": 109,
+          "abnormalRate": 1
+        },
+        "CO2^CO2": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "21-31",
+          "mean": 24,
+          "sd": 0,
+          "min": 24,
+          "max": 24,
+          "abnormalRate": 0
+        },
+        "AGAP^ANION GAP": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "5-16",
+          "mean": 8,
+          "sd": 0,
+          "min": 8,
+          "max": 8,
+          "abnormalRate": 0
+        },
+        "BUN^BLOOD UREA NITROGEN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "7-25",
+          "mean": 14,
+          "sd": 0,
+          "min": 14,
+          "max": 14,
+          "abnormalRate": 0
+        },
+        "CRET^CREATININE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.7-1.3",
+          "mean": 1.1,
+          "sd": 0,
+          "min": 1.1,
+          "max": 1.1,
+          "abnormalRate": 0
+        },
+        "BCR^BUN/CREAT RATIO": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "8-20",
+          "mean": 13,
+          "sd": 0,
+          "min": 13,
+          "max": 13,
+          "abnormalRate": 0
+        },
+        "GFRE^GLOMERULAR FILTRATION RATE": {
+          "kind": "numeric",
+          "units": "ml/min/1.73m2",
+          "ref": "",
+          "mean": 71,
+          "sd": 0,
+          "min": 71,
+          "max": 71,
+          "abnormalRate": 0
+        },
+        "GLUC^GLUCOSE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "71-99",
+          "mean": 122,
+          "sd": 0,
+          "min": 122,
+          "max": 122,
+          "abnormalRate": 1
+        },
+        "COSM^OSMOLALITY, CALC": {
+          "kind": "numeric",
+          "units": "mOs/kg",
+          "ref": "278-305",
+          "mean": 283,
+          "sd": 0,
+          "min": 283,
+          "max": 283,
+          "abnormalRate": 0
+        },
+        "CA^CALCIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "8.6-10.3",
+          "mean": 7.2,
+          "sd": 0,
+          "min": 7.2,
+          "max": 7.2,
+          "abnormalRate": 1
+        },
+        "TP^PROTEIN, TOTAL": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "6.4-8.9",
+          "mean": 4.5,
+          "sd": 0,
+          "min": 4.5,
+          "max": 4.5,
+          "abnormalRate": 1
+        },
+        "ALB^ALBUMIN": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "3.5-5.7",
+          "mean": 3,
+          "sd": 0,
+          "min": 3,
+          "max": 3,
+          "abnormalRate": 1
+        },
+        "GLOB^GLOBULIN": {
+          "kind": "numeric",
+          "units": "gm/dL",
+          "ref": "1.5-4.2",
+          "mean": 1.5,
+          "sd": 0,
+          "min": 1.5,
+          "max": 1.5,
+          "abnormalRate": 0
+        },
+        "ALGLR^ALB/GLOB RATIO": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "1.0-2.2",
+          "mean": 2,
+          "sd": 0,
+          "min": 2,
+          "max": 2,
+          "abnormalRate": 0
+        },
+        "ALKP^ALKALINE PHOSPHATASE": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "34-104",
+          "mean": 53,
+          "sd": 0,
+          "min": 53,
+          "max": 53,
+          "abnormalRate": 0
+        },
+        "OT^SGOT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "13-39",
+          "mean": 62,
+          "sd": 0,
+          "min": 62,
+          "max": 62,
+          "abnormalRate": 1
+        },
+        "SGPT^SGPT": {
+          "kind": "numeric",
+          "units": "U/L",
+          "ref": "7-52",
+          "mean": 39,
+          "sd": 0,
+          "min": 39,
+          "max": 39,
+          "abnormalRate": 0
+        },
+        "TBIL^BILIRUBIN,TOTAL": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.3-1.0",
+          "mean": 0.9,
+          "sd": 0,
+          "min": 0.9,
+          "max": 0.9,
+          "abnormalRate": 0
+        },
+        "DBIL^BILIRUBIN,DIRECT": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "0.0-0.2",
+          "mean": 0.36,
+          "sd": 0,
+          "min": 0.36,
+          "max": 0.36,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "701^URINALYSIS, ROUTINE^LAF": {
+      "obx": [
+        "UCLAR^URINE CLARITY",
+        "UCOL^URINE COLOR",
+        "UPH^URINE PH",
+        "UTP^URINE TOTAL PROTEIN",
+        "UGL^URINE GLUCOSE",
+        "UKET^URINE KETONES",
+        "UBIL^URINE BILIRUBIN",
+        "UHGB^URINE HEMOGLOBIN",
+        "UROB^URINE UROBILINOGEN",
+        "ULEU^URINE LEUKOCYTES",
+        "UNIT^URINE NITRITE",
+        "USPG^URINE SPEC GRAVITY",
+        "UWBC^URINE WBC'S",
+        "URBC^URINE RBC'S",
+        "EPI^SQUAMOUS EPITH. CELLS",
+        "BACT^BACTERIA",
+        "MUCUR^MUCOUS"
+      ],
+      "values": {
+        "UCLAR^URINE CLARITY": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "CLEAR",
+              1
+            ]
+          ]
+        },
+        "UCOL^URINE COLOR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "YELLOW",
+              1
+            ]
+          ]
+        },
+        "UPH^URINE PH": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "5.0-8.0",
+          "mean": 6,
+          "sd": 0,
+          "min": 6,
+          "max": 6,
+          "abnormalRate": 0
+        },
+        "UTP^URINE TOTAL PROTEIN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "NEG",
+          "mean": 50,
+          "sd": 0,
+          "min": 50,
+          "max": 50,
+          "abnormalRate": 1
+        },
+        "UGL^URINE GLUCOSE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NORMAL",
+              1
+            ]
+          ]
+        },
+        "UKET^URINE KETONES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "1+",
+              1
+            ]
+          ]
+        },
+        "UBIL^URINE BILIRUBIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UHGB^URINE HEMOGLOBIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "3+",
+              1
+            ]
+          ]
+        },
+        "UROB^URINE UROBILINOGEN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NORMAL",
+              1
+            ]
+          ]
+        },
+        "ULEU^URINE LEUKOCYTES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UNIT^URINE NITRITE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "USPG^URINE SPEC GRAVITY": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              ">1.050",
+              1
+            ]
+          ]
+        },
+        "UWBC^URINE WBC'S": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "0-5",
+              1
+            ]
+          ]
+        },
+        "URBC^URINE RBC'S": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              ">50",
+              1
+            ]
+          ]
+        },
+        "EPI^SQUAMOUS EPITH. CELLS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "SMALL",
+              1
+            ]
+          ]
+        },
+        "BACT^BACTERIA": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "SMALL",
+              1
+            ]
+          ]
+        },
+        "MUCUR^MUCOUS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "SMALL",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "2031^Acetylcholine Receptor Mod Ab^LAB": {
+      "obx": [
+        "AARM^Acetylcholine Receptor Mod Ab"
+      ],
+      "values": {
+        "AARM^Acetylcholine Receptor Mod Ab": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<1",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "1560^ANCA SCREEN W MPA PR3AB^LAB": {
+      "obx": [
+        "ANCAS^ANCA SCREEN",
+        "MPA^Myeloperoxidase Antibody",
+        "PR3AB^Proteinase-3 Ab"
+      ],
+      "values": {
+        "ANCAS^ANCA SCREEN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Negative",
+              1
+            ]
+          ]
+        },
+        "MPA^Myeloperoxidase Antibody": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<1.0",
+              1
+            ]
+          ]
+        },
+        "PR3AB^Proteinase-3 Ab": {
+          "kind": "coded",
+          "valueType": "ST",
+          "dist": [
+            [
+              "<1.0",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "99684^GLUCOSE, POC^LLA": {
+      "obx": [
+        "PCGLUC^GLUCOSE, POC"
+      ],
+      "values": {
+        "PCGLUC^GLUCOSE, POC": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "71-99",
+          "mean": 111,
+          "sd": 35,
+          "min": 76,
+          "max": 76,
+          "abnormalRate": 0.5
+        }
+      }
+    },
+    "10057^LACTATE^LAB": {
+      "obx": [
+        "LACT^LACTATE"
+      ],
+      "values": {
+        "LACT^LACTATE": {
+          "kind": "numeric",
+          "units": "mmol/L",
+          "ref": "0.5-2.0",
+          "mean": 1.1,
+          "sd": 0,
+          "min": 1.1,
+          "max": 1.1,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "8888^CBC/AUTOMATED DIFF^LLA": {
+      "obx": [
+        "WBC^WBC COUNT",
+        "RBC^RBC COUNT",
+        "HGB^HEMOGLOBIN",
+        "HCT^HEMATOCRIT",
+        "MCV^MCV",
+        "MCH^MCH",
+        "MCHC^MCHC",
+        "RDW^RDW",
+        "PLT^PLATELET COUNT",
+        "MPV^MPV",
+        "SEG^SEG",
+        "LY^LYMPH",
+        "MONO^MONOCYTE",
+        "EOS^EOSINOPHIL",
+        "BASO^BASOPHIL",
+        "IG^IMMATURE GRANULOCYTES",
+        "SEGNO^Abs Seg Neutrophils",
+        "LYNO^Abs Lymphocytes",
+        "EONO^Abs Eosinophils",
+        "BASONO^Abs Basophils",
+        "MONNO^Abs Monocytes",
+        "IGNO^Abs Imm Granulocytes"
+      ],
+      "values": {
+        "WBC^WBC COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "3.0-10.2",
+          "mean": 13.47,
+          "sd": 0,
+          "min": 13.47,
+          "max": 13.47,
+          "abnormalRate": 1
+        },
+        "RBC^RBC COUNT": {
+          "kind": "numeric",
+          "units": "10*6/uL",
+          "ref": "4.00-5.20",
+          "mean": 3.78,
+          "sd": 0,
+          "min": 3.78,
+          "max": 3.78,
+          "abnormalRate": 1
+        },
+        "HGB^HEMOGLOBIN": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "11.7-15.8",
+          "mean": 8.8,
+          "sd": 0,
+          "min": 8.8,
+          "max": 8.8,
+          "abnormalRate": 1
+        },
+        "HCT^HEMATOCRIT": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "36.6-47.7",
+          "mean": 30.7,
+          "sd": 0,
+          "min": 30.7,
+          "max": 30.7,
+          "abnormalRate": 1
+        },
+        "MCV^MCV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "81.0-101.0",
+          "mean": 81.2,
+          "sd": 0,
+          "min": 81.2,
+          "max": 81.2,
+          "abnormalRate": 0
+        },
+        "MCH^MCH": {
+          "kind": "numeric",
+          "units": "pg",
+          "ref": "26.0-34.0",
+          "mean": 23.3,
+          "sd": 0,
+          "min": 23.3,
+          "max": 23.3,
+          "abnormalRate": 1
+        },
+        "MCHC^MCHC": {
+          "kind": "numeric",
+          "units": "g/dl",
+          "ref": "30.9-34.5",
+          "mean": 28.7,
+          "sd": 0,
+          "min": 28.7,
+          "max": 28.7,
+          "abnormalRate": 1
+        },
+        "RDW^RDW": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "11.5-15.5",
+          "mean": 17.7,
+          "sd": 0,
+          "min": 17.7,
+          "max": 17.7,
+          "abnormalRate": 1
+        },
+        "PLT^PLATELET COUNT": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "130-400",
+          "mean": 271,
+          "sd": 0,
+          "min": 271,
+          "max": 271,
+          "abnormalRate": 0
+        },
+        "MPV^MPV": {
+          "kind": "numeric",
+          "units": "fl",
+          "ref": "9.0-12.5",
+          "mean": 10.6,
+          "sd": 0,
+          "min": 10.6,
+          "max": 10.6,
+          "abnormalRate": 0
+        },
+        "SEG^SEG": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "45-65",
+          "mean": 77,
+          "sd": 0,
+          "min": 77,
+          "max": 77,
+          "abnormalRate": 1
+        },
+        "LY^LYMPH": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "20-40",
+          "mean": 10,
+          "sd": 0,
+          "min": 10,
+          "max": 10,
+          "abnormalRate": 1
+        },
+        "MONO^MONOCYTE": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "3-9",
+          "mean": 12,
+          "sd": 0,
+          "min": 12,
+          "max": 12,
+          "abnormalRate": 1
+        },
+        "EOS^EOSINOPHIL": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-4",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "BASO^BASOPHIL": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-1",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "IG^IMMATURE GRANULOCYTES": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": "0-0.4",
+          "mean": 0.7,
+          "sd": 0,
+          "min": 0.7,
+          "max": 0.7,
+          "abnormalRate": 1
+        },
+        "SEGNO^Abs Seg Neutrophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "2.0-6.5",
+          "mean": 10.4,
+          "sd": 0,
+          "min": 10.4,
+          "max": 10.4,
+          "abnormalRate": 1
+        },
+        "LYNO^Abs Lymphocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.9-4.0",
+          "mean": 1.4,
+          "sd": 0,
+          "min": 1.4,
+          "max": 1.4,
+          "abnormalRate": 0
+        },
+        "EONO^Abs Eosinophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.0-0.4",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "BASONO^Abs Basophils": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.0-0.1",
+          "mean": 0,
+          "sd": 0,
+          "min": 0,
+          "max": 0,
+          "abnormalRate": 0
+        },
+        "MONNO^Abs Monocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0.1-0.9",
+          "mean": 1.6,
+          "sd": 0,
+          "min": 1.6,
+          "max": 1.6,
+          "abnormalRate": 1
+        },
+        "IGNO^Abs Imm Granulocytes": {
+          "kind": "numeric",
+          "units": "10*3/uL",
+          "ref": "0-0.03",
+          "mean": 0.09,
+          "sd": 0,
+          "min": 0.09,
+          "max": 0.09,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "701^URINALYSIS, ROUTINE^LLA": {
+      "obx": [
+        "UCLAR^URINE CLARITY",
+        "UCOL^URINE COLOR",
+        "UPH^URINE PH",
+        "UTP^URINE TOTAL PROTEIN",
+        "UGL^URINE GLUCOSE",
+        "UKET^URINE KETONES",
+        "UBIL^URINE BILIRUBIN",
+        "UHGB^URINE HEMOGLOBIN",
+        "UROB^URINE UROBILINOGEN",
+        "ULEU^URINE LEUKOCYTES",
+        "UNIT^URINE NITRITE",
+        "USPG^URINE SPEC GRAVITY",
+        "UWBC^URINE WBC'S",
+        "URBC^URINE RBC'S",
+        "EPI^SQUAMOUS EPITH. CELLS",
+        "BACT^BACTERIA",
+        "MUCUR^MUCOUS"
+      ],
+      "values": {
+        "UCLAR^URINE CLARITY": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "TURBID",
+              1
+            ]
+          ]
+        },
+        "UCOL^URINE COLOR": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "YELLOW",
+              1
+            ]
+          ]
+        },
+        "UPH^URINE PH": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "5.0-8.0",
+          "mean": 7,
+          "sd": 0,
+          "min": 7,
+          "max": 7,
+          "abnormalRate": 0
+        },
+        "UTP^URINE TOTAL PROTEIN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "NEG",
+          "mean": 30,
+          "sd": 0,
+          "min": 30,
+          "max": 30,
+          "abnormalRate": 1
+        },
+        "UGL^URINE GLUCOSE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NORMAL",
+              1
+            ]
+          ]
+        },
+        "UKET^URINE KETONES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UBIL^URINE BILIRUBIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "UHGB^URINE HEMOGLOBIN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "1+",
+              1
+            ]
+          ]
+        },
+        "UROB^URINE UROBILINOGEN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NORMAL",
+              1
+            ]
+          ]
+        },
+        "ULEU^URINE LEUKOCYTES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "3+",
+              1
+            ]
+          ]
+        },
+        "UNIT^URINE NITRITE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "USPG^URINE SPEC GRAVITY": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "1.003-1.030",
+          "mean": 1.01,
+          "sd": 0,
+          "min": 1.015,
+          "max": 1.015,
+          "abnormalRate": 0
+        },
+        "UWBC^URINE WBC'S": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              ">50",
+              1
+            ]
+          ]
+        },
+        "URBC^URINE RBC'S": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "11-20",
+              1
+            ]
+          ]
+        },
+        "EPI^SQUAMOUS EPITH. CELLS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NONE SEEN",
+              1
+            ]
+          ]
+        },
+        "BACT^BACTERIA": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "SMALL",
+              1
+            ]
+          ]
+        },
+        "MUCUR^MUCOUS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "SMALL",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "783^ALCOHOL, PLASMA^LAF": {
+      "obx": [
+        "ALCO^ALCOHOL, PLASMA"
+      ],
+      "values": {
+        "ALCO^ALCOHOL, PLASMA": {
+          "kind": "numeric",
+          "units": "mg/dl",
+          "ref": "<10",
+          "mean": 353,
+          "sd": 0,
+          "min": 353,
+          "max": 353,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "99498^VENOUS BLOOD GAS^LLA": {
+      "obx": [
+        "PHV^pH",
+        "PCOV^pCO2",
+        "PO2V^pO2",
+        "HCOV^HCO3",
+        "SBEV^BASE EXCESS VEN",
+        "HBOV^O2 SAT",
+        "VHB^HB VENOUS",
+        "ABGTV^SPECIMEN SOURCE VEN"
+      ],
+      "values": {
+        "PHV^pH": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "7.33-7.38",
+          "mean": 7.37,
+          "sd": 0,
+          "min": 7.37,
+          "max": 7.37,
+          "abnormalRate": 0
+        },
+        "PCOV^pCO2": {
+          "kind": "numeric",
+          "units": "mmHg",
+          "ref": "46.0-48.0",
+          "mean": 48,
+          "sd": 0,
+          "min": 48,
+          "max": 48,
+          "abnormalRate": 0
+        },
+        "PO2V^pO2": {
+          "kind": "numeric",
+          "units": "mmHg",
+          "ref": "35.0-45.0",
+          "mean": 200,
+          "sd": 0,
+          "min": 200,
+          "max": 200,
+          "abnormalRate": 1
+        },
+        "HCOV^HCO3": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "23.0-25.0",
+          "mean": 27.7,
+          "sd": 0,
+          "min": 27.7,
+          "max": 27.7,
+          "abnormalRate": 1
+        },
+        "SBEV^BASE EXCESS VEN": {
+          "kind": "numeric",
+          "units": "mmol/L",
+          "ref": "0-2.5",
+          "mean": 2,
+          "sd": 0,
+          "min": 2,
+          "max": 2,
+          "abnormalRate": 0
+        },
+        "HBOV^O2 SAT": {
+          "kind": "numeric",
+          "units": "%",
+          "ref": ">75.0",
+          "mean": 95.8,
+          "sd": 0,
+          "min": 95.8,
+          "max": 95.8,
+          "abnormalRate": 0
+        },
+        "VHB^HB VENOUS": {
+          "kind": "numeric",
+          "units": "gm%",
+          "ref": "12.0-15.0",
+          "mean": 9.5,
+          "sd": 0,
+          "min": 9.5,
+          "max": 9.5,
+          "abnormalRate": 1
+        },
+        "ABGTV^SPECIMEN SOURCE VEN": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "Venous",
+              1
+            ]
+          ]
+        }
+      }
+    },
+    "10054^BASIC METABOLIC PANEL^LLA": {
+      "obx": [
+        "NA^SODIUM",
+        "K^POTASSIUM",
+        "CL^CHLORIDE",
+        "CO2^CO2",
+        "AGAP^ANION GAP",
+        "GLUC^GLUCOSE",
+        "BUN^BLOOD UREA NITROGEN",
+        "CRET^CREATININE",
+        "CA^CALCIUM",
+        "GFRE^GLOMERULAR FILTRATION RATE"
+      ],
+      "values": {
+        "NA^SODIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "136-145",
+          "mean": 139,
+          "sd": 0,
+          "min": 139,
+          "max": 139,
+          "abnormalRate": 0
+        },
+        "K^POTASSIUM": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "3.5-5.1",
+          "mean": 4.7,
+          "sd": 0,
+          "min": 4.7,
+          "max": 4.7,
+          "abnormalRate": 0
+        },
+        "CL^CHLORIDE": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "98-107",
+          "mean": 104,
+          "sd": 0,
+          "min": 104,
+          "max": 104,
+          "abnormalRate": 0
+        },
+        "CO2^CO2": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "21-31",
+          "mean": 29,
+          "sd": 0,
+          "min": 29,
+          "max": 29,
+          "abnormalRate": 0
+        },
+        "AGAP^ANION GAP": {
+          "kind": "numeric",
+          "units": "mEq/L",
+          "ref": "5-16",
+          "mean": 6,
+          "sd": 0,
+          "min": 6,
+          "max": 6,
+          "abnormalRate": 0
+        },
+        "GLUC^GLUCOSE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "71-99",
+          "mean": 112,
+          "sd": 0,
+          "min": 112,
+          "max": 112,
+          "abnormalRate": 1
+        },
+        "BUN^BLOOD UREA NITROGEN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "7-25",
+          "mean": 31,
+          "sd": 0,
+          "min": 31,
+          "max": 31,
+          "abnormalRate": 1
+        },
+        "CRET^CREATININE": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "0.6-1.2",
+          "mean": 1.2,
+          "sd": 0,
+          "min": 1.2,
+          "max": 1.2,
+          "abnormalRate": 0
+        },
+        "CA^CALCIUM": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "8.6-10.3",
+          "mean": 8.6,
+          "sd": 0,
+          "min": 8.6,
+          "max": 8.6,
+          "abnormalRate": 0
+        },
+        "GFRE^GLOMERULAR FILTRATION RATE": {
+          "kind": "numeric",
+          "units": "ml/min/1.73m2",
+          "ref": "",
+          "mean": 46,
+          "sd": 0,
+          "min": 46,
+          "max": 46,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "443^VITAMIN B12^LAB": {
+      "obx": [
+        "B12^VITAMIN B12"
+      ],
+      "values": {
+        "B12^VITAMIN B12": {
+          "kind": "numeric",
+          "units": "pg/mL",
+          "ref": "180-914",
+          "mean": 163,
+          "sd": 0,
+          "min": 163,
+          "max": 163,
+          "abnormalRate": 1
+        }
+      }
+    },
+    "1478^CRP C-REACTIVE PROTEIN^LAB": {
+      "obx": [
+        "CRP^CRP C-REACTIVE PROTEIN"
+      ],
+      "values": {
+        "CRP^CRP C-REACTIVE PROTEIN": {
+          "kind": "numeric",
+          "units": "mg/dL",
+          "ref": "<1.0",
+          "mean": 0.6,
+          "sd": 0,
+          "min": 0.6,
+          "max": 0.6,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "442^FOLATE^LAB": {
+      "obx": [
+        "FOL^FOLATE"
+      ],
+      "values": {
+        "FOL^FOLATE": {
+          "kind": "numeric",
+          "units": "ng/mL",
+          "ref": ">3.0",
+          "mean": 15,
+          "sd": 0,
+          "min": 15,
+          "max": 15,
+          "abnormalRate": 0
+        }
+      }
+    },
+    "99730^DRUG SCREEN, URINE^LLA": {
+      "obx": [
+        "AMPM^AMPHETAMINE",
+        "BARB^BARBITURATE",
+        "BENZ^BENZODIAZEPINES",
+        "THC^CANNABINOIDS",
+        "COCN^COCAINE",
+        "OP^OPIATES",
+        "PCP^PHENCYCLIDINE",
+        "OXY^OXYCODONE LEVEL",
+        "METD^METHADONE",
+        "FENTD^FENTANYL",
+        "DSPGR^SPECIFIC GRAVITY"
+      ],
+      "values": {
+        "AMPM^AMPHETAMINE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "POSITIVE",
+              1
+            ]
+          ]
+        },
+        "BARB^BARBITURATE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "BENZ^BENZODIAZEPINES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "THC^CANNABINOIDS": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "COCN^COCAINE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "OP^OPIATES": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "PCP^PHENCYCLIDINE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "OXY^OXYCODONE LEVEL": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "METD^METHADONE": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "FENTD^FENTANYL": {
+          "kind": "coded",
+          "valueType": "TX",
+          "dist": [
+            [
+              "NEGATIVE",
+              1
+            ]
+          ]
+        },
+        "DSPGR^SPECIFIC GRAVITY": {
+          "kind": "numeric",
+          "units": "",
+          "ref": "1.003-1.030",
+          "mean": 1.02,
+          "sd": 0,
+          "min": 1.024,
+          "max": 1.024,
+          "abnormalRate": 0
+        }
+      }
+    }
+  },
+  "panelMix": [
+    [
+      "LC0O79H^HPV HIGH RISK DNA WITH HPV GENOTYPES 16 AND 18",
+      0.025
+    ],
+    [
+      "LCP2RR^PSA, FREE AND TOTAL",
+      0.008333
+    ],
+    [
+      "LCKDJ^Hematology Consult",
+      0.008333
+    ],
+    [
+      "LCI0YT0^DEXAMETHASONE, SERUM",
+      0.008333
+    ],
+    [
+      "LCURPVB^SHIGA TOXIN EIA",
+      0.016667
+    ],
+    [
+      "LCEM83^CBC WITH DIFFERENTIAL",
+      0.008333
+    ],
+    [
+      "LCMZJI^PT-INR",
+      0.008333
+    ],
+    [
+      "LCP8KC^ALDOSTERONE^LCLAB1^^^",
+      0.008333
+    ],
+    [
+      "LCCHQ^HEMOGLOBIN A1C^LCLAB1^^^",
+      0.008333
+    ],
+    [
+      "LCBIOR4^MANUAL DIFFERENTIAL - CELLAVISION",
+      0.008333
+    ],
+    [
+      "LCRFTC7^SYPHILIS (T. PALLIDUM) IGG/IGM",
+      0.008333
+    ],
+    [
+      "LC5Q6^Extractable Nuclear Antibodies",
+      0.008333
+    ],
+    [
+      "LCH47^pH Body Fluid",
+      0.008333
+    ],
+    [
+      "LC8EZBZ^Antinuclear Abs w rflx Titer and Pattern^LCLAB3^29950-3^Nuclear IgG Ab [Presence] in Serum by Immunoassay^LN",
+      0.008333
+    ],
+    [
+      "LCO8FDC^C. trachomatis / N. gonorrhoeae, DNA probe^LCLAB3^36902-5^Chlamydia trachomatis+Neisseria gonorrhoeae DNA [Presence] in Specimen by NAA with probe detection^LN",
+      0.008333
+    ],
+    [
+      "LCZ17F3^Surgical^LCLAB5",
+      0.008333
+    ],
+    [
+      "LCY3OHR^JAK 2 EXONS 12-15 MUTATION ANALYSIS (INCLUDES V617F)^LCLAB7^^^",
+      0.008333
+    ],
+    [
+      "LCYXMZCWF8XO2^CBC WITH AUTO DIFFERENTIAL^^^^",
+      0.008333
+    ],
+    [
+      "10054^BASIC METABOLIC PANEL^LAB",
+      0.058333
+    ],
+    [
+      "10054^BASIC METABOLIC PANEL^LAF",
+      0.041667
+    ],
+    [
+      "10052^LIVER (HEPATIC) FUNCTION PANEL^LAF",
+      0.016667
+    ],
+    [
+      "99187^TYPE AND SCREEN (HOLD XM-CONVERTIBLE)^LAB",
+      0.041667
+    ],
+    [
+      "8888^CBC/AUTOMATED DIFF^LAF",
+      0.016667
+    ],
+    [
+      "89048^INFLUENZA A AND B POC PCR^LAF",
+      0.016667
+    ],
+    [
+      "99684^GLUCOSE, POC^LAB",
+      0.091667
+    ],
+    [
+      "10052^LIVER (HEPATIC) FUNCTION PANEL^LLA",
+      0.008333
+    ],
+    [
+      "307^PHOSPHOROUS^LAB",
+      0.008333
+    ],
+    [
+      "99145^TROPONIN I^LLA",
+      0.025
+    ],
+    [
+      "10052^LIVER (HEPATIC) FUNCTION PANEL^LAB",
+      0.008333
+    ],
+    [
+      "89048^INFLUENZA A AND B POC PCR^LAB",
+      0.008333
+    ],
+    [
+      "99145^TROPONIN I^LAF",
+      0.016667
+    ],
+    [
+      "2032^Acetylcholine Receptor Blocking Antibodies^LAB",
+      0.008333
+    ],
+    [
+      "99698^Vitamin D, 25-Hydroxy, LC/MS/MS^LAB",
+      0.008333
+    ],
+    [
+      "99730^DRUG SCREEN, URINE^LAB",
+      0.016667
+    ],
+    [
+      "89096^PSA, Free and Total^LAB",
+      0.008333
+    ],
+    [
+      "267^FERRITIN^LAB",
+      0.008333
+    ],
+    [
+      "355^MAGNESIUM^LLA",
+      0.008333
+    ],
+    [
+      "99145^TROPONIN I^LAB",
+      0.05
+    ],
+    [
+      "327^LIPASE^LAF",
+      0.016667
+    ],
+    [
+      "99684^GLUCOSE, POC^LAF",
+      0.016667
+    ],
+    [
+      "355^MAGNESIUM^LAB",
+      0.025
+    ],
+    [
+      "99271^HEPARIN TEST (ANTI XA)^LAB",
+      0.025
+    ],
+    [
+      "99776^B-TYPE NATRIURETIC PEPTIDE^LAF",
+      0.008333
+    ],
+    [
+      "8888^CBC/AUTOMATED DIFF^LAB",
+      0.016667
+    ],
+    [
+      "439^CBC/NO DIFF^LAB",
+      0.008333
+    ],
+    [
+      "1477^BETA-HCG^LAB",
+      0.008333
+    ],
+    [
+      "226^SMEAR FOR MORPHOLOGY^LLA",
+      0.008333
+    ],
+    [
+      "344^IRON^LAB",
+      0.008333
+    ],
+    [
+      "9872^TSH^LAB",
+      0.008333
+    ],
+    [
+      "701^URINALYSIS, ROUTINE^LAB",
+      0.016667
+    ],
+    [
+      "89154^Tick Borne Disease Abs w RFLX^LAB",
+      0.008333
+    ],
+    [
+      "99271^HEPARIN TEST (ANTI XA)^LLA",
+      0.008333
+    ],
+    [
+      "1611^CORTISOL^LAB",
+      0.008333
+    ],
+    [
+      "327^LIPASE^LAB",
+      0.008333
+    ],
+    [
+      "427^PTT^LAB",
+      0.016667
+    ],
+    [
+      "894^SERUM PREGNANCY TEST^LAF",
+      0.008333
+    ],
+    [
+      "99947^CCMP and LFS^LAB",
+      0.008333
+    ],
+    [
+      "701^URINALYSIS, ROUTINE^LAF",
+      0.008333
+    ],
+    [
+      "2031^Acetylcholine Receptor Mod Ab^LAB",
+      0.008333
+    ],
+    [
+      "1560^ANCA SCREEN W MPA PR3AB^LAB",
+      0.008333
+    ],
+    [
+      "99684^GLUCOSE, POC^LLA",
+      0.016667
+    ],
+    [
+      "10057^LACTATE^LAB",
+      0.008333
+    ],
+    [
+      "8888^CBC/AUTOMATED DIFF^LLA",
+      0.008333
+    ],
+    [
+      "701^URINALYSIS, ROUTINE^LLA",
+      0.008333
+    ],
+    [
+      "783^ALCOHOL, PLASMA^LAF",
+      0.008333
+    ],
+    [
+      "99498^VENOUS BLOOD GAS^LLA",
+      0.008333
+    ],
+    [
+      "10054^BASIC METABOLIC PANEL^LLA",
+      0.008333
+    ],
+    [
+      "443^VITAMIN B12^LAB",
+      0.008333
+    ],
+    [
+      "1478^CRP C-REACTIVE PROTEIN^LAB",
+      0.008333
+    ],
+    [
+      "442^FOLATE^LAB",
+      0.008333
+    ],
+    [
+      "99730^DRUG SCREEN, URINE^LLA",
+      0.008333
+    ]
+  ],
+  "catalogs": {
+    "facility": [
+      [
+        "EDWINVILLE LABORATORY",
+        0.002733
+      ],
+      [
+        "WEST JASMINECHESTER MEDICAL CENTER",
+        0.000745
+      ],
+      [
+        "ANTIOCH DIAGNOSTICS",
+        0.000497
+      ],
+      [
+        "CORYFIELD CLINIC",
+        0.000497
+      ],
+      [
+        "LAKE ARMAND LABORATORY",
+        0.000248
+      ],
+      [
+        "FORT VELMASTAD DIAGNOSTICS",
+        0.000248
+      ],
+      [
+        "LAKE PETER CLINIC",
+        0.000248
+      ],
+      [
+        "BRAKUSPORT CLINIC",
+        0.000248
+      ],
+      [
+        "WEST MEGHAN MEDICAL CENTER",
+        0.000248
+      ],
+      [
+        "SOUTH CASSANDRA HEALTH",
+        0.327702
+      ],
+      [
+        "POWLOWSKIVIEW LABORATORY",
+        0.15677
+      ],
+      [
+        "TREVORSTEAD CLINIC",
+        0.043727
+      ],
+      [
+        "EAST CLARENCESHIRE MEDICAL CENTER",
+        0.124224
+      ],
+      [
+        "MUELLERFORT MEDICAL CENTER",
+        0.130932
+      ],
+      [
+        "FORT MADILYN DIAGNOSTICS",
+        0.050186
+      ],
+      [
+        "FORT JANEBURGH CLINIC",
+        0.082484
+      ],
+      [
+        "ERICHSTAD CLINIC",
+        0.000497
+      ],
+      [
+        "FORT TODD DIAGNOSTICS",
+        0.003975
+      ],
+      [
+        "CHESTERFIELD LABORATORY",
+        0.073789
+      ]
+    ],
+    "assigningAuthority": [
+      [
+        "YSBT_REG",
+        0.005764
+      ],
+      [
+        "TXSD_REG",
+        0.528571
+      ],
+      [
+        "AAAG_REG",
+        0.199749
+      ],
+      [
+        "WOOV_REG",
+        0.265915
+      ]
+    ],
+    "lis": [
+      [
+        "DHPZOA",
+        0.86087
+      ],
+      [
+        "UGUKWT",
+        0.13913
+      ]
+    ],
+    "provider": [
+      [
+        "6006^CARTWRIGHT^DENISE",
+        0.000671
+      ],
+      [
+        "7416^BINS^DALE",
+        0.000335
+      ],
+      [
+        "3270^MCCLURE^DAVONTE",
+        0.000335
+      ],
+      [
+        "5443^CRONA^KARLA",
+        0.000335
+      ],
+      [
+        "6456^YUNDT^JULIUS",
+        0.000671
+      ],
+      [
+        "7708^BERGSTROM^CORENE",
+        0.000335
+      ],
+      [
+        "7774^SCHNEIDER^JULES",
+        0.001006
+      ],
+      [
+        "9323^RICE^TRACY",
+        0.000335
+      ],
+      [
+        "1125^WHITE^THEODORE",
+        0.000671
+      ],
+      [
+        "6774^MITCHELL^TEVIN",
+        0.000335
+      ],
+      [
+        "4553^CASSIN^ALMA",
+        0.000335
+      ],
+      [
+        "9531^DARE^RENEE",
+        0.000335
+      ],
+      [
+        "4102^THIEL^JADYN",
+        0.000335
+      ],
+      [
+        "5917^KUHN^LEO",
+        0.000335
+      ],
+      [
+        "4903^TRANTOW^REX",
+        0.000335
+      ],
+      [
+        "6508^PARISIAN^WILBERT",
+        0.000335
+      ],
+      [
+        "4389^SIMONIS^EDISON",
+        0.000335
+      ],
+      [
+        "6281^ROOB^ENA",
+        0.000671
+      ],
+      [
+        "7037^JENKINS^MAE",
+        0.000335
+      ],
+      [
+        "4872^DONNELLY^RACHEL",
+        0.002348
+      ],
+      [
+        "8919^GLOVER^JUSTEN",
+        0.001342
+      ],
+      [
+        "8219^LEANNON^JACK",
+        0.000671
+      ],
+      [
+        "4084^BLOCK^ROGER",
+        0.000671
+      ],
+      [
+        "8874^CROOKS^DENISE",
+        0.001342
+      ],
+      [
+        "6332^VANDERVORT^CRISTINA",
+        0.006709
+      ],
+      [
+        "5496^FRANEY^LORENZO",
+        0.000335
+      ],
+      [
+        "3102^KREIGER^KARELLE",
+        0.003355
+      ],
+      [
+        "6887^FADEL^AIMEE",
+        0.003019
+      ],
+      [
+        "3919^LIND^REGAN",
+        0.002684
+      ],
+      [
+        "8687^PROSACCO^ALEXANDRE",
+        0.002348
+      ],
+      [
+        "7932^GERHOLD^RICKEY",
+        0.012747
+      ],
+      [
+        "5015^GUTKOWSKI-CONROY^WESLEY",
+        0.015767
+      ],
+      [
+        "6729^LEFFLER^AMANDA",
+        0.000335
+      ],
+      [
+        "2443^HILLL^MARJOLAINE",
+        0.000335
+      ],
+      [
+        "2697^ZBONCAK^ELEANOR",
+        0.001677
+      ],
+      [
+        "7751^LANG^ELIANE",
+        0.002348
+      ],
+      [
+        "1248^HOMENICK^JOSH",
+        0.002013
+      ],
+      [
+        "9634^QUITZON^DAISHA",
+        0.000335
+      ],
+      [
+        "3403^BREKKE^MARYJANE",
+        0.000671
+      ],
+      [
+        "7895^KEEBLER^BROWN",
+        0.001006
+      ],
+      [
+        "1705^KOCH^OLIVE",
+        0.005032
+      ],
+      [
+        "4553^KIRLIN^RAQUEL",
+        0.001342
+      ],
+      [
+        "4621^RYAN^ADELE",
+        0.001342
+      ],
+      [
+        "5847^ULLRICH-SCHINNER^CHESTER",
+        0.005367
+      ],
+      [
+        "2688^ZBONCAK^SYDNIE",
+        0.001006
+      ],
+      [
+        "4607^CARTER^DONNIE",
+        0.002684
+      ],
+      [
+        "8371^GLEICHNER-LESCH^FREEDA",
+        0.001677
+      ],
+      [
+        "4902^BARTELL^ALBIN",
+        0.000671
+      ],
+      [
+        "5698^MACGYVER^LUTHER",
+        0.002013
+      ],
+      [
+        "3610^HAHN^HILBERT",
+        0.001342
+      ],
+      [
+        "3226^WEHNER^DANIELA",
+        0.001342
+      ],
+      [
+        "1787^DANIEL^ROLANDO",
+        0.001342
+      ],
+      [
+        "2666^MARVIN^DIANA",
+        0.001677
+      ],
+      [
+        "6976^DANIEL^RAHUL",
+        0.000335
+      ],
+      [
+        "6349^MERTZ^APRIL",
+        0.001006
+      ],
+      [
+        "5065^CUMMINGS-WIZA^LINWOOD",
+        0.002348
+      ],
+      [
+        "7018^HERMAN^JAMEY",
+        0.001006
+      ],
+      [
+        "5116^ROSENBAUM^DAGMAR",
+        0.005367
+      ],
+      [
+        "4048^KOHLER^KAY",
+        0.000671
+      ],
+      [
+        "7064^BAHRINGER^ADELLE",
+        0.002348
+      ],
+      [
+        "7052^VOLKMAN^JEFFERY",
+        0.001677
+      ],
+      [
+        "8733^PACOCHA^KEN",
+        0.001677
+      ],
+      [
+        "7045^DIETRICH^RANDY",
+        0.001342
+      ],
+      [
+        "4849^EMARD^OWEN",
+        0.003355
+      ],
+      [
+        "7700^DOOLEY^AMANDA",
+        0.000671
+      ],
+      [
+        "1998^BODE^TAMARA",
+        0.005703
+      ],
+      [
+        "7401^SKILES^MAXIMO",
+        0.013418
+      ],
+      [
+        "5302^CRONIN-DOUGLAS^CASSANDRA",
+        0.000335
+      ],
+      [
+        "7563^ROMAGUERA^NAOMIE",
+        0.002684
+      ],
+      [
+        "6743^REYNOLDS^RAYMOND",
+        0.008722
+      ],
+      [
+        "1505^HUELS^SUE",
+        0.002684
+      ],
+      [
+        "4331^COLE^KELLEY",
+        0.002348
+      ],
+      [
+        "3353^SCHAEFER^CHAIM",
+        0.000671
+      ],
+      [
+        "6151^DICKENS^CADE",
+        0.002013
+      ],
+      [
+        "5959^REICHERT^AHMAD",
+        0.003019
+      ],
+      [
+        "8742^ROSENBAUM^DRAKE",
+        0.002684
+      ],
+      [
+        "1034^REMPEL^OLETA",
+        0.000671
+      ],
+      [
+        "4373^MORAR^ABDIEL",
+        0.000335
+      ],
+      [
+        "7974^CARTWRIGHT^SILVIA",
+        0.000671
+      ],
+      [
+        "5888^GREENFELDER^ISAAC",
+        0.000671
+      ],
+      [
+        "4997^HEGMANN^JACOB",
+        0.000671
+      ],
+      [
+        "3832^KING^MARTIN",
+        0.000335
+      ],
+      [
+        "2186^MOEN^JEROME",
+        0.001006
+      ],
+      [
+        "8586^WEISSNAT^SALVATORE",
+        0.002684
+      ],
+      [
+        "3264^WHITE^ADALINE",
+        0.008722
+      ],
+      [
+        "9904^WEST^RYANN",
+        0.003019
+      ],
+      [
+        "4958^KRIS^SINCERE",
+        0.001006
+      ],
+      [
+        "5423^PAUCEK^CONSTANCE",
+        0.003355
+      ],
+      [
+        "9684^CONSIDINE^KELLEN",
+        0.003355
+      ],
+      [
+        "8151^PREDOVIC^MARIO",
+        0.010399
+      ],
+      [
+        "2618^JAST^VIOLA",
+        0.01476
+      ],
+      [
+        "3882^HIRTHE^DEMARCUS",
+        0.009057
+      ],
+      [
+        "8135^HARRIS^RODOLFO",
+        0.012412
+      ],
+      [
+        "3657^STEUBER^LARRY",
+        0.012076
+      ],
+      [
+        "9083^GOTTLIEB^DANIELLA",
+        0.003019
+      ],
+      [
+        "1123^HEATHCOTE^EVERETT",
+        0.003355
+      ],
+      [
+        "2301^PFEFFER^DANIAL",
+        0.004025
+      ],
+      [
+        "4821^BEER^LENNIE",
+        0.002684
+      ],
+      [
+        "6834^LARKIN^ISRAEL",
+        0.000671
+      ],
+      [
+        "4860^HEANEY^PAYTON",
+        0.002684
+      ],
+      [
+        "4839^LANGOSH^MAKAYLA",
+        0.007716
+      ],
+      [
+        "6701^YOST^CALE",
+        0.003355
+      ],
+      [
+        "6752^KEEBLER^NAT",
+        0.002013
+      ],
+      [
+        "6214^ZBONCAK^JEANETTE",
+        0.006038
+      ],
+      [
+        "1967^GRAHAM^MAGDALENA",
+        0.001342
+      ],
+      [
+        "4407^HAYES^JON",
+        0.000671
+      ],
+      [
+        "1256^FAY^JUDITH",
+        0.000335
+      ],
+      [
+        "9815^LUEILWITZ^DERRICK",
+        0.001006
+      ],
+      [
+        "9199^LYNCH-HODKIEWICZ^JOEY",
+        0.005032
+      ],
+      [
+        "1279^MURRAY^IZAIAH",
+        0.001677
+      ],
+      [
+        "7376^LEGROS^CAROLYN",
+        0.003355
+      ],
+      [
+        "7542^TORPHY^DOUGLAS",
+        0.001342
+      ],
+      [
+        "1648^GREENFELDER^BARTHOLOME",
+        0.002013
+      ],
+      [
+        "7057^CONROY^RACHAEL",
+        0.001342
+      ],
+      [
+        "2725^EMMERICH^HENRIETTA",
+        0.014089
+      ],
+      [
+        "6934^ARMSTRONG^GUNNER",
+        0.000671
+      ],
+      [
+        "3889^SKILES-PRICE^AUBREY",
+        0.002013
+      ],
+      [
+        "5266^KUHN^ISAIAH",
+        0.000671
+      ],
+      [
+        "8893^HARBER^MAX",
+        0.002348
+      ],
+      [
+        "2285^FERRY^KRISTIE",
+        0.000335
+      ],
+      [
+        "1684^SCHULIST-GRAHAM^KARL",
+        0.002684
+      ],
+      [
+        "9769^HANSEN^STANLEY",
+        0.003019
+      ],
+      [
+        "7765^EBERT^ANDREA",
+        0.000335
+      ],
+      [
+        "7244^RUNTE^CARL",
+        0.001342
+      ],
+      [
+        "2740^MOEN^HORTENSE",
+        0.004361
+      ],
+      [
+        "8629^SWANIAWSKI^VALENTINE",
+        0.000335
+      ],
+      [
+        "1458^JONES^JAMES",
+        0.000671
+      ],
+      [
+        "2129^BAUMBACH^TRICIA",
+        0.001342
+      ],
+      [
+        "9495^HEGMANN-TREUTEL^TINA",
+        0.009393
+      ],
+      [
+        "7157^PROHASKA^DEMETRIUS",
+        0.003019
+      ],
+      [
+        "6404^CHRISTIANSEN^JUWAN",
+        0.000671
+      ],
+      [
+        "3234^JONES^COLTON",
+        0.002013
+      ],
+      [
+        "8436^MILLER^ROWENA",
+        0.001006
+      ],
+      [
+        "3539^BUCKRIDGE^DAVON",
+        0.000671
+      ],
+      [
+        "2182^MILLS^LEON",
+        0.001006
+      ],
+      [
+        "6390^ROHAN^COREY",
+        0.001342
+      ],
+      [
+        "7776^VONRUEDEN^LAVONNE",
+        0.001677
+      ],
+      [
+        "8403^CASPER^BYRON",
+        0.00369
+      ],
+      [
+        "6308^SCHAEFER^ALMA",
+        0.000671
+      ],
+      [
+        "9977^WARD^LAWRENCE",
+        0.001006
+      ],
+      [
+        "3377^FRAMI^ANNETTA",
+        0.001342
+      ],
+      [
+        "9739^ROLFSON^JOAN",
+        0.002013
+      ],
+      [
+        "7052^PARKER^CAITLYN",
+        0.002013
+      ],
+      [
+        "7847^FEEST^FAYE",
+        0.001677
+      ],
+      [
+        "8339^KEEBLER^HAZEL",
+        0.001677
+      ],
+      [
+        "2744^PFEFFER^DIANNE",
+        0.001677
+      ],
+      [
+        "5154^RENNER^RUSSELL",
+        0.001677
+      ],
+      [
+        "4855^MCCLURE^STACEY",
+        0.001006
+      ],
+      [
+        "3744^HARRIS^ANTWAN",
+        0.001006
+      ],
+      [
+        "8907^ORN^MARGARET",
+        0.000335
+      ],
+      [
+        "8630^WILL^HERBERT",
+        0.001006
+      ],
+      [
+        "4030^ZEMLAK^BARRY",
+        0.001342
+      ],
+      [
+        "4332^JERDE^BUSTER",
+        0.001342
+      ],
+      [
+        "4553^SAUER^ELAINE",
+        0.002684
+      ],
+      [
+        "9197^DICKENS^WENDELL",
+        0.001006
+      ],
+      [
+        "2104^MCCULLOUGH^DESIREE",
+        0.000671
+      ],
+      [
+        "2308^SWANIAWSKI^ROOSEVELT",
+        0.002684
+      ],
+      [
+        "5462^WALSH^EDITH",
+        0.001677
+      ],
+      [
+        "8964^RAYNOR^RUBY",
+        0.000671
+      ],
+      [
+        "7697^MUELLER^ARTHUR",
+        0.000671
+      ],
+      [
+        "8924^FUNK^GEOFFREY",
+        0.001006
+      ],
+      [
+        "2140^GUTMANN^MAKENZIE",
+        0.001342
+      ],
+      [
+        "1075^FEENEY^SALLY",
+        0.002348
+      ],
+      [
+        "9843^SAUER^JAYDA",
+        0.000335
+      ],
+      [
+        "6309^LIND^VERNICE",
+        0.000335
+      ],
+      [
+        "4535^O'CONNELL^GUST",
+        0.001006
+      ],
+      [
+        "2225^ERDMAN^LAUREL",
+        0.002348
+      ],
+      [
+        "7719^WATERS^DONALD",
+        0.000335
+      ],
+      [
+        "1644^OKUNEVA^KATRINA",
+        0.000671
+      ],
+      [
+        "1944^HAYES^GERARDO",
+        0.001677
+      ],
+      [
+        "7266^MACEJKOVIC^TREVA",
+        0.001342
+      ],
+      [
+        "6371^RITCHIE^JOSHUAH",
+        0.001342
+      ],
+      [
+        "1047^RUNTE^RAMONA",
+        0.004025
+      ],
+      [
+        "6846^GORCZANY^LAURIANE",
+        0.000671
+      ],
+      [
+        "8496^ZULAUF-CONNELLY^ALICE",
+        0.000671
+      ],
+      [
+        "9746^PFANNERSTILL^GLENDA",
+        0.004025
+      ],
+      [
+        "3284^BALISTRERI^AMBER",
+        0.00369
+      ],
+      [
+        "8962^SCHINNER^TASHA",
+        0.006038
+      ],
+      [
+        "9792^TOWNE-LEANNON^JACKLYN",
+        0.001006
+      ],
+      [
+        "6446^HARVEY^KRISTIN",
+        0.000335
+      ],
+      [
+        "4753^DAUGHERTY^VERONA",
+        0.004361
+      ],
+      [
+        "1340^HAHN^GLORIA",
+        0.002348
+      ],
+      [
+        "9583^KUVALIS^PRESTON",
+        0.000335
+      ],
+      [
+        "8667^HOMENICK^DENISE",
+        0.000335
+      ],
+      [
+        "9741^TOY^SHERMAN",
+        0.000671
+      ],
+      [
+        "6687^CRONIN^CHERYL",
+        0.000671
+      ],
+      [
+        "2774^SWIFT^ALEXANDRE",
+        0.000335
+      ],
+      [
+        "5645^ALTENWERTH-FRITSCH^ALEXANDRA",
+        0.001677
+      ],
+      [
+        "5411^NIKOLAUS^LORI",
+        0.000671
+      ],
+      [
+        "4424^NADER^CARMEN",
+        0.000671
+      ],
+      [
+        "9433^DENESIK^EDA",
+        0.001677
+      ],
+      [
+        "3471^KIHN^JENIFER",
+        0.000671
+      ],
+      [
+        "9675^WISOKY^MADELYN",
+        0.000335
+      ],
+      [
+        "4904^KONOPELSKI^GILBERT",
+        0.001006
+      ],
+      [
+        "3161^DARE-SCHUSTER^CAROLE",
+        0.000335
+      ],
+      [
+        "9416^WHITE^JACOB",
+        0.000335
+      ],
+      [
+        "6668^GLEASON^KATELYNN",
+        0.000335
+      ],
+      [
+        "3894^FRAMI^BESSIE",
+        0.000335
+      ],
+      [
+        "8829^CARTER^SUSIE",
+        0.000335
+      ],
+      [
+        "8744^SCHMIDT^MAIA",
+        0.000671
+      ],
+      [
+        "8270^LYNCH^MARIAH",
+        0.000335
+      ],
+      [
+        "5682^SHANAHAN^VICKIE",
+        0.000671
+      ],
+      [
+        "7677^WILKINSON^MABLE",
+        0.000335
+      ],
+      [
+        "3020^ORN^MAGGIE",
+        0.000671
+      ],
+      [
+        "4687^OSINSKI^URSULA",
+        0.000335
+      ],
+      [
+        "9654^ROBERTS^LUZ",
+        0.000335
+      ],
+      [
+        "6353^RUNOLFSSON^JASON",
+        0.000335
+      ],
+      [
+        "6913^STEUBER^ALBINA",
+        0.000335
+      ],
+      [
+        "1768^JOHNSON^ALEXANE",
+        0.000335
+      ],
+      [
+        "3804^O'HARA^MADALINE",
+        0.000335
+      ],
+      [
+        "6203^CREMIN-TREMBLAY^MELANIE",
+        0.001342
+      ],
+      [
+        "3128^SCHILLER^SYLVESTER",
+        0.000671
+      ],
+      [
+        "5317^BOGAN^MAXIMO",
+        0.001677
+      ],
+      [
+        "9054^O'HARA^HECTOR",
+        0.000335
+      ],
+      [
+        "3233^BERGSTROM-RATKE^DESHAUN",
+        0.001677
+      ],
+      [
+        "6859^VEUM^CREOLA",
+        0.002348
+      ],
+      [
+        "9454^EFFERTZ^LYLE",
+        0.001006
+      ],
+      [
+        "7396^ROWE^ARYANNA",
+        0.000335
+      ],
+      [
+        "2160^CASSIN^DENNIS",
+        0.000671
+      ],
+      [
+        "8911^WOLF^ELWIN",
+        0.000335
+      ],
+      [
+        "8190^KOCH^TOMAS",
+        0.000335
+      ],
+      [
+        "6572^REINGER^DOMINICK",
+        0.000335
+      ],
+      [
+        "3941^SCHMIDT^RAUL",
+        0.000335
+      ],
+      [
+        "5802^JACOBS^TOMAS",
+        0.001342
+      ],
+      [
+        "9377^MOSCISKI^DEMOND",
+        0.000671
+      ],
+      [
+        "3617^LEUSCHKE^WOODROW",
+        0.000671
+      ],
+      [
+        "4903^ZBONCAK^LORENZA",
+        0.000671
+      ],
+      [
+        "7507^WALTER^EARLENE",
+        0.001006
+      ],
+      [
+        "6419^GUTKOWSKI^ALVIN",
+        0.000335
+      ],
+      [
+        "1444^WILKINSON^JUNIUS",
+        0.000335
+      ],
+      [
+        "4179^BAUMBACH^ISABELL",
+        0.000671
+      ],
+      [
+        "7470^STAMM^GUY",
+        0.000335
+      ],
+      [
+        "5339^KRIS^URIEL",
+        0.000671
+      ],
+      [
+        "6752^VONRUEDEN^SERGIO",
+        0.000335
+      ],
+      [
+        "8648^LEUSCHKE^HENDERSON",
+        0.000671
+      ],
+      [
+        "9800^WILKINSON^ADELINE",
+        0.000335
+      ],
+      [
+        "4417^RITCHIE^FREDDIE",
+        0.000335
+      ],
+      [
+        "6262^MORISSETTE^DELTA",
+        0.000335
+      ],
+      [
+        "6901^REILLY^MAMIE",
+        0.000335
+      ],
+      [
+        "3186^FEENEY^KARL",
+        0.000335
+      ],
+      [
+        "1854^O'HARA^MARTY",
+        0.000335
+      ],
+      [
+        "8319^KLEIN^MAVERICK",
+        0.000335
+      ],
+      [
+        "2664^CORWIN^JEROMY",
+        0.000335
+      ],
+      [
+        "1338^BAUMBACH^CLETA",
+        0.000335
+      ],
+      [
+        "9829^MOSCISKI^KATHERINE",
+        0.000671
+      ],
+      [
+        "7901^ORN^MARSHA",
+        0.000335
+      ],
+      [
+        "2630^WUCKERT^STACEY",
+        0.000335
+      ],
+      [
+        "6412^PAUCEK^RODNEY",
+        0.000335
+      ],
+      [
+        "9725^CARROLL^ZACHARY",
+        0.000335
+      ],
+      [
+        "4506^KIEHN^JAIME",
+        0.001006
+      ],
+      [
+        "5613^DICKINSON^ANNA",
+        0.001342
+      ],
+      [
+        "6028^BLANDA^HESTER",
+        0.000335
+      ],
+      [
+        "8296^PROSACCO^ADOLF",
+        0.000671
+      ],
+      [
+        "9842^SCHOEN^DARNELL",
+        0.001006
+      ],
+      [
+        "4859^WEBER^WILLOW",
+        0.001342
+      ],
+      [
+        "6791^HARVEY^BRYAN",
+        0.000671
+      ],
+      [
+        "7014^COLE^LUCIE",
+        0.001342
+      ],
+      [
+        "2844^LITTEL^SABRINA",
+        0.000671
+      ],
+      [
+        "8830^MARQUARDT^LAVINIA",
+        0.000335
+      ],
+      [
+        "3873^COLLIER^CELESTINO",
+        0.001342
+      ],
+      [
+        "4070^WINTHEISER^JOHNNY",
+        0.001677
+      ],
+      [
+        "9491^GRAHAM^DOMINGO",
+        0.001342
+      ],
+      [
+        "1756^MACEJKOVIC^ISIDRO",
+        0.000335
+      ],
+      [
+        "2657^WEST^LEATHA",
+        0.000335
+      ],
+      [
+        "3264^WINDLER^GERALDINE",
+        0.000335
+      ],
+      [
+        "7927^DOYLE^ELLA",
+        0.000335
+      ],
+      [
+        "6389^WILLIAMSON^WINNIFRED",
+        0.001342
+      ],
+      [
+        "4744^LANGWORTH^EMILY",
+        0.000335
+      ],
+      [
+        "7919^LARSON^ELMIRA",
+        0.001342
+      ],
+      [
+        "1265^KAUTZER^ANSEL",
+        0.003019
+      ],
+      [
+        "2554^KUNZE^LAMONT",
+        0.002348
+      ],
+      [
+        "3161^FERRY^DANIELLA",
+        0.000335
+      ],
+      [
+        "2570^STARK^AMY",
+        0.000671
+      ],
+      [
+        "7087^CONN^JUDY",
+        0.000335
+      ],
+      [
+        "4805^COLLINS^ESTELLE",
+        0.027172
+      ],
+      [
+        "7051^KOSS^DANDRE",
+        0.000671
+      ],
+      [
+        "8604^FRITSCH^VIVIAN",
+        0.00369
+      ],
+      [
+        "2196^ONDRICKA^JASMINE",
+        0.010399
+      ],
+      [
+        "6425^PARKER^OLIN",
+        0.013754
+      ],
+      [
+        "3766^CASSIN^ROOSEVELT",
+        0.001342
+      ],
+      [
+        "4280^KSHLERIN^CHRISTIAN",
+        0.018786
+      ],
+      [
+        "6840^KLEIN^MAYA",
+        0.007045
+      ],
+      [
+        "6318^ABERNATHY^NATALIE",
+        0.00369
+      ],
+      [
+        "1787^KASSULKE^JERAMIE",
+        0.004361
+      ],
+      [
+        "6584^ABSHIRE^CASSANDRA",
+        0.001342
+      ],
+      [
+        "6387^HAMMES^ABRAHAM",
+        0.003355
+      ],
+      [
+        "7614^DENESIK^MICHELE",
+        0.004696
+      ],
+      [
+        "1925^MRAZ^LUIS",
+        0.001006
+      ],
+      [
+        "4486^LEGROS^KARLA",
+        0.001342
+      ],
+      [
+        "2657^RYAN^JORDANE",
+        0.000671
+      ],
+      [
+        "5309^HETTINGER^IRENE",
+        0.000335
+      ],
+      [
+        "1269^LEGROS^ERIN",
+        0.001006
+      ],
+      [
+        "6197^OLSON^DEANGELO",
+        0.000335
+      ],
+      [
+        "9467^SCHUSTER^ILIANA",
+        0.001006
+      ],
+      [
+        "7787^LEGROS^JUANITA",
+        0.001006
+      ],
+      [
+        "9056^LOCKMAN^CEDRIC",
+        0.000671
+      ],
+      [
+        "3555^STROSIN^LORENZO",
+        0.000335
+      ],
+      [
+        "3719^SCHOWALTER^NICHOLE",
+        0.000335
+      ],
+      [
+        "4068^DICKINSON^SERENITY",
+        0.026501
+      ],
+      [
+        "9122^GRADY^JANICE",
+        0.003355
+      ],
+      [
+        "2932^WINDLER^MYRTIE",
+        0.004696
+      ],
+      [
+        "5119^GUTMANN^ELNA",
+        0.002013
+      ],
+      [
+        "1112^WARD^PRESTON",
+        0.000335
+      ],
+      [
+        "5742^WHITE^MYA",
+        0.000671
+      ],
+      [
+        "7543^TURCOTTE^ROSEMARY",
+        0.001342
+      ],
+      [
+        "5850^BARTOLETTI^MOSES",
+        0.000335
+      ],
+      [
+        "6287^GORCZANY^KELSI",
+        0.000671
+      ],
+      [
+        "6968^ROBERTS-HERMANN^SIMON",
+        0.000671
+      ],
+      [
+        "3475^HOWELL^LUKE",
+        0.002684
+      ],
+      [
+        "6611^RODRIGUEZ^HEIDI",
+        0.00369
+      ],
+      [
+        "6972^ARMSTRONG^GERMAN",
+        0.000335
+      ],
+      [
+        "2320^HAMILL^VICTOR",
+        0.000671
+      ],
+      [
+        "7320^GLOVER^NORVAL",
+        0.001006
+      ],
+      [
+        "6144^CORKERY^THEODORE",
+        0.001006
+      ],
+      [
+        "2784^KING^TED",
+        0.001006
+      ],
+      [
+        "4126^MAYER^JEFFREY",
+        0.001342
+      ],
+      [
+        "6588^BRUEN^MAMIE",
+        0.000335
+      ],
+      [
+        "1878^BUCKRIDGE^WANDA",
+        0.000671
+      ],
+      [
+        "6504^HUDSON^DUDLEY",
+        0.002013
+      ],
+      [
+        "6533^LAKIN^LEWIS",
+        0.000335
+      ],
+      [
+        "1234^KSHLERIN^BARRY",
+        0.000335
+      ],
+      [
+        "8752^WINDLER^CURTIS",
+        0.000335
+      ],
+      [
+        "6300^MCGLYNN^OPAL",
+        0.000671
+      ],
+      [
+        "2350^ARMSTRONG^GENEVA",
+        0.000671
+      ],
+      [
+        "4259^HERZOG^SANTIAGO",
+        0.001677
+      ],
+      [
+        "6810^RODRIGUEZ^SONJA",
+        0.003019
+      ],
+      [
+        "2236^BRADTKE^JACKSON",
+        0.000335
+      ],
+      [
+        "6879^LEBSACK^SETH",
+        0.000335
+      ],
+      [
+        "6943^HINTZ^RYDER",
+        0.001006
+      ],
+      [
+        "3354^LOCKMAN^MISTY",
+        0.002013
+      ],
+      [
+        "1793^QUITZON^GRACIELA",
+        0.000335
+      ],
+      [
+        "8177^HAMILL^LILLIE",
+        0.001677
+      ],
+      [
+        "1375^JOHNS^HILDA",
+        0.000671
+      ],
+      [
+        "2622^MERTZ^EMMA",
+        0.000335
+      ],
+      [
+        "8476^MANTE^VELMA",
+        0.001006
+      ],
+      [
+        "5980^O'CONNELL^ERVIN",
+        0.000671
+      ],
+      [
+        "5143^FARRELL^DARRIN",
+        0.000335
+      ],
+      [
+        "4673^DAVIS^LEONOR",
+        0.000671
+      ],
+      [
+        "8912^VON^LAURIE",
+        0.000335
+      ],
+      [
+        "4097^CROOKS^TOREY",
+        0.001006
+      ],
+      [
+        "9109^BINS^KACEY",
+        0.000335
+      ],
+      [
+        "8035^DIBBERT^LELA",
+        0.000335
+      ],
+      [
+        "9736^BRAUN^KELLIE",
+        0.000335
+      ],
+      [
+        "4134^STOLTENBERG^DEBORAH",
+        0.005703
+      ],
+      [
+        "8814^HIRTHE^BETTY",
+        0.000335
+      ],
+      [
+        "2068^DURGAN-ROGAHN^ALICIA",
+        0.000671
+      ],
+      [
+        "2374^REMPEL^ROBERTA",
+        0.000335
+      ],
+      [
+        "8545^BEAHAN^JAY",
+        0.000335
+      ],
+      [
+        "2728^LEGROS^ADA",
+        0.000335
+      ],
+      [
+        "3495^BOGAN^TYREE",
+        0.000335
+      ],
+      [
+        "5475^CORMIER^MONSERRATE",
+        0.000335
+      ],
+      [
+        "2614^CASSIN^LEOLA",
+        0.00369
+      ],
+      [
+        "7310^STRACKE^TIARA",
+        0.001677
+      ],
+      [
+        "6977^HERMAN^CARLEY",
+        0.000671
+      ],
+      [
+        "5380^DICKENS^RODGER",
+        0.001006
+      ],
+      [
+        "8450^ZULAUF^PENNY",
+        0.000335
+      ],
+      [
+        "2099^DICKINSON^MARC",
+        0.000335
+      ],
+      [
+        "7667^CARTER^GRAHAM",
+        0.000335
+      ],
+      [
+        "6975^TURNER^LEONIE",
+        0.000671
+      ],
+      [
+        "8110^HANSEN^DEBORAH",
+        0.003355
+      ],
+      [
+        "1295^TERRY^MINNIE",
+        0.00738
+      ],
+      [
+        "9273^WILLMS^JAMES",
+        0.000335
+      ],
+      [
+        "6393^REINGER^TOMMY",
+        0.000335
+      ],
+      [
+        "5311^SCHOWALTER^ROBYN",
+        0.001677
+      ],
+      [
+        "7458^DAUGHERTY-FARRELL^LAVINA",
+        0.000671
+      ],
+      [
+        "8895^KUNDE^MELANIE",
+        0.005032
+      ],
+      [
+        "2983^HANE-BARTON^ANDY",
+        0.001006
+      ],
+      [
+        "9012^JACOBSON^GINGER",
+        0.000335
+      ],
+      [
+        "7756^SWIFT^ALEXANDER",
+        0.000335
+      ],
+      [
+        "7352^RUNOLFSDOTTIR^ALFORD",
+        0.000335
+      ],
+      [
+        "3382^PADBERG^STEPHON",
+        0.000335
+      ],
+      [
+        "1780^RITCHIE^CRAIG",
+        0.002684
+      ],
+      [
+        "4735^RUNOLFSDOTTIR^BOBBY",
+        0.000335
+      ],
+      [
+        "3868^LITTLE^ELAINE",
+        0.000671
+      ],
+      [
+        "3779^PARISIAN^NICOLE",
+        0.017108
+      ],
+      [
+        "9485^FEEST^DASHAWN",
+        0.001342
+      ],
+      [
+        "7823^REYNOLDS^ERICK",
+        0.001342
+      ],
+      [
+        "9535^MERTZ^JOE",
+        0.002013
+      ],
+      [
+        "7155^TORPHY^MARILYN",
+        0.001677
+      ],
+      [
+        "3572^HACKETT^CAROLANNE",
+        0.001677
+      ],
+      [
+        "7545^DENESIK^TERI",
+        0.001342
+      ],
+      [
+        "8984^DANIEL^EDUARDO",
+        0.001677
+      ],
+      [
+        "2538^LANGOSH^BRANSON",
+        0.000671
+      ],
+      [
+        "7805^KOEPP^ALVIS",
+        0.001342
+      ],
+      [
+        "9666^MARQUARDT^BILLY",
+        0.001006
+      ],
+      [
+        "6235^YOST^RICKY",
+        0.006038
+      ],
+      [
+        "8298^KUTCH^LAFAYETTE",
+        0.013083
+      ],
+      [
+        "6867^RIPPIN^LYNETTE",
+        0.000671
+      ],
+      [
+        "6914^HOEGER^KELLY",
+        0.00369
+      ],
+      [
+        "4230^KLEIN^JARROD",
+        0.000671
+      ],
+      [
+        "1794^BATZ^RAUL",
+        0.001677
+      ],
+      [
+        "5393^BAUCH^ARJUN",
+        0.001006
+      ],
+      [
+        "1977^POWLOWSKI^JANIE",
+        0.000671
+      ],
+      [
+        "3034^WILDERMAN^LEIGH",
+        0.000671
+      ],
+      [
+        "8667^KEMMER^EARL",
+        0.000335
+      ],
+      [
+        "8000^GULGOWSKI^DEANNA",
+        0.000335
+      ],
+      [
+        "6772^BODE^JORGE",
+        0.000671
+      ],
+      [
+        "9669^BOGAN^ALEX",
+        0.000335
+      ],
+      [
+        "7940^ROOB^EMERSON",
+        0.001342
+      ],
+      [
+        "1990^OKUNEVA^BENNY",
+        0.000335
+      ],
+      [
+        "3749^LEHNER^DEVYN",
+        0.001006
+      ],
+      [
+        "6874^MANN^YESSENIA",
+        0.002348
+      ],
+      [
+        "7997^HALEY^JOAN",
+        0.000335
+      ],
+      [
+        "6495^BRUEN^KATE",
+        0.000671
+      ],
+      [
+        "9960^WITTING^JODI",
+        0.000671
+      ],
+      [
+        "9708^KESSLER^PRISCILLA",
+        0.000671
+      ],
+      [
+        "1322^WILLMS-LYNCH^VAN",
+        0.000335
+      ],
+      [
+        "7027^STEHR^MURL",
+        0.001006
+      ],
+      [
+        "2409^QUIGLEY^JEDEDIAH",
+        0.000335
+      ],
+      [
+        "2839^TORP^WALTON",
+        0.000335
+      ],
+      [
+        "3740^KASSULKE^WINIFRED",
+        0.000335
+      ],
+      [
+        "3301^WEBER^KRISTOPHER",
+        0.000671
+      ],
+      [
+        "7061^HANE^BRADFORD",
+        0.001006
+      ],
+      [
+        "7316^HINTZ^DORTHY",
+        0.000671
+      ],
+      [
+        "8602^RENNER^MAURICIO",
+        0.000671
+      ],
+      [
+        "6570^GERHOLD^CLARENCE",
+        0.000335
+      ],
+      [
+        "6020^THIEL^RANDAL",
+        0.000671
+      ],
+      [
+        "5452^BREKKE^EDISON",
+        0.000335
+      ],
+      [
+        "6272^JOHNSTON^HOPE",
+        0.000335
+      ],
+      [
+        "9288^HAMILL^KELLEN",
+        0.000335
+      ],
+      [
+        "2958^FERRY-BREITENBERG^MAYE",
+        0.000335
+      ],
+      [
+        "4941^JERDE^DOROTHEA",
+        0.002348
+      ],
+      [
+        "6546^WINTHEISER^RANDOLPH",
+        0.001006
+      ],
+      [
+        "9565^BALISTRERI^ALEXANDER",
+        0.001342
+      ],
+      [
+        "8277^ABERNATHY^ETHYL",
+        0.000671
+      ],
+      [
+        "8936^RAU-TERRY^SHELIA",
+        0.000671
+      ],
+      [
+        "3731^MOEN^BROOKE",
+        0.000335
+      ],
+      [
+        "5804^PADBERG^OLETA",
+        0.000335
+      ],
+      [
+        "3050^HERMAN^PARKER",
+        0.000335
+      ],
+      [
+        "1121^YOST^LEONARD",
+        0.002684
+      ],
+      [
+        "2728^HODKIEWICZ^MARGIE",
+        0.000671
+      ],
+      [
+        "2099^LEFFLER^RACHELLE",
+        0.000671
+      ],
+      [
+        "3120^BOGISICH^VELMA",
+        0.000335
+      ],
+      [
+        "7544^HERMAN^SHANE",
+        0.000671
+      ],
+      [
+        "2984^BOYER^JAMAR",
+        0.002013
+      ],
+      [
+        "8913^HAMMES^CLAY",
+        0.000671
+      ],
+      [
+        "9455^BEDNAR^RITA",
+        0.000335
+      ],
+      [
+        "1928^GOTTLIEB^VINCENZO",
+        0.000671
+      ],
+      [
+        "6397^BAHRINGER^LISA",
+        0.001677
+      ],
+      [
+        "3147^LAKIN^OLGA",
+        0.000671
+      ],
+      [
+        "3969^TROMP^DALE",
+        0.000335
+      ],
+      [
+        "6689^UPTON^LAURY",
+        0.001342
+      ],
+      [
+        "2914^WALKER^DOMINICK",
+        0.000671
+      ],
+      [
+        "4004^SCHULTZ^FERNANDO",
+        0.000671
+      ],
+      [
+        "5839^MACEJKOVIC^BRET",
+        0.000671
+      ],
+      [
+        "1275^BOTSFORD-BERGSTROM^RAPHAELLE",
+        0.000671
+      ],
+      [
+        "5210^MCCULLOUGH^LURLINE",
+        0.002013
+      ],
+      [
+        "6062^GRANT^NIGEL",
+        0.000335
+      ],
+      [
+        "6378^RUNOLFSSON^DEVIN",
+        0.000335
+      ],
+      [
+        "8130^LUETTGEN^JAKOB",
+        0.000335
+      ],
+      [
+        "4643^BOSCO^MARILIE",
+        0.000671
+      ],
+      [
+        "1028^LEGROS^GARRY",
+        0.000671
+      ],
+      [
+        "8324^SCHMITT^JORDAN",
+        0.000335
+      ],
+      [
+        "8321^ROLFSON^LILA",
+        0.000335
+      ],
+      [
+        "3147^WINTHEISER^TOMMY",
+        0.000335
+      ],
+      [
+        "8508^TILLMAN^LORENZO",
+        0.000671
+      ],
+      [
+        "8599^POUROS^AARON",
+        0.000335
+      ],
+      [
+        "3119^SIMONIS^OPAL",
+        0.000335
+      ],
+      [
+        "3563^BOYLE^JOAN",
+        0.001342
+      ],
+      [
+        "8327^KIHN^ANDREW",
+        0.000671
+      ],
+      [
+        "1723^POUROS-GLEICHNER^ALIYA",
+        0.000335
+      ],
+      [
+        "4253^TORP^BERNIECE",
+        0.000335
+      ],
+      [
+        "6086^BOYER^LEO",
+        0.000335
+      ],
+      [
+        "7478^MOHR^RAE",
+        0.000335
+      ],
+      [
+        "4725^WARD^BETSY",
+        0.000335
+      ],
+      [
+        "3861^KOZEY^CLAY",
+        0.001006
+      ],
+      [
+        "4412^VOLKMAN^DEBORAH",
+        0.000335
+      ],
+      [
+        "4347^GOTTLIEB^TAD",
+        0.000671
+      ],
+      [
+        "2098^PAUCEK^COLEMAN",
+        0.000671
+      ],
+      [
+        "8359^CORMIER^MARGARET",
+        0.000335
+      ],
+      [
+        "7127^ROWE^MARK",
+        0.000335
+      ],
+      [
+        "1809^RATH^KATHY",
+        0.000335
+      ],
+      [
+        "9415^WYMAN^ELAINA",
+        0.000335
+      ],
+      [
+        "8191^FEIL^KELVIN",
+        0.000335
+      ],
+      [
+        "5448^SCHADEN^PEGGY",
+        0.000335
+      ],
+      [
+        "4766^SCHUPPE^CHRIS",
+        0.000335
+      ],
+      [
+        "7319^KONOPELSKI^JUAN",
+        0.003355
+      ],
+      [
+        "1571^CORKERY^MELVIN",
+        0.000335
+      ],
+      [
+        "3469^HARVEY^NADINE",
+        0.000335
+      ],
+      [
+        "8264^GLOVER^IRIS",
+        0.000335
+      ],
+      [
+        "1785^ROOB^GAYLE",
+        0.000335
+      ],
+      [
+        "9935^RAU^DAMON",
+        0.000335
+      ],
+      [
+        "9819^HAGENES^DEWAYNE",
+        0.000671
+      ],
+      [
+        "2480^BATZ^JACQUES",
+        0.000335
+      ],
+      [
+        "7064^BOGISICH^JAVIER",
+        0.000671
+      ],
+      [
+        "3608^GOYETTE^LAURYN",
+        0.000671
+      ],
+      [
+        "7574^BAUCH^ADOLF",
+        0.000671
+      ],
+      [
+        "4967^DECKOW^ROOSEVELT",
+        0.000335
+      ],
+      [
+        "2855^SCHOWALTER^BRANT",
+        0.000335
+      ],
+      [
+        "5490^PACOCHA-DECKOW^RALPH",
+        0.000335
+      ],
+      [
+        "8450^WEBER^EBONY",
+        0.000335
+      ],
+      [
+        "5551^GREENHOLT^EMERY",
+        0.000335
+      ],
+      [
+        "5432^JAST^KARI",
+        0.000671
+      ],
+      [
+        "9915^ERNSER^GWENDOLYN",
+        0.000335
+      ],
+      [
+        "3562^BREKKE^OLIVER",
+        0.000335
+      ],
+      [
+        "6155^SWIFT^DARRELL",
+        0.000335
+      ],
+      [
+        "9974^HINTZ^DERRICK",
+        0.000335
+      ],
+      [
+        "8135^FEENEY^DAHLIA",
+        0.001342
+      ],
+      [
+        "7175^BERNIER^MONSERRATE",
+        0.000335
+      ],
+      [
+        "2510^SHANAHAN^HENRIETTA",
+        0.000335
+      ],
+      [
+        "9211^BEDNAR^LORA",
+        0.000335
+      ],
+      [
+        "7053^KUTCH^PERRY",
+        0.000335
+      ],
+      [
+        "5514^LAKIN^CAROLYN",
+        0.000335
+      ],
+      [
+        "2282^HEATHCOTE^VINCENZA",
+        0.001006
+      ],
+      [
+        "7602^BERGSTROM^DEVANTE",
+        0.000335
+      ],
+      [
+        "2151^HANSEN^VERNA",
+        0.000335
+      ],
+      [
+        "6189^BEDNAR^KRISTA",
+        0.001677
+      ],
+      [
+        "5841^BAILEY^MADELINE",
+        0.000335
+      ],
+      [
+        "8737^WATSICA^ERNEST",
+        0.000335
+      ],
+      [
+        "9441^YOST^DIANE",
+        0.000335
+      ],
+      [
+        "9301^ROOB^VERDA",
+        0.000335
+      ],
+      [
+        "8871^CONN^LILLIE",
+        0.000335
+      ],
+      [
+        "6967^HETTINGER^FURMAN",
+        0.000671
+      ],
+      [
+        "7044^LEGROS^STEPHANIE",
+        0.000335
+      ],
+      [
+        "6865^KRIS^EFFIE",
+        0.000335
+      ],
+      [
+        "4447^DOOLEY^MEGANE",
+        0.000335
+      ],
+      [
+        "8062^PREDOVIC^LILLA",
+        0.000335
+      ],
+      [
+        "4800^MAGGIO^KARL",
+        0.000671
+      ],
+      [
+        "2544^SWIFT^SONIA",
+        0.001342
+      ],
+      [
+        "8952^TURCOTTE^STAN",
+        0.000335
+      ],
+      [
+        "8048^HUELS^GLADYS",
+        0.000335
+      ],
+      [
+        "8790^HARBER-POUROS^SETH",
+        0.001006
+      ],
+      [
+        "2926^BREITENBERG^HUGH",
+        0.002013
+      ],
+      [
+        "8003^WINDLER^GUSTAVO",
+        0.000335
+      ],
+      [
+        "7525^ROSENBAUM^JOSHUA",
+        0.000335
+      ],
+      [
+        "5812^MILLS^HAYLEY",
+        0.002684
+      ],
+      [
+        "6230^QUITZON^DALE",
+        0.001342
+      ],
+      [
+        "4670^RATH^SHERRY",
+        0.000671
+      ],
+      [
+        "6751^FRAMI^CARLEE",
+        0.000671
+      ],
+      [
+        "8934^BAUMBACH^DANIEL",
+        0.000671
+      ],
+      [
+        "9057^SIPES^MARTIN",
+        0.000335
+      ],
+      [
+        "7910^MARVIN^DAWSON",
+        0.000335
+      ],
+      [
+        "7815^SCHOWALTER^LOUIS",
+        0.000335
+      ],
+      [
+        "7797^WOLF-MANN^D'ANGELO",
+        0.000335
+      ],
+      [
+        "7897^MOHR^KAREEM",
+        0.000335
+      ],
+      [
+        "5434^HETTINGER^MARGIE",
+        0.000335
+      ],
+      [
+        "7910^ROHAN^ALEXANDER",
+        0.002348
+      ],
+      [
+        "3688^WISOKY^LUCAS",
+        0.000335
+      ],
+      [
+        "3079^ROOB^ARTHUR",
+        0.000671
+      ],
+      [
+        "5040^BATZ^ALVIN",
+        0.000335
+      ],
+      [
+        "9863^SCHAMBERGER^FERNANDO",
+        0.000335
+      ],
+      [
+        "2800^BERNHARD^WILBER",
+        0.000335
+      ],
+      [
+        "7873^BAHRINGER^CATHERINE",
+        0.000335
+      ],
+      [
+        "7187^RENNER^BERT",
+        0.000335
+      ],
+      [
+        "4347^ROMAGUERA^TAMIA",
+        0.000671
+      ],
+      [
+        "5618^GOODWIN^LOWELL",
+        0.000335
+      ],
+      [
+        "5455^BERNHARD^MAYMIE",
+        0.001342
+      ],
+      [
+        "3933^REYNOLDS^KENDALL",
+        0.000335
+      ],
+      [
+        "1306^HOEGER^IRA",
+        0.000335
+      ],
+      [
+        "6758^ORTIZ^LARUE",
+        0.000335
+      ],
+      [
+        "8572^GERLACH^MONIQUE",
+        0.000335
+      ],
+      [
+        "1706^KILBACK^SHAYLEE",
+        0.000335
+      ],
+      [
+        "1338^STROMAN^AVIS",
+        0.000335
+      ],
+      [
+        "1509^BAUMBACH^OLIVIA",
+        0.000335
+      ],
+      [
+        "9929^SCHINNER^CAMERON",
+        0.001006
+      ],
+      [
+        "8170^BEER^ELLA",
+        0.000335
+      ],
+      [
+        "5281^GREEN^THEODORE",
+        0.000335
+      ],
+      [
+        "8770^CRONA^JERALD",
+        0.000335
+      ],
+      [
+        "3028^KREIGER^JESSE",
+        0.000335
+      ],
+      [
+        "8318^RATH^MUSTAFA",
+        0.000671
+      ],
+      [
+        "3394^HOMENICK^AVIS",
+        0.000335
+      ],
+      [
+        "9756^SAUER^DEMETRIS",
+        0.000335
+      ],
+      [
+        "1416^LIND^ADDISON",
+        0.000335
+      ],
+      [
+        "7713^MULLER^HERMAN",
+        0.000335
+      ],
+      [
+        "7609^HIRTHE^CATHERINE",
+        0.000335
+      ],
+      [
+        "1869^MANN^PETE",
+        0.000335
+      ],
+      [
+        "3984^MARVIN^ETHEL",
+        0.000335
+      ],
+      [
+        "6432^GRANT^ANN",
+        0.000335
+      ],
+      [
+        "8869^ROBERTS^KYLEIGH",
+        0.000335
+      ],
+      [
+        "2118^MITCHELL^MATHEW",
+        0.000335
+      ],
+      [
+        "3307^HARRIS-HETTINGER^IRMA",
+        0.000335
+      ],
+      [
+        "6570^NITZSCHE^ALVA",
+        0.000335
+      ],
+      [
+        "9965^GRIMES^FORREST",
+        0.000671
+      ],
+      [
+        "9762^KLOCKO^EDWIN",
+        0.000335
+      ],
+      [
+        "5729^LANGOSH^YVETTE",
+        0.000335
+      ],
+      [
+        "8404^FAHEY^MEGAN",
+        0.001006
+      ],
+      [
+        "5956^KREIGER^BENNY",
+        0.000335
+      ],
+      [
+        "5643^BATZ^CINDY",
+        0.000671
+      ],
+      [
+        "6179^BERNIER-STROMAN^AMBROSE",
+        0.000335
+      ],
+      [
+        "1892^MACGYVER^ROSALEE",
+        0.000335
+      ],
+      [
+        "9965^JAKUBOWSKI^JENNIFER",
+        0.000335
+      ],
+      [
+        "7160^EMMERICH^KEATON",
+        0.000335
+      ],
+      [
+        "5191^KOHLER^GORDON",
+        0.000335
+      ],
+      [
+        "5478^SWIFT^COLTEN",
+        0.000335
+      ],
+      [
+        "8558^HAYES^AMYA",
+        0.000335
+      ],
+      [
+        "9163^RATH^JACK",
+        0.000335
+      ],
+      [
+        "6808^ROMAGUERA^MODESTA",
+        0.000335
+      ],
+      [
+        "8395^HEANEY^MOISES",
+        0.000335
+      ],
+      [
+        "5310^NITZSCHE^ERMA",
+        0.000671
+      ],
+      [
+        "4482^GOYETTE^VIVIAN",
+        0.001006
+      ],
+      [
+        "4606^MORISSETTE^JAZMIN",
+        0.000335
+      ],
+      [
+        "3736^KOHLER^JACK",
+        0.000335
+      ],
+      [
+        "7616^SIPES^TRINITY",
+        0.000335
+      ],
+      [
+        "2163^HESSEL^GLENDA",
+        0.000335
+      ],
+      [
+        "5887^MCCULLOUGH^EVA",
+        0.000335
+      ],
+      [
+        "1670^JENKINS^CANDACE",
+        0.000335
+      ],
+      [
+        "9042^BOSCO^ANN",
+        0.000335
+      ],
+      [
+        "2306^KERLUKE^WESLEY",
+        0.000335
+      ],
+      [
+        "2603^ZBONCAK^RUTHE",
+        0.000335
+      ],
+      [
+        "6379^BEDNAR^RENE",
+        0.000335
+      ],
+      [
+        "1251^MANN^LOMA",
+        0.000335
+      ],
+      [
+        "2453^LEUSCHKE^LAWRENCE",
+        0.000335
+      ],
+      [
+        "4650^KULAS^ROWENA",
+        0.000671
+      ],
+      [
+        "4411^JACOBI^PERRY",
+        0.000335
+      ],
+      [
+        "8173^MCLAUGHLIN^BREANNA",
+        0.000335
+      ],
+      [
+        "3499^RAU^ESSIE",
+        0.000335
+      ],
+      [
+        "8816^MACEJKOVIC-MACEJKOVIC^JEANNIE",
+        0.000335
+      ],
+      [
+        "3044^BREITENBERG^JERALD",
+        0.000335
+      ],
+      [
+        "2760^ERNSER^MAMIE",
+        0.000335
+      ],
+      [
+        "3797^HILPERT^LAVERNE",
+        0.000335
+      ],
+      [
+        "2388^DAUGHERTY^VIVIAN",
+        0.000335
+      ],
+      [
+        "6924^BEAHAN^BRANDON",
+        0.000335
+      ],
+      [
+        "2503^BOYER^ELLA",
+        0.000335
+      ],
+      [
+        "5527^CRONIN^COLIN",
+        0.000335
+      ],
+      [
+        "4689^KLOCKO^AVERY",
+        0.000335
+      ],
+      [
+        "6463^O'REILLY^KARA",
+        0.000335
+      ],
+      [
+        "6533^GOTTLIEB^RUDY",
+        0.000335
+      ],
+      [
+        "7173^DENESIK^JOSEPH",
+        0.000335
+      ],
+      [
+        "4023^ABSHIRE^EULALIA",
+        0.000335
+      ],
+      [
+        "5228^BAHRINGER^SHANIA",
+        0.000335
+      ],
+      [
+        "3926^DOUGLAS^ANNETTE",
+        0.000335
+      ],
+      [
+        "4934^LOCKMAN^CAMILLE",
+        0.000335
+      ],
+      [
+        "2936^AUER-KIHN^MABEL",
+        0.000335
+      ],
+      [
+        "4563^BARTOLETTI^ASIA",
+        0.000335
+      ],
+      [
+        "5962^GLEASON^KAYLEY",
+        0.000335
+      ],
+      [
+        "3297^DENESIK^MAGNUS",
+        0.000335
+      ],
+      [
+        "2833^CHRISTIANSEN^EDDIE",
+        0.023482
+      ],
+      [
+        "6113^FEENEY^RUBY",
+        0.000671
+      ],
+      [
+        "6802^HUDSON^SID",
+        0.000335
+      ],
+      [
+        "1268^DARE^PABLO",
+        0.000671
+      ],
+      [
+        "9612^KEEBLER^VERONA",
+        0.001006
+      ],
+      [
+        "4029^SCHROEDER^ELDA",
+        0.000335
+      ],
+      [
+        "4961^HEATHCOTE^FLOYD",
+        0.000335
+      ],
+      [
+        "7214^HAYES^JULIE",
+        0.000335
+      ],
+      [
+        "7573^BLICK^KRYSTAL",
+        0.000671
+      ],
+      [
+        "4827^COLLINS^GWEN",
+        0.000335
+      ],
+      [
+        "8277^DECKOW^ANGELITA",
+        0.001006
+      ],
+      [
+        "3513^KOSS-TOWNE^FLOYD",
+        0.000335
+      ],
+      [
+        "5470^HAUCK-SAUER^CRAIG",
+        0.000335
+      ],
+      [
+        "6819^ROBERTS^ABNER",
+        0.002348
+      ],
+      [
+        "6314^ROWE^ESSIE",
+        0.001342
+      ],
+      [
+        "7669^YOST^DAVE",
+        0.000335
+      ],
+      [
+        "4230^PROHASKA^IRVIN",
+        0.000335
+      ],
+      [
+        "4848^WEIMANN^DEJA",
+        0.001342
+      ],
+      [
+        "5935^SAUER^TED",
+        0.001342
+      ],
+      [
+        "6892^ROWE^BRADLEY",
+        0.000671
+      ],
+      [
+        "7205^ONDRICKA^KACI",
+        0.001006
+      ],
+      [
+        "9053^REICHEL^HERBERT",
+        0.001677
+      ],
+      [
+        "8734^JAKUBOWSKI^WESTLEY",
+        0.001006
+      ],
+      [
+        "5401^PROHASKA^KAITLYN",
+        0.000335
+      ],
+      [
+        "9819^VONRUEDEN-KASSULKE^JOANNA",
+        0.000335
+      ],
+      [
+        "2794^OSINSKI^RODRIGO",
+        0.000671
+      ],
+      [
+        "8494^JACOBS^JACQUELINE",
+        0.000335
+      ],
+      [
+        "2813^WOLF^KRISTA",
+        0.001006
+      ],
+      [
+        "4179^RENNER^PALMA",
+        0.000335
+      ],
+      [
+        "8191^O'KEEFE^FRIDA",
+        0.000335
+      ],
+      [
+        "7195^WEHNER^OSCAR",
+        0.000335
+      ],
+      [
+        "4651^SCHAMBERGER^JORDAN",
+        0.000335
+      ],
+      [
+        "7949^ZIEMANN^JOSEPH",
+        0.005367
+      ],
+      [
+        "8559^KEMMER^JOSH",
+        0.000335
+      ],
+      [
+        "3836^WEHNER^DAVION",
+        0.000335
+      ],
+      [
+        "5729^JACOBS^HILTON",
+        0.000335
+      ],
+      [
+        "7424^KING^RODOLFO",
+        0.000335
+      ],
+      [
+        "3271^ABBOTT^WELDON",
+        0.000335
+      ],
+      [
+        "6968^LESCH^KIANA",
+        0.000335
+      ],
+      [
+        "2916^ORTIZ^JIMMY",
+        0.000335
+      ],
+      [
+        "1933^NOLAN^JARRET",
+        0.000335
+      ],
+      [
+        "8141^RUNOLFSDOTTIR^TOM",
+        0.000671
+      ],
+      [
+        "6216^CRONIN^CURTIS",
+        0.000335
+      ],
+      [
+        "8585^JACOBSON^NATASHA",
+        0.000335
+      ],
+      [
+        "6095^RUNTE^CLYDE",
+        0.000335
+      ],
+      [
+        "5899^CONNELLY^ANNALISE",
+        0.000335
+      ],
+      [
+        "4323^HERZOG^BRADLY",
+        0.000671
+      ],
+      [
+        "3290^HEGMANN^LINDSAY",
+        0.000335
+      ],
+      [
+        "9916^QUIGLEY^YOLANDA",
+        0.000335
+      ],
+      [
+        "6438^CONSIDINE^WM",
+        0.001006
+      ],
+      [
+        "5460^MCLAUGHLIN^BRIDGETTE",
+        0.000671
+      ],
+      [
+        "1072^MONAHAN^MICHAEL",
+        0.000335
+      ],
+      [
+        "2797^DACH^TRISTON",
+        0.000335
+      ],
+      [
+        "9175^FERRY^EVELYN",
+        0.001006
+      ],
+      [
+        "5788^MARKS^SHAWN",
+        0.001006
+      ],
+      [
+        "7604^JACOBI^DOREEN",
+        0.000335
+      ],
+      [
+        "7191^HILPERT^MELYSSA",
+        0.000335
+      ],
+      [
+        "7304^TILLMAN^GRADY",
+        0.000335
+      ],
+      [
+        "1260^UPTON^SABINA",
+        0.000335
+      ],
+      [
+        "8974^CARTWRIGHT^JERALD",
+        0.000335
+      ],
+      [
+        "5382^VON^ENA",
+        0.000671
+      ],
+      [
+        "8059^RUTHERFORD^IGNACIO",
+        0.000335
+      ],
+      [
+        "3039^LITTLE-TURCOTTE^FRANCES",
+        0.000335
+      ],
+      [
+        "9926^RUNOLFSDOTTIR^ASHA",
+        0.001006
+      ],
+      [
+        "6526^BOTSFORD^LARON",
+        0.001006
+      ],
+      [
+        "1130^WITTING^EARLENE",
+        0.002013
+      ],
+      [
+        "3299^ALTENWERTH^LESTER",
+        0.001677
+      ],
+      [
+        "5844^LINDGREN^ANTHONY",
+        0.000335
+      ],
+      [
+        "6580^SPINKA^BLAISE",
+        0.000335
+      ],
+      [
+        "3271^CRIST^DOMINICK",
+        0.000671
+      ],
+      [
+        "7307^ROGAHN^FELICIA",
+        0.000335
+      ],
+      [
+        "8954^BAHRINGER^JUSTINE",
+        0.000671
+      ],
+      [
+        "7679^EFFERTZ^ALONZO",
+        0.000335
+      ],
+      [
+        "7200^ARMSTRONG^WOODROW",
+        0.000335
+      ],
+      [
+        "2209^CROOKS^DEDRICK",
+        0.000335
+      ],
+      [
+        "8616^BOSCO^KAVON",
+        0.001006
+      ],
+      [
+        "3861^AUER^BELINDA",
+        0.001342
+      ],
+      [
+        "3525^POUROS^ROSELLA",
+        0.001342
+      ],
+      [
+        "2363^PREDOVIC^DEMARCUS",
+        0.000671
+      ],
+      [
+        "8081^GORCZANY^STELLA",
+        0.000671
+      ],
+      [
+        "6770^LYNCH^NEOMA",
+        0.001006
+      ],
+      [
+        "7300^WOLFF^LONNY",
+        0.000335
+      ],
+      [
+        "3937^QUITZON^MELINDA",
+        0.000671
+      ],
+      [
+        "5815^MOORE^KATRINA",
+        0.000335
+      ],
+      [
+        "1846^CARTER^MILTON",
+        0.000335
+      ],
+      [
+        "4399^VANDERVORT^MAYMIE",
+        0.000335
+      ],
+      [
+        "9561^BAUMBACH^JESS",
+        0.000335
+      ],
+      [
+        "6275^HOEGER^TRACEY",
+        0.000335
+      ],
+      [
+        "4468^KUNZE^SHAWNA",
+        0.000671
+      ],
+      [
+        "8389^ZIEME^ELVERA",
+        0.000335
+      ],
+      [
+        "2435^HUDSON^LUCILE",
+        0.001006
+      ],
+      [
+        "2865^GUTMANN^OVA",
+        0.000335
+      ],
+      [
+        "5487^JACOBI^DOREEN",
+        0.000335
+      ],
+      [
+        "9750^RIPPIN^DARLENE",
+        0.000335
+      ],
+      [
+        "3288^STEHR^JARED",
+        0.000335
+      ],
+      [
+        "8573^KIHN^JALEN",
+        0.000671
+      ],
+      [
+        "5183^FEIL-FARRELL^NORMAN",
+        0.000335
+      ],
+      [
+        "7601^ZULAUF^BONNIE",
+        0.000335
+      ],
+      [
+        "6053^TURCOTTE^LILA",
+        0.000335
+      ],
+      [
+        "3778^SPINKA^LUCIA",
+        0.000335
+      ],
+      [
+        "6626^SCHROEDER^GLEN",
+        0.000335
+      ],
+      [
+        "2025^CREMIN^BARRY",
+        0.000335
+      ],
+      [
+        "6180^BINS^LORA",
+        0.000335
+      ],
+      [
+        "1765^JENKINS^STEVEN",
+        0.000335
+      ],
+      [
+        "4757^CARROLL^MARGARITA",
+        0.000335
+      ],
+      [
+        "7161^PADBERG^MARK",
+        0.000335
+      ],
+      [
+        "4636^KEELING^KYLE",
+        0.000335
+      ],
+      [
+        "8770^LEANNON^CHERYL",
+        0.000335
+      ],
+      [
+        "9211^BRAUN^KATIE",
+        0.000335
+      ],
+      [
+        "6724^RUNTE^BERYL",
+        0.000335
+      ],
+      [
+        "8346^KLOCKO^TYRESE",
+        0.000335
+      ],
+      [
+        "7867^SCHNEIDER^DEBORAH",
+        0.000671
+      ],
+      [
+        "5960^SCHMITT^EMILY",
+        0.000335
+      ]
+    ],
+    "app": [
+      [
+        "HKN_HUB",
+        0.003057
+      ],
+      [
+        "ZDK_IF",
+        0.000764
+      ],
+      [
+        "VCW_SYS",
+        0.001019
+      ],
+      [
+        "WXD_SYS",
+        0.000764
+      ],
+      [
+        "HHA_SYS",
+        0.000255
+      ],
+      [
+        "AXG_GW",
+        0.177325
+      ],
+      [
+        "QAC_GW",
+        0.127389
+      ],
+      [
+        "QVK_HUB",
+        0.025478
+      ],
+      [
+        "PAR_IF",
+        0.025223
+      ],
+      [
+        "ATO_HUB",
+        0.008153
+      ],
+      [
+        "CJH_SYS",
+        0.012739
+      ],
+      [
+        "NUE_SYS",
+        0.00051
+      ],
+      [
+        "QLO_HUB",
+        0.219618
+      ],
+      [
+        "TJL_SYS",
+        0.296561
+      ],
+      [
+        "CQC_IF",
+        0.025478
+      ],
+      [
+        "RET_HUB",
+        0.075669
+      ]
+    ]
+  },
+  "temporal": {
+    "sendYearRange": [
+      2025,
+      2026
+    ],
+    "collectToResultMins": {
+      "mean": 63,
+      "sd": 35
+    }
+  },
+  "idFormats": {
+    "mrn": "########",
+    "controlId": "GEN-##########",
+    "placer": "PL#########",
+    "filler": "FL#########",
+    "visit": "V#########"
+  }
+}
