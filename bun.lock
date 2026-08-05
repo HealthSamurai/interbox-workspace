@@ -16,7 +16,7 @@
   "packages": {
     "@atomic-ehr/hl7v2": ["@atomic-ehr/hl7v2@0.0.1", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-qUOYUX6lI9cdb98ThXBcCWqruFVFzG8H6NnOTlS2Rgg7kSenjxwpDEBh8pjvmhaiWAfUqY/B7W0+agmxIoJRWg=="],
 
-    "@health-samurai/interbox": ["@health-samurai/interbox@1.11.1", "", { "dependencies": { "@atomic-ehr/hl7v2": "^0.0.1" }, "peerDependencies": { "typescript": "^5" }, "bin": { "interbox": "dist/cli.js" } }, "sha512-w2Z20qcwKG/9UVn+DlAeeoB8cmiQ6J7B32rsUKdrPTnswfeMLyli4DXcnNIchxKIqMypBlogLjA/MYvOKmz6LQ=="],
+    "@health-samurai/interbox": ["@health-samurai/interbox@1.11.2", "", { "dependencies": { "@atomic-ehr/hl7v2": "^0.0.1" }, "peerDependencies": { "typescript": "^5" }, "bin": { "interbox": "dist/cli.js" } }, "sha512-5sEhErd4QD0dOEMbUKX315RqDZ3byd/wDOy4YIb7wMsR5QPTzgweHv1187HYiYSrOFHqBsgUQg2fIzDBPoXWIw=="],
 
     "@types/bun": ["@types/bun@1.3.14", "", { "dependencies": { "bun-types": "1.3.14" } }, "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw=="],
 
