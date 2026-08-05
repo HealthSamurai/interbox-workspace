@@ -8,7 +8,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "interbox-cli": "interbox",
-    "simulator": "bun install --cwd utils/hl7v2-simulator && bun run --cwd utils/hl7v2-simulator ui"
+    "hl7v2:simulator": "bun install --cwd utils/hl7v2-simulator && bun run --cwd utils/hl7v2-simulator ui"
   },
   "dependencies": {
     "@health-samurai/interbox": "^1.0.0"

@@ -23,7 +23,7 @@ You need [Bun](https://bun.sh) (`curl -fsSL https://bun.sh/install | bash`).
 From the workspace root, with the dev stack already up (`docker compose up`):
 
 ```bash
-bun run simulator
+bun run hl7v2:simulator
 ```
 
 That installs the simulator's dependencies and starts its UI on

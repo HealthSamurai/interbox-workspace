@@ -34,7 +34,7 @@ MRN pool, so routing and per-source error handling get exercised rather than a
 single uniform stream. With the stack up:
 
 ```bash
-bun run simulator
+bun run hl7v2:simulator
 ```
 
 That installs the simulator and opens its UI on http://localhost:4003, already
