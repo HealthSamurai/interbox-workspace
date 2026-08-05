@@ -1,9 +1,15 @@
-import { expect, test } from "bun:test";
+import { afterEach, expect, test } from "bun:test";
 import * as net from "node:net";
 import { ackCode, mllpFrame, streamOverMllp } from "../src/send/mllp.ts";
 
 const SB = 0x0b;
 const EB = 0x1c;
+
+// Servers are closed in afterEach as well as inline: without this, an assertion
+// that throws mid-test leaks its listener, and the cascade of follow-on errors
+// buries the real failure.
+const openServers: net.Server[] = [];
+afterEach(() => { for (const s of openServers.splice(0)) s.close(); });
 
 /** Spin a loopback MLLP server that unframes payloads into `onFrame`. */
 function listen(
@@ -22,6 +28,7 @@ function listen(
     });
     sock.on("error", () => {}); // client drops are expected in the reconnect test
   });
+  openServers.push(srv);
   return new Promise((resolve) => {
     srv.listen(0, "127.0.0.1", () => {
       resolve({ port: (srv.address() as net.AddressInfo).port, close: () => srv.close() });

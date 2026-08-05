@@ -8,8 +8,17 @@ export class Rng {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   }
   int(maxExclusive: number): number { return Math.floor(this.next() * maxExclusive); }
-  pick<T>(arr: readonly T[]): T { return arr[this.int(arr.length)]!; }
+  // Both of these used to end in a non-null assertion, so an empty distribution
+  // returned `undefined` at runtime and got interpolated into a segment as the
+  // literal string "undefined" — a profile with an empty catalog produced
+  // plausible-looking messages that were silently wrong. Fail where the mistake
+  // is instead.
+  pick<T>(arr: readonly T[]): T {
+    if (arr.length === 0) throw new Error("Rng.pick: empty array");
+    return arr[this.int(arr.length)]!;
+  }
   weighted<T>(pairs: ReadonlyArray<readonly [T, number]>): T {
+    if (pairs.length === 0) throw new Error("Rng.weighted: empty distribution");
     const total = pairs.reduce((a, [, w]) => a + w, 0);
     let x = this.next() * total;
     for (const [v, w] of pairs) { if ((x -= w) < 0) return v; }

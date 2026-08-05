@@ -76,21 +76,43 @@ Other environment knobs:
 | `PROFILE_PATH` | this package's `fixtures/profile.json` | generator profile |
 | `PROFILE_NAME` | `default` | profile label shown in the UI |
 | `SOURCES_PATH` | this package's `data/sources.json` | where source definitions persist |
+| `EXPORT_ROOT` | this package's `batch-out/` | **every** export directory must resolve inside this |
 | `EXPORT_DIR` | this package's `batch-out/` | directory prefilled in the export form |
 | `MAX_STREAM_RATE` | `1000` | per-source msg/s ceiling |
+| `MAX_SOURCES` | `64` | how many sources may exist at once |
+| `MAX_SSE_CLIENTS` | `32` | concurrent `/events` subscribers |
+| `MAX_STREAM_FILES` | `100000` | files the folder-stream writes before stopping itself |
 | `RECEIVING_APP` / `RECEIVING_FACILITY` | `INTERBOX` | MSH-5 / MSH-6 on generated messages |
 
 Path defaults resolve inside this package, so the simulator behaves the same
 whether you start it from here or from the workspace root. A path you pass
 explicitly is used as given — a relative one resolves against your shell's
-working directory, as usual.
+working directory, as usual. The one exception is the export directory, which is
+always resolved inside `EXPORT_ROOT` (see below).
 
-> **Bind address.** The simulator listens on loopback only, because it has no
-> authentication of any kind: `/export` writes — and with `clean: true`, deletes
-> — files at a path taken straight from the request body, and `/probe` opens TCP
-> connections on request. Setting `HOST=0.0.0.0` hands those to anyone who can
-> reach the port. Do it only on a network you control, and never on a shared or
-> internet-facing host.
+## Security
+
+The simulator has **no authentication**. It is a developer tool, and the design
+assumes only you can reach it. Three things enforce that:
+
+- **It binds loopback** (`127.0.0.1`) unless you set `HOST`.
+- **It requires `application/json` on POST.** Loopback binding alone is not
+  enough: a form on any website you visit can POST to `localhost` as a CORS
+  simple request — no preflight, no origin check — and the attacker does not
+  need to read the response to have caused the effect. A form cannot send a JSON
+  content-type, and `fetch()` with one preflights, which this server declines.
+- **It checks the `Host` header.** That is what stops DNS rebinding, where an
+  attacker's domain re-resolves to `127.0.0.1` and thereby becomes same-origin —
+  able to read responses, which the content-type rule cannot prevent.
+
+Export directories are confined under `EXPORT_ROOT`, and `clean` removes only the
+`.hl7` files the simulator itself wrote, so a mistargeted export cannot delete
+your data.
+
+> **Setting `HOST=0.0.0.0` gives up the first and third of those**, and hands
+> traffic generation and file writes under `EXPORT_ROOT` to anyone who can reach
+> the port. Do it only on a network you control, never on a shared or
+> internet-facing host. The server prints a warning at startup when you do.
 
 ## Choose source types
 
@@ -138,6 +160,10 @@ assigning authority.
 own seeded RNG, so streams interleave on the wire and one source failing does not
 disturb the others. Fault injection is per-source via `faultRate`.
 
+**Distinct identifiers.** Control IDs, placer/filler numbers and visit numbers
+all carry the source's own prefix, as MRNs do — so a receiver's deduplication
+sees genuinely separate systems rather than one system replayed.
+
 ## Faults
 
 `faultRate` is the fraction of messages deliberately broken before sending —
@@ -146,6 +172,19 @@ simulator classifies each locally, so its summary previews how the engine will
 bucket them (`parse_error` / `map_error` / `data_quality`, or benign-but-valid).
 Set it to `0` for a clean stream, or crank it to see the dashboard's error views
 populate.
+
+## Reproducibility
+
+The seed governs everything: message content, identities, **and** which messages
+get corrupted. Same seed, same corpus, down to the faults.
+
+```bash
+bun run gen 1000 0.05 42 --out-dir ./corpus   # rerun with 42 to get it back
+```
+
+`POST /export` reports the `seed` it used; pass that seed back to regenerate the
+same batch. Live streaming deliberately seeds itself fresh per run, so successive
+demos differ.
 
 ## The two views
 
@@ -167,7 +206,7 @@ bun run gen 1000 0.05 42
 
 # Write a corpus: out.jsonl / out.csv, or one .hl7 file per message
 bun run gen 1000 0.05 42 --output jsonl
-bun run gen 500 0 42 --out-dir ./corpus --clean
+bun run gen 500 0 42 --out-dir ./corpus --clean   # --clean removes only .hl7 files
 bun run gen 200 0 42 --types ADT^A01,ORU^R01   # force an even mix
 
 # Send over MLLP to a running engine
@@ -216,7 +255,8 @@ folder source ingests, for testing that path without a socket.
 | `src/cli.ts` | CLI generator (`bun run gen`) |
 | `src/send-cli.ts` | MLLP sender CLI, `batch` / `stream` (`bun run send`) |
 | `src/gen/` | Message synthesis (profile-driven, no real data) |
+| `src/gen/stream.ts` | `makeGenerator` — the one seeded generate-and-maybe-corrupt used by every caller |
 | `src/send/mllp.ts` | MLLP transport — fire-and-forget, reliable (ACK-aware), live stream |
-| `src/paths.ts` | Package-relative defaults for profile / state / export paths |
+| `src/paths.ts` | Package-relative path defaults, and the export-directory confinement |
 | `fixtures/` | `profile.json` (the shipped generator profile) and `profile.example.json` (a smaller one used by the tests) |
 | `test/` | Unit tests, incl. `sources.test.ts` for the registry |

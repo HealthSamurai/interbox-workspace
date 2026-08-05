@@ -9,17 +9,12 @@
  * many of them the way a web server hosts many sockets.
  */
 
-import { Rng } from "../src/gen/rng.ts";
-import { fakerNames } from "../src/gen/names.ts";
-import { generateMessage } from "../src/gen/assemble.ts";
-import { FAULTS } from "../src/gen/faults.ts";
+import { makeGenerator, type StreamMessage } from "../src/gen/stream.ts";
 import { streamOverMllp } from "../src/send/mllp.ts";
 import type { Profile } from "../src/profile/schema.ts";
 import { publish, type ActorStateSnapshot, type ActorCounters } from "./bus.ts";
 
 export interface ActorTarget { host: string; port: number; mock?: boolean }
-
-interface StreamMessage { msg: string; type: string; injected: boolean }
 
 // Exponential inter-arrival delay for a Poisson process with the given rate.
 function poissonDelayMs(rate: number): number {
@@ -57,6 +52,7 @@ export class SourceActor {
   private runAc: AbortController | null = null; // whole stream
   private legAc: AbortController | null = null; // current target leg
   private runToken: object | null = null; // identifies the live run (see supervise)
+  private nextIndex = 0; // identifier index, carried across regenerations
   private gen: ((faultRate: number) => StreamMessage) | null = null;
 
   constructor(id: string, profileFn: () => Promise<Profile>, targetFn: () => ActorTarget) {
@@ -75,28 +71,28 @@ export class SourceActor {
     return { running: this.running, rate: this.rate, faultRate: this.faultRate, counters: this.view() };
   }
 
-  /** One synthetic message per call — own Rng/names, live MSH-7 timestamp. */
+  /**
+   * One synthetic message per call — own seeded Rng/names, live MSH-7 timestamp.
+   *
+   * `startIndex` advances across regenerations rather than resetting to 0.
+   * Identifiers are index-derived, so restarting a source used to replay the
+   * same control/placer/visit numbers it had already sent — which is exactly
+   * what a receiver's dedup is meant to catch.
+   */
   private async makeGen(): Promise<(faultRate: number) => StreamMessage> {
     const profile = await this.profileFn();
-    const seed = Math.floor(Math.random() * 1e9);
-    const rng = new Rng(seed);
-    const names = fakerNames("en", seed);
-    let i = 0;
-    return (faultRate: number): StreamMessage => {
-      const m = generateMessage(rng, profile, names, i++, { now: new Date() });
-      let msg = m.msg;
-      let injected = false;
-      if (faultRate > 0 && Math.random() < faultRate) {
-        msg = FAULTS[Math.floor(Math.random() * FAULTS.length)]!.apply(msg);
-        injected = true;
-      }
-      return { msg, type: m.type, injected };
-    };
+    return makeGenerator({
+      profile,
+      seed: Math.floor(Math.random() * 1e9),
+      liveTime: true,
+      startIndex: this.nextIndex,
+    });
   }
 
   private lastTickAt = 0;
   private onMessage(m: StreamMessage): void {
     this.counters.sent += 1;
+    this.nextIndex += 1;
     if (m.injected) this.counters.malformed += 1;
     // High-rate protection: at 500+ msg/s a tick per message would flood SSE
     // clients. Cap published ticks to ~20/s per source; counters ride on each

@@ -10,11 +10,8 @@
 // the UI and `bun run gen` use. Faults are injected at --errorRate from the
 // FAULTS table and classified locally so the summary previews how the engine
 // will bucket them (parse_error / map_error / data_quality / benign-ok).
-import { Rng } from "./gen/rng.ts";
-import { fakerNames } from "./gen/names.ts";
 import { parseProfile, type Profile } from "./profile/schema.ts";
-import { generateMessage } from "./gen/assemble.ts";
-import { FAULTS } from "./gen/faults.ts";
+import { makeGenerator } from "./gen/stream.ts";
 import { classify } from "./validate/classify.ts";
 import { sendOverMllp, sendOverMllpReliable, streamOverMllp } from "./send/mllp.ts";
 import { DEFAULT_PROFILE } from "./paths.ts";
@@ -186,25 +183,20 @@ async function buildGenerator(profilePath: string, seed: number, errorRate: numb
     die(`could not read profile '${profilePath}': ${(e as Error)?.message ?? e}`);
   }
   const knownTypes = new Set(profile.messageTypes.map(([t]) => t));
-  const rng = new Rng(seed);
-  const names = fakerNames("en", seed);
-  let index = 0;
+  const next = makeGenerator({ profile, seed });
   let injected = 0;
   const byKind = new Map<string, number>();
 
   const gen = (now?: Date): string => {
-    let msg = generateMessage(rng, profile, names, index++, { now }).msg;
-    // Roll a fault after the message is built so the RNG stream (and thus the
-    // content) is identical whether or not a fault lands — only the corruption
-    // differs. Mirrors src/cli.ts. We send the wire bytes regardless; the engine
-    // does the authoritative classification, this tally is just a preview.
-    if (errorRate > 0 && rng.next() < errorRate) {
-      msg = rng.pick(FAULTS).apply(msg);
+    // We send the wire bytes regardless; the engine does the authoritative
+    // classification, this tally is just a preview of how it will bucket them.
+    const m = next(errorRate, now);
+    if (m.injected) {
       injected++;
-      const kind = classify(msg, knownTypes).kind;
+      const kind = classify(m.msg, knownTypes).kind;
       byKind.set(kind, (byKind.get(kind) ?? 0) + 1);
     }
-    return msg;
+    return m.msg;
   };
   return { gen, summary: () => ({ injected, byKind }) };
 }

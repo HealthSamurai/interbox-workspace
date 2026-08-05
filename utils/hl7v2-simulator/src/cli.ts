@@ -1,13 +1,10 @@
 import { join } from "node:path";
-import { mkdir, rm, readdir } from "node:fs/promises";
-import { Rng } from "./gen/rng.ts";
-import { fakerNames } from "./gen/names.ts";
+import { mkdir } from "node:fs/promises";
 import { parseProfile } from "./profile/schema.ts";
-import { generateMessage } from "./gen/assemble.ts";
-import { FAULTS } from "./gen/faults.ts";
+import { makeGenerator } from "./gen/stream.ts";
 import { classify } from "./validate/classify.ts";
 import { toRow, type MessageRow } from "./gen/row.ts";
-import { DEFAULT_PROFILE } from "./paths.ts";
+import { cleanExports, DEFAULT_PROFILE } from "./paths.ts";
 
 // usage: bun run src/cli.ts <count> <faultRate 0..1> <seed>
 //   [--profile f.json]   (default fixtures/profile.json)
@@ -56,29 +53,25 @@ if (forcedTypes) {
     process.exit(1);
   }
 }
-const rng = new Rng(seed);
-const names = fakerNames(locale, seed);
+const next = makeGenerator({ profile, seed, types: forcedTypes, locale });
 const rows: MessageRow[] = [];
 const outFiles: { msg: string; type: string }[] = [];
 
 for (let i = 0; i < count; i++) {
-  if (forcedTypes) profile.messageTypes = [[forcedTypes[i % forcedTypes.length]!, 1]];
-  const gen = generateMessage(rng, profile, names, i);
-  let msg = gen.msg;
+  const gen = next(faultRate);
   // Generated messages are valid + mappable by construction -> received.
   // Only an injected fault can break a message; the engine's parser names the
   // kind (a benign fault may still classify "ok" -> stays received).
-  if (rng.next() < faultRate) {
-    msg = rng.pick(FAULTS).apply(msg);
-    const c = classify(msg, knownTypes);
+  if (gen.injected) {
+    const c = classify(gen.msg, knownTypes);
     if (c.kind !== "ok") {
-      rows.push(toRow(msg, "error", channel, { errorKind: c.kind, errorMessage: c.detail }));
-      if (outDir) outFiles.push({ msg, type: gen.type });
+      rows.push(toRow(gen.msg, "error", channel, { errorKind: c.kind, errorMessage: c.detail }));
+      if (outDir) outFiles.push({ msg: gen.msg, type: gen.type });
       continue;
     }
   }
-  rows.push(toRow(msg, "received", channel));
-  if (outDir) outFiles.push({ msg, type: gen.type });
+  rows.push(toRow(gen.msg, "received", channel));
+  if (outDir) outFiles.push({ msg: gen.msg, type: gen.type });
 }
 
 const tally = (key: (r: MessageRow) => string) => {
@@ -107,9 +100,10 @@ if (outFmt === "jsonl") {
 // framing), named msg-<NN>-<TYPE>.hl7 — exactly what folderSource/hl7v2Parser drains.
 if (outDir) {
   await mkdir(outDir, { recursive: true });
-  if (doClean) {
-    for (const f of await readdir(outDir)) await rm(join(outDir, f), { force: true });
-  }
+  // Only our own .hl7 files: a blanket delete took out whatever else lived in
+  // the directory, and without `recursive` threw on the first subdirectory —
+  // after having already removed everything sorted ahead of it.
+  if (doClean) await cleanExports(outDir);
   const width = String(outFiles.length).length;
   let k = 0;
   for (const { msg, type } of outFiles) {

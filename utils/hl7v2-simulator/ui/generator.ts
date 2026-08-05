@@ -10,15 +10,14 @@
  * existing FAULTS table from src/gen/faults.ts.
  */
 
-import { mkdir, rm, readdir } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import { Rng } from "../src/gen/rng.ts";
-import { fakerNames } from "../src/gen/names.ts";
 import { parseProfile } from "../src/profile/schema.ts";
-import { generateMessage } from "../src/gen/assemble.ts";
-import { FAULTS } from "../src/gen/faults.ts";
+import { makeGenerator, type StreamMessage } from "../src/gen/stream.ts";
 import { sendOverMllpReliable } from "../src/send/mllp.ts";
 import type { Profile } from "../src/profile/schema.ts";
+
+export type { StreamMessage };
 import { cleanExports, DEFAULT_PROFILE, safeExportDir } from "../src/paths.ts";
 
 const PROFILE_PATH = process.env.PROFILE_PATH ?? DEFAULT_PROFILE;
@@ -71,23 +70,16 @@ export async function generateAndSend(p: SendParams): Promise<SendResult> {
     ? { ...baseProfile, messageTypes: [[p.forceType, 1]] }
     : baseProfile;
 
-  const seed = ++seedCounter;
-  const rng = new Rng(seed);
-  const names = fakerNames("en", seed);
+  const next = makeGenerator({ profile, seed: ++seedCounter });
 
   const messages: string[] = [];
   const types: Record<string, number> = {};
   let injectedFaults = 0;
 
   for (let i = 0; i < p.count; i++) {
-    const m = generateMessage(rng, profile, names, i);
-    let msg = m.msg;
-    if (p.faultRate > 0 && Math.random() < p.faultRate) {
-      const fault = FAULTS[Math.floor(Math.random() * FAULTS.length)]!;
-      msg = fault.apply(msg);
-      injectedFaults++;
-    }
-    messages.push(msg);
+    const m = next(p.faultRate);
+    if (m.injected) injectedFaults++;
+    messages.push(m.msg);
     types[m.type] = (types[m.type] ?? 0) + 1;
   }
 
@@ -158,38 +150,6 @@ export async function generateAndSend(p: SendParams): Promise<SendResult> {
   }
 }
 
-export interface StreamMessage {
-  msg: string;
-  type: string;
-  injected: boolean; // a fault was deliberately injected into this message
-}
-
-/**
- * A per-call message source for STREAM mode. Each call generates one synthetic
- * message (live MSH-7 timestamp) and injects a fault with probability
- * `faultRate`. Profile is cached; rng/names are seeded fresh per source so
- * successive streams differ. Unlike `generateAndSend` this does NO network I/O —
- * the stream loop owns transport (a persistent fire-and-forget MLLP connection),
- * which is what lets it pace far past the per-message-ACK ceiling.
- */
-export async function streamGenerator(): Promise<(faultRate: number) => StreamMessage> {
-  const profile = await getProfile();
-  const seed = ++seedCounter;
-  const rng = new Rng(seed);
-  const names = fakerNames("en", seed);
-  let i = 0;
-  return (faultRate: number): StreamMessage => {
-    const m = generateMessage(rng, profile, names, i++, { now: new Date() });
-    let msg = m.msg;
-    let injected = false;
-    if (faultRate > 0 && Math.random() < faultRate) {
-      msg = FAULTS[Math.floor(Math.random() * FAULTS.length)]!.apply(msg);
-      injected = true;
-    }
-    return { msg, type: m.type, injected };
-  };
-}
-
 // ── Folder / batch output (files, not MLLP) ─────────────────────────────────
 // The batch counterpart of generateAndSend: write raw .hl7 files a folderSource
 // can drain (one message per file, CR-separated segments, no MLLP framing).
@@ -199,14 +159,17 @@ export interface FolderParams {
   count: number;
   faultRate: number;    // 0..1
   types?: string[];     // round-robin forced mix; empty = the profile's own mix
-  clean?: boolean;      // wipe existing files first (folderSource reads ALL files)
+  clean?: boolean;      // remove our own .hl7 files first (folderSource reads ALL files)
   profile?: Profile;
+  seed?: number;        // reproduce a previous export; omitted = a fresh one
 }
 export interface FolderResult {
   written: number;
   dir: string;
   types: Record<string, number>;
   injectedFaults: number;
+  /** The seed actually used — pass it back to regenerate this exact batch. */
+  seed: number;
   ok: boolean;
   error?: string;
 }
@@ -220,35 +183,26 @@ function badTypes(base: Profile, types?: string[]): string | null {
 
 // Round-robin generator over the (optional) forced type list, so every listed
 // type appears — evenly — regardless of the profile's own weights.
-function forcedGen(base: Profile, types: string[] | null): (faultRate: number) => StreamMessage {
-  const seed = ++seedCounter;
-  const rng = new Rng(seed);
-  const names = fakerNames("en", seed);
-  let i = 0;
-  return (faultRate: number): StreamMessage => {
-    const profile: Profile = types ? { ...base, messageTypes: [[types[i % types.length]!, 1]] } : base;
-    const m = generateMessage(rng, profile, names, i++, { now: new Date() });
-    let msg = m.msg;
-    let injected = false;
-    if (faultRate > 0 && Math.random() < faultRate) {
-      msg = FAULTS[Math.floor(Math.random() * FAULTS.length)]!.apply(msg);
-      injected = true;
-    }
-    return { msg, type: m.type, injected };
-  };
+//
+// `seed` is accepted so an export can be reproduced; without one it advances a
+// process counter, which keeps successive exports different but still puts the
+// seed on the record (the result reports it back).
+function forcedGen(base: Profile, types: string[] | null, seed: number): (faultRate: number) => StreamMessage {
+  return makeGenerator({ profile: base, seed, types, liveTime: true });
 }
 
 export async function generateToFolder(p: FolderParams): Promise<FolderResult> {
   const base = p.profile ?? (await getProfile());
   const bad = badTypes(base, p.types);
-  if (bad) return { written: 0, dir: p.dir, types: {}, injectedFaults: 0, ok: false, error: bad };
+  if (bad) return { written: 0, dir: p.dir, types: {}, injectedFaults: 0, seed: 0, ok: false, error: bad };
   let dir: string;
   try {
     dir = safeExportDir(p.dir);
   } catch (e) {
-    return { written: 0, dir: p.dir, types: {}, injectedFaults: 0, ok: false, error: (e as Error).message };
+    return { written: 0, dir: p.dir, types: {}, injectedFaults: 0, seed: 0, ok: false, error: (e as Error).message };
   }
-  const next = forcedGen(base, p.types?.length ? p.types : null);
+  const seed = p.seed ?? ++seedCounter;
+  const next = forcedGen(base, p.types?.length ? p.types : null, seed);
   const types: Record<string, number> = {};
   let injectedFaults = 0;
   const width = String(Math.max(1, p.count)).length;
@@ -267,9 +221,9 @@ export async function generateToFolder(p: FolderParams): Promise<FolderResult> {
     // of both: destructive AND failed.
     if (p.clean) await cleanExports(dir);
     for (const f of files) await Bun.write(join(dir, f.name), f.msg);
-    return { written: files.length, dir, types, injectedFaults, ok: true };
+    return { written: files.length, dir, types, injectedFaults, seed, ok: true };
   } catch (e) {
-    return { written: 0, dir, types, injectedFaults, ok: false, error: (e as Error)?.message ?? String(e) };
+    return { written: 0, dir, types, injectedFaults, seed, ok: false, error: (e as Error)?.message ?? String(e) };
   }
 }
 
@@ -290,7 +244,7 @@ class FolderStreamer {
   rate = 2;
   faultRate = 0;
 
-  async start(o: { dir: string; rate: number; faultRate: number; types?: string[]; profile?: Profile }): Promise<{ ok: boolean; error?: string }> {
+  async start(o: { dir: string; rate: number; faultRate: number; types?: string[]; profile?: Profile; seed?: number }): Promise<{ ok: boolean; error?: string }> {
     if (this.running) return { ok: false, error: `already streaming to ${this.dir}` };
     const base = o.profile ?? (await getProfile());
     const bad = badTypes(base, o.types);
@@ -307,7 +261,7 @@ class FolderStreamer {
     this.faultRate = Math.max(0, Math.min(1, o.faultRate));
     this.written = 0;
     this.lastError = null;
-    this.next = forcedGen(base, o.types?.length ? o.types : null);
+    this.next = forcedGen(base, o.types?.length ? o.types : null, o.seed ?? ++seedCounter);
     this.running = true;
     const mine = ++this.generation;
     const tick = async (): Promise<void> => {

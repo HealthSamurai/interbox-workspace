@@ -79,32 +79,53 @@ export async function sendOverMllp(messages: string[], opts: MllpOpts = {}): Pro
   const host = opts.host ?? "127.0.0.1";
   const port = opts.port ?? 2575;
   const concurrency = Math.max(1, Math.min(opts.concurrency ?? 8, messages.length || 1));
-  const socks = await Promise.all(
+  // allSettled + an explicit teardown: with Promise.all, one failed connect (or
+  // one socket erroring mid-write) rejected the aggregate and left every sibling
+  // socket open and unreferenced. Worse, `open` removes its own error listener
+  // once connected, so a later error on a leaked socket was an unhandled 'error'
+  // event — which takes the process down.
+  const opened = await Promise.allSettled(
     Array.from({ length: concurrency }, () => open(host, port)),
   );
+  const socks = opened.flatMap((r) => (r.status === "fulfilled" ? [r.value] : []));
+  if (socks.length === 0) {
+    const why = opened.find((r) => r.status === "rejected");
+    throw why?.status === "rejected" ? why.reason : new Error(`could not connect to ${host}:${port}`);
+  }
   let sent = 0;
-  await Promise.all(
-    socks.map((sock, k) =>
-      new Promise<void>((resolve, reject) => {
-        sock.once("error", reject);
-        let i = k;
-        const writeNext = (): void => {
-          if (i >= messages.length) {
-            sock.end();
-            resolve();
-            return;
-          }
-          const buf = mllpFrame(messages[i]!);
-          i += concurrency;
-          sent++;
-          if (sock.write(buf)) process.nextTick(writeNext);
-          else sock.once("drain", writeNext);
-        };
-        writeNext();
-      }),
-    ),
-  );
-  return sent;
+  try {
+    const results = await Promise.allSettled(
+      socks.map((sock, k) =>
+        new Promise<void>((resolve, reject) => {
+          sock.once("error", reject);
+          let i = k;
+          const writeNext = (): void => {
+            if (i >= messages.length) {
+              sock.end();
+              resolve();
+              return;
+            }
+            const buf = mllpFrame(messages[i]!);
+            i += socks.length;
+            sent++;
+            if (sock.write(buf)) process.nextTick(writeNext);
+            else sock.once("drain", writeNext);
+          };
+          writeNext();
+        }),
+      ),
+    );
+    const failed = results.find((r) => r.status === "rejected");
+    if (failed?.status === "rejected") throw failed.reason;
+    return sent;
+  } finally {
+    // Keep a listener attached: destroying a socket can still surface an error,
+    // and an unhandled 'error' event is fatal.
+    for (const sock of socks) {
+      sock.on("error", () => {});
+      sock.destroy();
+    }
+  }
 }
 
 /** Parse the ACK code (MSA-1: AA/AE/AR) from an HL7 ACK message. */
@@ -173,31 +194,34 @@ export async function sendOverMllpReliable(messages: string[], opts: ReliableOpt
   const maxRetries = opts.maxRetries ?? 5;
   const backoffMs = opts.backoffMs ?? 1000;
 
-  let pending = messages.slice();
+  // Track INDICES, not message text. Keying the response map by the message
+  // body collapsed duplicates, so a batch containing the same message twice
+  // reported the refused/silent split wrong.
+  let pending = messages.map((_, i) => i);
   let retries = 0;
   // Last response code per still-failing message: present = refused, absent = silent.
-  let lastCodes = new Map<string, string | undefined>();
+  let lastCodes = new Map<number, string | undefined>();
   for (let attempt = 0; attempt <= maxRetries && pending.length > 0; attempt++) {
     if (attempt > 0) {
       retries += pending.length;
       await new Promise((r) => setTimeout(r, backoffMs));
     }
     const batch = pending;
-    const failed: string[] = [];
+    const failed: number[] = [];
     let i = 0;
     lastCodes = new Map();
     const worker = async (): Promise<void> => {
       while (i < batch.length) {
-        const msg = batch[i++]!;
-        const code = await deliverOne(host, port, msg, ackTimeoutMs);
-        if (code !== "AA") { failed.push(msg); lastCodes.set(msg, code); }
+        const idx = batch[i++]!;
+        const code = await deliverOne(host, port, messages[idx]!, ackTimeoutMs);
+        if (code !== "AA") { failed.push(idx); lastCodes.set(idx, code); }
       }
     };
     await Promise.all(Array.from({ length: Math.min(concurrency, batch.length) }, worker));
     pending = failed;
   }
   let refused = 0;
-  for (const m of pending) if (lastCodes.get(m) !== undefined) refused += 1;
+  for (const idx of pending) if (lastCodes.get(idx) !== undefined) refused += 1;
   return { acked: messages.length - pending.length, refused, silent: pending.length - refused, failed: pending.length, retries };
 }
 
@@ -206,9 +230,12 @@ const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms
 /** Write one frame, awaiting backpressure drain; rejects if the socket errors. */
 function writeFrame(sock: net.Socket, frame: Buffer): Promise<void> {
   return new Promise((resolve, reject) => {
-    const onErr = (e: Error): void => reject(e);
+    // Both listeners come off on either outcome. Leaving the pending `drain`
+    // attached when the socket errored accumulated one listener per frame on a
+    // long back-pressured stream.
+    const done = (): void => { sock.off("error", onErr); sock.off("drain", done); resolve(); };
+    const onErr = (e: Error): void => { sock.off("drain", done); reject(e); };
     sock.once("error", onErr);
-    const done = (): void => { sock.off("error", onErr); resolve(); };
     if (sock.write(frame)) process.nextTick(done);
     else sock.once("drain", done);
   });
@@ -321,27 +348,4 @@ export async function streamOverMllp(opts: LiveStreamOpts): Promise<number> {
     if (sock) { try { sock.end(); } catch { /* gone */ } }
   }
   return sent;
-}
-
-export interface StreamOpts extends MllpOpts {
-  /** Gap (ms) to wait before the NEXT send. Supply an exponential draw
-   * (`Rng.exponential`) and the arrivals form a Poisson process. */
-  gapMs: () => number;
-  onSent?: (n: number) => void;
-}
-
-/**
- * Stream a fixed array of messages over one MLLP connection, pausing `gapMs()`
- * between each. Thin wrapper over `streamOverMllp` (index-pull, no reconnect →
- * fails fast if the engine is down).
- */
-export async function sendOverMllpStream(messages: string[], opts: StreamOpts): Promise<number> {
-  let i = 0;
-  return streamOverMllp({
-    host: opts.host,
-    port: opts.port,
-    next: () => (i < messages.length ? messages[i++]! : null),
-    gapMs: opts.gapMs,
-    onSent: opts.onSent ? (n) => opts.onSent!(n) : undefined,
-  });
 }
