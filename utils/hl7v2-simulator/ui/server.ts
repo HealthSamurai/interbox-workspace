@@ -16,18 +16,29 @@ import {
   setTarget, getTarget, bumpExternalCounters,
 } from "./stream.ts";
 import { ALLOWED_MSG_TYPES, SourceRegistry, type SourceType } from "./sources.ts";
-import { DEFAULT_EXPORT_DIR, DEFAULT_SOURCES_PATH } from "../src/paths.ts";
+import { DEFAULT_EXPORT_DIR, DEFAULT_SOURCES_PATH, EXPORT_ROOT } from "../src/paths.ts";
 
 const PORT = Number(process.env.PORT ?? 4003);
 // Loopback by default. This server is a developer tool with no authentication:
-// /export writes and (with clean:true) deletes files at a path taken straight
-// from the request body, and /probe will TCP-scan from wherever it runs. Bun
-// would otherwise bind 0.0.0.0 and hand all of that to anyone on the network.
-// Set HOST=0.0.0.0 only on a network you control.
-const HOST = process.env.HOST ?? "127.0.0.1";
+// /export writes files at a path taken from the request body, and /probe will
+// TCP-connect from wherever it runs. Bun would otherwise bind 0.0.0.0 and hand
+// all of that to anyone on the network. Set HOST=0.0.0.0 only on a network you
+// control — and see the guard below, because binding loopback is NOT on its own
+// a defence against a browser.
+//
+// `||`, not `??`: an empty-but-set HOST (`docker run -e HOST`, a Kubernetes
+// `value: ""`) reaches Bun as hostname:"" and binds every interface — while Bun
+// still reports the hostname as "localhost", so the log looks reassuring.
+const HOST = process.env.HOST || "127.0.0.1";
+const WILDCARD_HOST = HOST === "0.0.0.0" || HOST === "::";
 const PROFILE = process.env.PROFILE_NAME ?? "default";
 const SOURCES_PATH = process.env.SOURCES_PATH ?? DEFAULT_SOURCES_PATH;
 const EXPORT_DIR = process.env.EXPORT_DIR ?? DEFAULT_EXPORT_DIR;
+// Ceilings. Every one of these guards a route that a single request can drive
+// without bound; the defaults are far above any real demo.
+const MAX_SOURCES = Number(process.env.MAX_SOURCES ?? 64);
+const MAX_SSE_CLIENTS = Number(process.env.MAX_SSE_CLIENTS ?? 32);
+let sseClients = 0;
 
 // Available MLLP targets — switchable from the UI.
 // Override via TARGETS env: "label1:host1:port1,label2:host2:port2".
@@ -76,15 +87,27 @@ await registry.init();
 // Quick TCP probe for the add-source form: is anything listening on the port?
 // Bun.connect resolves on open and rejects on connect failure; race a timeout.
 async function probePort(port: number, host = "127.0.0.1"): Promise<boolean> {
+  // Keep a handle on the connect promise: when the timeout wins the race, the
+  // connection may still succeed afterwards, and whatever it yields has to be
+  // closed or it leaks a descriptor on every probe the UI makes.
+  const connecting = Bun.connect({
+    hostname: host, port, socket: { data() {}, error() {}, close() {} },
+  });
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     const sock = await Promise.race([
-      Bun.connect({ hostname: host, port, socket: { data() {}, error() {}, close() {} } }),
-      new Promise<never>((_, rej) => setTimeout(() => rej(new Error("probe timeout")), 1500)),
+      connecting,
+      new Promise<never>((_, rej) => {
+        timer = setTimeout(() => rej(new Error("probe timeout")), 1500);
+      }),
     ]);
     sock.end();
     return true;
   } catch {
+    void connecting.then((s) => s.end()).catch(() => {});
     return false;
+  } finally {
+    if (timer) clearTimeout(timer);
   }
 }
 
@@ -98,13 +121,90 @@ interface SendBody {
 interface StreamStartBody { rate?: number; faultRate?: number; }
 interface StreamPatchBody { rate?: number; faultRate?: number; }
 
+// ── Browser guard ───────────────────────────────────────────────────────────
+//
+// Binding to loopback keeps the network out; it does nothing about the
+// developer's own browser. Bun's `req.json()` ignores Content-Type, so without
+// this every mutating route is reachable from any website the developer visits:
+// a plain `<form enctype="text/plain">` POSTing a JSON-shaped field name is a
+// CORS *simple request* — no preflight, no origin check, and the attacker never
+// needs to read the response to have caused the effect.
+//
+// Two checks close it:
+//   1. content-type must be application/json. A <form> cannot send that, and
+//      fetch() with it triggers a preflight this server answers with no CORS
+//      headers, so the browser blocks the real request.
+//   2. the Host header must be one we expect. This is what stops DNS rebinding,
+//      where an attacker-controlled name re-resolves to 127.0.0.1 and thereby
+//      becomes same-origin — able to READ responses, which check 1 can't help
+//      with. Skipped when bound to a wildcard, since we can't know the legit
+//      names then and the operator has explicitly opted into exposure.
+const ALLOWED_HOSTS = new Set([
+  `localhost:${PORT}`, `127.0.0.1:${PORT}`, `[::1]:${PORT}`, `${HOST}:${PORT}`,
+]);
+
+function guard(req: Request): Response | null {
+  if (!WILDCARD_HOST && !ALLOWED_HOSTS.has(req.headers.get("host") ?? "")) {
+    return Response.json({ ok: false, error: "unrecognised Host" }, { status: 421 });
+  }
+  if (req.method === "GET" || req.method === "HEAD") return null;
+  // POST is the only mutating method a <form> can emit, so it is the only one
+  // that can arrive without a preflight. PATCH and DELETE are never simple
+  // requests — the browser preflights them, and this server answers with no CORS
+  // headers, so they are already unreachable cross-origin. Demanding a JSON
+  // content-type on those too would only break legitimate bodiless calls.
+  if (req.method === "POST"
+    && !(req.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) {
+    return Response.json(
+      { ok: false, error: "content-type: application/json required" },
+      { status: 415 },
+    );
+  }
+  const origin = req.headers.get("origin");
+  if (origin && origin !== `http://${req.headers.get("host")}`) {
+    return Response.json({ ok: false, error: "cross-origin request denied" }, { status: 403 });
+  }
+  return null;
+}
+
+/**
+ * Apply {@link guard} to every handler in a Bun route table.
+ *
+ * Wrapping the table rather than calling guard() inside each handler means a
+ * route added later cannot forget it — there is no per-route opt-in to omit.
+ * The signature is written in terms of Bun's own `Routes` type so each handler
+ * still gets its `BunRequest<Path>` (and therefore typed `req.params`); the
+ * casts below are confined to the untyped walk over the table.
+ */
+function guarded<R extends string>(routes: Bun.Serve.Routes<undefined, R>): Bun.Serve.Routes<undefined, R> {
+  type AnyHandler = (req: Request, ...rest: unknown[]) => Response | Promise<Response>;
+  const wrap = (h: AnyHandler): AnyHandler =>
+    (req, ...rest) => guard(req) ?? h(req, ...rest);
+  const out: Record<string, unknown> = {};
+  for (const [path, def] of Object.entries(routes as Record<string, unknown>)) {
+    if (typeof def === "function") {
+      out[path] = wrap(def as AnyHandler);
+    } else if (def && typeof def === "object") {
+      out[path] = Object.fromEntries(
+        Object.entries(def as Record<string, unknown>).map(([m, h]) => [
+          m,
+          typeof h === "function" ? wrap(h as AnyHandler) : h,
+        ]),
+      );
+    } else {
+      out[path] = def;
+    }
+  }
+  return out as Bun.Serve.Routes<undefined, R>;
+}
+
 Bun.serve({
   port: PORT,
   hostname: HOST,
   // SSE /events is long-lived; Bun's default 10s idleTimeout would close it
   // between ticks (heartbeat is 15s, too late to save it). 0 = no timeout.
   idleTimeout: 0,
-  routes: {
+  routes: guarded({
     // Topology (multi-source map) is the default view; the classic
     // single-stream page stays fully functional at /classic.
     "/": () =>
@@ -148,6 +248,12 @@ Bun.serve({
       POST: async (req) => {
         let body: { name?: string; type?: SourceType; rate?: number; faultRate?: number; targetPort?: number; msgTypes?: string[] } = {};
         try { body = await req.json() as typeof body; } catch {}
+        if (registry.list().length >= MAX_SOURCES) {
+          return Response.json(
+            { ok: false, error: `at the ${MAX_SOURCES}-source limit (raise MAX_SOURCES)` },
+            { status: 429 },
+          );
+        }
         try {
           const def = await registry.create({
             name: body.name ?? "",
@@ -192,7 +298,9 @@ Bun.serve({
         if (!entry) return Response.json({ ok: false, error: "unknown source" }, { status: 404 });
         let body: SendBody = { mode: "burst" };
         try { body = await req.json() as SendBody; } catch {}
-        const count = body.mode === "single" ? 1 : Math.max(1, Math.min(10000, body.count ?? 1));
+        // 1000, not 10000: the reliable path waits for an ACK per message, so a
+        // silent target turns a big burst into a request that hangs for hours.
+        const count = body.mode === "single" ? 1 : Math.max(1, Math.min(1000, body.count ?? 1));
         const t = registry.targetOf(req.params.id)!;
         const result = await generateAndSend({
           count,
@@ -294,7 +402,9 @@ Bun.serve({
         try { body = await req.json() as SendBody; }
         catch { return Response.json({ ok: false, error: "invalid json" }, { status: 400 }); }
         const faultRate = Math.max(0, Math.min(1, body.faultRate ?? 0));
-        const count = body.mode === "single" ? 1 : Math.max(1, Math.min(10000, body.count ?? 1));
+        // 1000, not 10000: the reliable path waits for an ACK per message, so a
+        // silent target turns a big burst into a request that hangs for hours.
+        const count = body.mode === "single" ? 1 : Math.max(1, Math.min(1000, body.count ?? 1));
         const forceType = body.mode === "single" ? body.type : undefined;
         const t = activeTarget();
         const result = await generateAndSend({
@@ -335,12 +445,29 @@ Bun.serve({
 
     "/events": (req) => {
       // SSE: client connects once on page-load, receives state + tick events
+      if (sseClients >= MAX_SSE_CLIENTS) {
+        return Response.json({ ok: false, error: "too many event subscribers" }, { status: 503 });
+      }
+      sseClients += 1;
       const enc = new TextEncoder();
       let unsubscribe = () => {};
       let heartbeat: ReturnType<typeof setInterval> | null = null;
+      let closed = false;
+      const release = () => {
+        if (closed) return;
+        closed = true;
+        sseClients -= 1;
+        try { unsubscribe(); } catch {}
+        if (heartbeat) clearInterval(heartbeat);
+      };
       const stream = new ReadableStream({
         start(controller) {
           const send = (data: unknown) => {
+            // Drop rather than buffer when the client isn't draining. These are
+            // periodic state snapshots, not a log: the next tick carries the
+            // full counters, so a skipped frame costs nothing — whereas an
+            // unbounded queue against a backgrounded tab is a memory leak.
+            if ((controller.desiredSize ?? 0) <= 0) return;
             try { controller.enqueue(enc.encode(`data: ${JSON.stringify(data)}\n\n`)); }
             catch { /* connection closed mid-flight */ }
           };
@@ -351,14 +478,12 @@ Bun.serve({
           }, 15000);
           // disconnect when client navigates away
           req.signal.addEventListener("abort", () => {
-            try { unsubscribe(); } catch {}
-            if (heartbeat) clearInterval(heartbeat);
+            release();
             try { controller.close(); } catch {}
           });
         },
         cancel() {
-          try { unsubscribe(); } catch {}
-          if (heartbeat) clearInterval(heartbeat);
+          release();
         },
       });
       return new Response(stream, {
@@ -369,19 +494,25 @@ Bun.serve({
         },
       });
     },
-  },
+  }),
   error(err) {
+    // Log the detail, return a generic message: these carry absolute paths
+    // (ENOENT/EACCES), which is free reconnaissance for anything that can read
+    // a response.
     console.error("[source-ui]", err);
-    return Response.json(
-      { ok: false, error: (err as Error)?.message ?? String(err) },
-      { status: 500 },
-    );
+    return Response.json({ ok: false, error: "internal error" }, { status: 500 });
   },
 });
 
 console.log(
-  `[source-ui] listening on http://localhost:${PORT}  ·  profile ${PROFILE}`,
+  `[source-ui] listening on http://${HOST}:${PORT}  ·  profile ${PROFILE}`,
 );
+if (WILDCARD_HOST) {
+  console.warn(
+    `[source-ui] WARNING: bound to ${HOST} — this server has no authentication. ` +
+    `Anyone who can reach port ${PORT} can generate traffic and write files under ${EXPORT_ROOT}.`,
+  );
+}
 console.log(
   `[source-ui] targets: ${TARGETS.map((t) => `${t.label}@${t.host}:${t.port}`).join(" · ")}  (active: ${activeTarget().label})`,
 );

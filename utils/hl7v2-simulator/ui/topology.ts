@@ -358,9 +358,9 @@ function render() {
       ? '<div class="node-stat"><span class="node-sent">' + fmtRate(s.rate) + ' msg/s · <span class="sent-n">' + s.counters.sent + '</span> sent</span></div>'
       : '<div class="node-stat idle-txt">Idle · <span class="sent-n">' + s.counters.sent + '</span> sent</div>';
     el.innerHTML =
-      '<div class="node-strip ' + s.type + '"><span>' + escapeHtml(strip) + '</span>' +
+      '<div class="node-strip ' + escapeAttr(s.type) + '"><span>' + escapeHtml(strip) + '</span>' +
       '<span class="node-status-dot ' + (s.running ? 'status-live' : 'status-idle') + '"></span></div>' +
-      '<div class="node-edge ' + s.type + '"></div>' +
+      '<div class="node-edge ' + escapeAttr(s.type) + '"></div>' +
       '<div class="node-body"><div class="node-name">' + escapeHtml(title(s.name)) + '</div>' +
       '<div class="node-types">' + escapeHtml(typesLine(s)) + '</div>' + stat + '</div>';
     stage.appendChild(el);
@@ -381,6 +381,9 @@ function updateAllBtn() {
 
 function title(name) { return name.toLowerCase().replace(/\\b[a-z]/g, (c) => c.toUpperCase()); }
 function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+// escapeHtml goes through textContent, which does NOT escape quotes — safe in
+// element context, not inside an attribute. Use this one there.
+function escapeAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
 // Log-scale rate slider: position 0..100 -> 0.1..1000 msg/s (0.1 @0, 1 @25,
 // 10 @50, 100 @75, 1000 @100) — fine control at demo rates, load rates reachable.
@@ -472,7 +475,7 @@ function renderInspector() {
   insSig = sig;
   inspector.innerHTML =
     '<div class="ins-section"><div class="ins-h">Selected source</div>' +
-    '<div class="ins-name">' + escapeHtml(title(s.name)) + '<small>' + escapeHtml(s.id) + ' · ' + s.type + (s.targetPort ? ' · port ' + s.targetPort : '') + '</small></div></div>' +
+    '<div class="ins-name">' + escapeHtml(title(s.name)) + '<small>' + escapeHtml(s.id) + ' · ' + escapeHtml(s.type) + (s.targetPort ? ' · port ' + s.targetPort : '') + '</small></div></div>' +
     '<div class="ins-section">' +
     '<div class="ctl"><div class="ctl-row"><span class="ctl-k">Rate</span><span class="ctl-v" id="rateV">' + fmtRate(s.rate) + '<small>/s</small></span></div>' +
     '<input type="range" min="0" max="100" step="1" value="' + posFromRate(s.rate) + '" id="rateSlider" title="log scale: 0.1 — 1000 msg/s"></div>' +
@@ -480,7 +483,7 @@ function renderInspector() {
     '<input type="range" min="0" max="50" step="1" value="' + Math.round(s.faultRate * 100) + '" id="faultSlider"></div></div>' +
     '<div class="ins-section"><div class="ins-h">Message types</div><div class="msg-chips">' +
     ALL_MSG_TYPES.map((t) => '<button type="button" class="msg-chip' + ((s.msgTypes || []).includes(t) ? ' on' : '') + '" data-t="' + t + '">' + t + '</button>').join('') +
-    '</div><div class="chips-hint">' + (s.msgTypes && s.msgTypes.length ? 'hand-picked, equal shares' : 'preset mix for ' + s.type + ' — click to hand-pick') + '</div></div>' +
+    '</div><div class="chips-hint">' + (s.msgTypes && s.msgTypes.length ? 'hand-picked, equal shares' : 'preset mix for ' + escapeHtml(s.type) + ' — click to hand-pick') + '</div></div>' +
     '<div class="ins-section"><div class="ins-h">Counters</div><div class="ins-stats">' +
     '<div class="ins-stat-cell"><div class="ins-stat-k">Sent</div><div class="ins-stat-v" id="insSent">' + s.counters.sent + '</div></div>' +
     '<div class="ins-stat-cell"><div class="ins-stat-k">Accepted</div><div class="ins-stat-v ok" id="insAcc">' + s.counters.accepted + '</div></div>' +

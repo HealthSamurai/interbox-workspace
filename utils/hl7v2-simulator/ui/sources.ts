@@ -50,13 +50,23 @@ const TYPE_PRESETS: Record<SourceType, { app: string; mix: [string, number][] }>
 };
 
 /** HL7-style sender name: CAPS, ASCII, single spaces. */
+/** Longest source name we accept — MSH-4 has no business being longer. */
+export const MAX_NAME_LEN = 40;
+
 export function normalizeName(raw: string): string {
   return raw
     .normalize("NFKD")
     .replace(/[^\x20-\x7E]/g, "")
+    // HL7v2 delimiters must never survive into a segment. The name becomes MSH-4
+    // by raw interpolation, so a name containing `|` shifts every later field
+    // along — letting the caller forge MSH-9 (what receivers route on) and
+    // MSH-10 (what they dedupe on) on traffic aimed at a real engine. Stripping
+    // non-printables above already removes CR/LF, so this closes the rest.
+    .replace(/[|^~\\&]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .toUpperCase();
+    .toUpperCase()
+    .slice(0, MAX_NAME_LEN);
 }
 
 export function slugOf(name: string): string {
@@ -91,13 +101,38 @@ export function profileFor(base: Profile, def: SourceDef): Profile {
       facility: [[facility, 1]],
       assigningAuthority: [[aa, 1]],
     },
-    idFormats: { ...base.idFormats, mrn: `${initialsOf(def.name)}########` },
+    // Every identifier gets the source prefix, not just the MRN. Leaving the
+    // rest on the shared base format made concurrent sources emit identical
+    // control IDs, placer/filler numbers and visit numbers in lockstep — which
+    // defeats the point of a multi-source simulator, since the engine's dedup
+    // sees one system's traffic replayed rather than several systems.
+    idFormats: {
+      ...base.idFormats,
+      mrn: `${initialsOf(def.name)}########`,
+      controlId: `${initialsOf(def.name)}-##########`,
+      placer: `${initialsOf(def.name)}P#########`,
+      filler: `${initialsOf(def.name)}F#########`,
+      visit: `${initialsOf(def.name)}V#########`,
+    },
   };
 }
 
 export interface SourceView extends SourceDef {
   running: boolean;
   counters: ActorCounters;
+}
+
+/** Shape check for a persisted definition — see SourceRegistry.init. */
+function isValidDef(d: unknown): d is SourceDef {
+  if (!d || typeof d !== "object") return false;
+  const c = d as Record<string, unknown>;
+  return typeof c.id === "string" && c.id.length > 0
+    && typeof c.name === "string" && c.name.length > 0 && c.name.length <= MAX_NAME_LEN
+    && typeof c.type === "string" && Object.hasOwn(TYPE_PRESETS, c.type)
+    && typeof c.rate === "number" && Number.isFinite(c.rate)
+    && typeof c.faultRate === "number" && Number.isFinite(c.faultRate)
+    && (c.targetPort === undefined || (Number.isInteger(c.targetPort) && (c.targetPort as number) > 0 && (c.targetPort as number) <= 65535))
+    && (c.msgTypes === undefined || (Array.isArray(c.msgTypes) && c.msgTypes.every((t) => (ALLOWED_MSG_TYPES as readonly string[]).includes(t as string))));
 }
 
 export class SourceRegistry {
@@ -115,8 +150,18 @@ export class SourceRegistry {
   async init(): Promise<void> {
     let defs: SourceDef[] | null = null;
     try {
-      const raw = await Bun.file(this.path).json() as SourceDef[];
-      if (Array.isArray(raw) && raw.every((d) => d && typeof d.id === "string")) defs = raw;
+      const raw = await Bun.file(this.path).json() as unknown;
+      // Re-validate on load, not just on create. This file is on disk: it can be
+      // hand-edited or restored from elsewhere, and an unchecked `type` flows
+      // into a class attribute in the topology view. Drop bad entries rather
+      // than refusing to boot — a corrupt row shouldn't cost you the others.
+      if (Array.isArray(raw)) {
+        const kept = raw.filter(isValidDef);
+        if (kept.length !== raw.length) {
+          console.warn(`[sources] ignored ${raw.length - kept.length} invalid definition(s) in ${this.path}`);
+        }
+        if (kept.length) defs = kept;
+      }
     } catch { /* no file yet — seed below */ }
     if (!defs) {
       defs = [
@@ -200,15 +245,27 @@ export class SourceRegistry {
     const entry = this.get(id);
     if (!entry) throw new Error(`unknown source "${id}"`);
     const def = entry.def;
-    if (typeof patch.rate === "number") def.rate = clampRate(patch.rate);
-    if (typeof patch.faultRate === "number") def.faultRate = clamp01(patch.faultRate);
-    if (typeof patch.targetPort === "number") def.targetPort = validPort(patch.targetPort);
+    // Validate everything BEFORE touching the live def. `def` is the object in
+    // the registry map, so mutating as we went meant a patch that failed
+    // validation halfway left memory, disk and the actor's pacing disagreeing —
+    // the UI showing a value that was rejected, never persisted, and silently
+    // reverted on the next restart.
+    const nextRate = typeof patch.rate === "number" ? clampRate(patch.rate) : undefined;
+    const nextFaultRate = typeof patch.faultRate === "number" ? clamp01(patch.faultRate) : undefined;
+    const nextPort = typeof patch.targetPort === "number" ? validPort(patch.targetPort) : undefined;
+    const nextMsgTypes = Array.isArray(patch.msgTypes) && patch.msgTypes.length > 0
+      ? validMsgTypes(patch.msgTypes)
+      : undefined;
+
+    if (nextRate !== undefined) def.rate = nextRate;
+    if (nextFaultRate !== undefined) def.faultRate = nextFaultRate;
+    if (nextPort !== undefined) def.targetPort = nextPort;
     if (patch.clearTargetPort) delete def.targetPort;
     if (Array.isArray(patch.msgTypes)) {
       // Empty selection = back to the type preset. The actor's generator is
       // profile-backed lazily per leg, so restart the leg to pick up the mix.
-      if (patch.msgTypes.length === 0) delete def.msgTypes;
-      else def.msgTypes = validMsgTypes(patch.msgTypes);
+      if (nextMsgTypes === undefined) delete def.msgTypes;
+      else def.msgTypes = nextMsgTypes;
       entry.actor.regen();
     }
     entry.actor.update({ rate: def.rate, faultRate: def.faultRate }); // live-applies

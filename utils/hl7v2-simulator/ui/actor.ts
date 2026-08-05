@@ -56,6 +56,7 @@ export class SourceActor {
 
   private runAc: AbortController | null = null; // whole stream
   private legAc: AbortController | null = null; // current target leg
+  private runToken: object | null = null; // identifies the live run (see supervise)
   private gen: ((faultRate: number) => StreamMessage) | null = null;
 
   constructor(id: string, profileFn: () => Promise<Profile>, targetFn: () => ActorTarget) {
@@ -170,7 +171,15 @@ export class SourceActor {
   }
 
   // Supervisor: runs the active leg; restarts it on retarget; exits on stop.
-  private async supervise(signal: AbortSignal): Promise<void> {
+  //
+  // `token` identifies this run. stop() flips `running` synchronously, but the
+  // loop can still be parked in an uncancellable sleep for up to one
+  // inter-arrival gap — seconds at low rates. A start() inside that window
+  // legitimately begins a new run; when the old one finally unwinds, its tail
+  // must not clobber the new run's state. Without the token check it did, and
+  // stop() then early-returned on !running forever: a source that could not be
+  // stopped short of restarting the process.
+  private async supervise(signal: AbortSignal, token: object): Promise<void> {
     while (!signal.aborted) {
       const leg = new AbortController();
       this.legAc = leg;
@@ -189,6 +198,7 @@ export class SourceActor {
         signal.removeEventListener("abort", onAbort);
       }
     }
+    if (this.runToken !== token) return; // superseded by a newer start()
     this.running = false;
     publish({ type: "state", sourceId: this.id, state: this.snapshot() });
   }
@@ -199,8 +209,10 @@ export class SourceActor {
     if (this.running) return; // idempotent
     this.running = true;
     this.runAc = new AbortController();
+    const token = {};
+    this.runToken = token;
     publish({ type: "state", sourceId: this.id, state: this.snapshot() });
-    void this.supervise(this.runAc.signal);
+    void this.supervise(this.runAc.signal, token);
   }
 
   stop(): void {

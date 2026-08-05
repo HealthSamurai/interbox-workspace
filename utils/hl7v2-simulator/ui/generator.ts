@@ -19,9 +19,12 @@ import { generateMessage } from "../src/gen/assemble.ts";
 import { FAULTS } from "../src/gen/faults.ts";
 import { sendOverMllpReliable } from "../src/send/mllp.ts";
 import type { Profile } from "../src/profile/schema.ts";
-import { DEFAULT_PROFILE } from "../src/paths.ts";
+import { cleanExports, DEFAULT_PROFILE, safeExportDir } from "../src/paths.ts";
 
 const PROFILE_PATH = process.env.PROFILE_PATH ?? DEFAULT_PROFILE;
+// Ceiling for the trickle-to-folder stream, which otherwise runs until the
+// process dies — it outlives the browser tab that started it.
+const MAX_STREAM_FILES = Number(process.env.MAX_STREAM_FILES ?? 100_000);
 let cachedProfile: Profile | null = null;
 let seedCounter = Math.floor(Math.random() * 1e9);
 
@@ -239,6 +242,12 @@ export async function generateToFolder(p: FolderParams): Promise<FolderResult> {
   const base = p.profile ?? (await getProfile());
   const bad = badTypes(base, p.types);
   if (bad) return { written: 0, dir: p.dir, types: {}, injectedFaults: 0, ok: false, error: bad };
+  let dir: string;
+  try {
+    dir = safeExportDir(p.dir);
+  } catch (e) {
+    return { written: 0, dir: p.dir, types: {}, injectedFaults: 0, ok: false, error: (e as Error).message };
+  }
   const next = forcedGen(base, p.types?.length ? p.types : null);
   const types: Record<string, number> = {};
   let injectedFaults = 0;
@@ -251,12 +260,16 @@ export async function generateToFolder(p: FolderParams): Promise<FolderResult> {
     files.push({ name: `msg-${String(i + 1).padStart(width, "0")}-${m.type.replace(/\^/g, "_")}.hl7`, msg: m.msg });
   }
   try {
-    await mkdir(p.dir, { recursive: true });
-    if (p.clean) for (const f of await readdir(p.dir)) await rm(join(p.dir, f), { force: true });
-    for (const f of files) await Bun.write(join(p.dir, f.name), f.msg);
-    return { written: files.length, dir: p.dir, types, injectedFaults, ok: true };
+    await mkdir(dir, { recursive: true });
+    // Only our own output. The previous `rm` over every entry took out unrelated
+    // files, and — without `recursive` — threw on the first subdirectory, so it
+    // deleted whatever sorted ahead of that and then reported written: 0. Worst
+    // of both: destructive AND failed.
+    if (p.clean) await cleanExports(dir);
+    for (const f of files) await Bun.write(join(dir, f.name), f.msg);
+    return { written: files.length, dir, types, injectedFaults, ok: true };
   } catch (e) {
-    return { written: 0, dir: p.dir, types, injectedFaults, ok: false, error: (e as Error)?.message ?? String(e) };
+    return { written: 0, dir, types, injectedFaults, ok: false, error: (e as Error)?.message ?? String(e) };
   }
 }
 
@@ -266,40 +279,71 @@ class FolderStreamer {
   private timer: ReturnType<typeof setTimeout> | null = null;
   private next: ((faultRate: number) => StreamMessage) | null = null;
   private seq = 0;
+  // Bumped on every start/stop. A tick that awaits Bun.write across a stop() and
+  // a fresh start() would otherwise carry on beside the new run's tick chain —
+  // two loops writing, with `timer` tracking only one of them, so stop() could
+  // never cancel both.
+  private generation = 0;
+  private lastError: string | null = null;
   written = 0;
   dir = "";
   rate = 2;
   faultRate = 0;
 
   async start(o: { dir: string; rate: number; faultRate: number; types?: string[]; profile?: Profile }): Promise<{ ok: boolean; error?: string }> {
-    if (this.running) return { ok: true };
+    if (this.running) return { ok: false, error: `already streaming to ${this.dir}` };
     const base = o.profile ?? (await getProfile());
     const bad = badTypes(base, o.types);
     if (bad) return { ok: false, error: bad };
-    await mkdir(o.dir, { recursive: true });
-    this.dir = o.dir;
+    let dir: string;
+    try {
+      dir = safeExportDir(o.dir);
+    } catch (e) {
+      return { ok: false, error: (e as Error).message };
+    }
+    await mkdir(dir, { recursive: true });
+    this.dir = dir;
     this.rate = Math.max(0.1, o.rate);
     this.faultRate = Math.max(0, Math.min(1, o.faultRate));
     this.written = 0;
+    this.lastError = null;
     this.next = forcedGen(base, o.types?.length ? o.types : null);
     this.running = true;
+    const mine = ++this.generation;
     const tick = async (): Promise<void> => {
-      if (!this.running || !this.next) return;
+      if (this.generation !== mine || !this.running || !this.next) return;
       const m = this.next(this.faultRate);
       const name = `stream-${String(++this.seq).padStart(6, "0")}-${m.type.replace(/\^/g, "_")}.hl7`;
-      try { await Bun.write(join(this.dir, name), m.msg); this.written += 1; } catch { /* keep going */ }
-      if (this.running) this.timer = setTimeout(() => void tick(), Math.max(20, 1000 / this.rate));
+      try {
+        await Bun.write(join(this.dir, name), m.msg);
+        this.written += 1;
+      } catch (e) {
+        // A full disk or a deleted directory used to leave the stream reporting
+        // running:true with a frozen count and no error anywhere. Stop and say why.
+        this.lastError = (e as Error)?.message ?? String(e);
+        this.stop();
+        return;
+      }
+      if (this.written >= MAX_STREAM_FILES) {
+        this.lastError = `stopped at the ${MAX_STREAM_FILES}-file limit (raise MAX_STREAM_FILES)`;
+        this.stop();
+        return;
+      }
+      if (this.generation === mine && this.running) {
+        this.timer = setTimeout(() => void tick(), Math.max(20, 1000 / this.rate));
+      }
     };
     void tick();
     return { ok: true };
   }
   stop(): void {
     this.running = false;
+    this.generation += 1;
     if (this.timer) clearTimeout(this.timer);
     this.timer = null;
   }
-  state(): { running: boolean; written: number; dir: string; rate: number } {
-    return { running: this.running, written: this.written, dir: this.dir, rate: this.rate };
+  state(): { running: boolean; written: number; dir: string; rate: number; error: string | null } {
+    return { running: this.running, written: this.written, dir: this.dir, rate: this.rate, error: this.lastError };
   }
 }
 export const folderStreamer = new FolderStreamer();

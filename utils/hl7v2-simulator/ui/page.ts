@@ -24,6 +24,16 @@ export interface PageProps {
   activeTargetId: string;
 }
 
+/**
+ * JSON for embedding inside a `<script>` block.
+ *
+ * JSON.stringify does not escape `</script>` or `<!--`, so a value containing
+ * either would close the block early and turn data into markup. These values
+ * come from env today, but the escape costs nothing and removes the sink.
+ */
+const safeJson = (v: unknown): string =>
+  JSON.stringify(v).replace(/</g, "\\u003c").replace(/-->/g, "--\\u003e");
+
 export function renderPage({ engineTarget, profile, targets, activeTargetId }: PageProps): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -720,10 +730,10 @@ export function renderPage({ engineTarget, profile, targets, activeTargetId }: P
   function sourceUi() {
     return {
       // env
-      engineTarget: ${JSON.stringify(engineTarget)},
-      profile: ${JSON.stringify(profile)},
-      targets: ${JSON.stringify(targets)},
-      activeTargetId: ${JSON.stringify(activeTargetId)},
+      engineTarget: ${safeJson(engineTarget)},
+      profile: ${safeJson(profile)},
+      targets: ${safeJson(targets)},
+      activeTargetId: ${safeJson(activeTargetId)},
       targetMenuOpen: false,
 
       get activeTarget() {
@@ -1035,7 +1045,7 @@ export function renderPage({ engineTarget, profile, targets, activeTargetId }: P
       // for technical viewers during the demo.
       cliCommand() {
         const fr = (this.faultRate / 100).toFixed(2);
-        const target = ${JSON.stringify(engineTarget)};
+        const target = ${safeJson(engineTarget)};
         const [host, port] = target.split(':');
         const conn = ' <span class="dim">--host ' + host + ' --port ' + port + '</span>';
         if (this.mode === 'single') {
@@ -1127,7 +1137,7 @@ export function renderPage({ engineTarget, profile, targets, activeTargetId }: P
       async toggleStream() {
         if (this.status === 'streaming') {
           try {
-            await fetch('/stream/stop', { method: 'POST' });
+            await fetch('/stream/stop', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
             this.lastError = null;
           } catch (e) {
             this.lastError = e.message || String(e);
