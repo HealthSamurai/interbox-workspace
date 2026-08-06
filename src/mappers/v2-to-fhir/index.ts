@@ -22,6 +22,7 @@ import { convertADT_A03 } from "./messages/adt-a03.ts";
 import { convertADT_A08 } from "./messages/adt-a08.ts";
 import { convertORM_O01 } from "./messages/orm-o01.ts";
 import { convertORU_R01 } from "./messages/oru-r01.ts";
+import { convertSIU_S12 } from "./messages/siu-s12.ts";
 import { convertVXU_V04 } from "./messages/vxu-v04.ts";
 import { findSegment } from "./support/segments.ts";
 
@@ -50,6 +51,13 @@ export async function convertToFhir(
       "invalid_message_type",
       `MSH-9 must carry both code and event, got "${code ?? ""}^${event ?? ""}"`,
     );
+  }
+
+  // Routed on the code alone: every SIU trigger event (S12 booking through S26
+  // no-show) uses the SIU_S12 structure, and the converter reads the event to
+  // infer a status when SCH-25 does not carry one.
+  if (code === "SIU") {
+    return convertSIU_S12(segments, event);
   }
 
   switch (`${code}_${event}`) {
