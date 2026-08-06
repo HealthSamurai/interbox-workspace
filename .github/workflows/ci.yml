@@ -13,6 +13,24 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
+      # Scoped to test/ by bunfig.toml, so this never reaches into
+      # utils/hl7v2-simulator/ — that package is checked by the job below.
+      - run: bun test
+
+  # The bundled HL7v2 simulator (utils/hl7v2-simulator) is a self-contained
+  # package with its own lockfile, so it installs and checks separately. Keeping
+  # it out of the root install is deliberate: a workspace user who never touches
+  # the simulator shouldn't pay for faker et al. on every `bun install`.
+  simulator:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: utils/hl7v2-simulator
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
       - run: bun test
 
   # Guard the version scheme for workspace-only PRs. Workspace versions are
