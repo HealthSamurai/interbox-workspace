@@ -78,7 +78,7 @@ export function convertAILToLocation(
   // part (usually the point of care) when it is absent.
   const name = pl.$9_description?.trim() || parts[0]?.value;
   const description = parts.map((p) => `${p.label} ${p.value}`).join(", ");
-  const type = convertCEToCodeableConcept(ail.$4_locationType);
+  const type = convertCEToCodeableConcept(ail.$4_locationTypeAil);
   const physicalType = convertPLToLocation(pl)?.physicalType;
 
   return {

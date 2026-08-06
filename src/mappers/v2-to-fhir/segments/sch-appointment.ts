@@ -105,7 +105,7 @@ export function resolveAppointmentStatus(
   sch: SCH,
   triggerEvent: string,
 ): Appointment["status"] {
-  const fillerStatus = sch.$25_fillerStatusCode?.$1_code?.trim().toLowerCase();
+  const fillerStatus = sch.$25_fillerStatus?.$1_code?.trim().toLowerCase();
   const fromFiller = fillerStatus
     ? FILLER_STATUS_TO_APPOINTMENT_STATUS[fillerStatus]
     : undefined;
@@ -121,7 +121,7 @@ export function resolveAppointmentStatus(
   throw domainError(
     "field",
     "unknown_appointment_status",
-    `cannot resolve Appointment.status: SCH-25 is "${sch.$25_fillerStatusCode?.$1_code ?? ""}" ` +
+    `cannot resolve Appointment.status: SCH-25 is "${sch.$25_fillerStatus?.$1_code ?? ""}" ` +
       `and trigger event ${triggerEvent} has no status mapping`,
   );
 }
@@ -232,11 +232,11 @@ function resolveTiming(
     toInstant(tq1?.$7_start) ??
     toInstant(schTiming?.$4_start) ??
     toInstant(schTiming?.$1_value?.$1_value) ??
-    toInstant(firstService?.$4_startOfServiceDateTime);
+    toInstant(firstService?.$4_start);
 
   const minutesDuration =
-    toMinutes(sch.$9_appointmentDuration, sch.$10_appointmentDurationUnits?.$1_code) ??
-    toMinutes(firstService?.$7_duration, firstService?.$8_durationUnits?.$1_code);
+    toMinutes(sch.$9_appointmentDuration, sch.$10_appointmentDurationUnit?.$1_code) ??
+    toMinutes(firstService?.$7_duration, firstService?.$8_durationUnit?.$1_code);
 
   const explicitEnd = toInstant(tq1?.$8_end) ?? toInstant(schTiming?.$5_end);
   const end =
@@ -257,13 +257,13 @@ function buildServiceTypes(services: AIS[]): CodeableConcept[] {
   const byCode = new Map<string, CodeableConcept>();
 
   for (const ais of services) {
-    const concept = convertCEToCodeableConcept(ais.$3_universalServiceIdentifier);
+    const concept = convertCEToCodeableConcept(ais.$3_service);
     if (!concept) {
       continue;
     }
     const key =
-      ais.$3_universalServiceIdentifier?.$1_code ??
-      ais.$3_universalServiceIdentifier?.$2_text ??
+      ais.$3_service?.$1_code ??
+      ais.$3_service?.$2_text ??
       "";
     if (!byCode.has(key)) {
       byCode.set(key, concept);
