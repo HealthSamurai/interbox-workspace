@@ -1,4 +1,4 @@
-import type { PID, PV1 } from "@health-samurai/interbox/hl7v2";
+import type { PID, PV1, SCH } from "@health-samurai/interbox/hl7v2";
 import { domainError } from "@health-samurai/interbox";
 import { toKebabCase } from "./string.ts";
 
@@ -38,4 +38,36 @@ export function encounterIdFromPv1(
 
   const scope = visitNumber.$4_system?.$1_namespace || sendingFacility;
   return toKebabCase(`${scope}-${visitNumber.$1_value}`);
+}
+
+/**
+ * Deterministic Appointment.id from SCH-2 (Filler Appointment ID), falling back
+ * to SCH-1 (Placer Appointment ID):
+ * kebab("<EI.2 namespace || MSH-4 facility>-<EI.1 value>[-<SCH-3 occurrence>]").
+ *
+ * The filler ID is preferred because the filler (the scheduling system) is the
+ * SIU sender: it keeps that ID stable across the booking (S12), every
+ * modification (S13/S14) and the cancellation (S15), so those messages land on
+ * one Appointment instead of creating a new one each time. SCH-3 is part of the
+ * id because a recurring appointment repeats one ID pair per occurrence.
+ *
+ * Returns undefined when neither field carries a value — the caller decides
+ * whether that is field/missing_appointment_id.
+ */
+export function appointmentIdFromSch(
+  sch: SCH,
+  sendingFacility: string,
+): string | undefined {
+  const ei = sch.$2_fillerAppointmentId?.$1_value
+    ? sch.$2_fillerAppointmentId
+    : sch.$1_placerAppointmentId;
+  if (!ei?.$1_value) {
+    return undefined;
+  }
+
+  const scope = ei.$2_namespace || sendingFacility;
+  const occurrence = sch.$3_occurrenceNumber?.trim();
+  return toKebabCase(
+    `${scope}-${ei.$1_value}${occurrence ? `-${occurrence}` : ""}`,
+  );
 }
