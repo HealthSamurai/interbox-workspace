@@ -28,9 +28,14 @@ function loincCoding(code: string, display: string | undefined): Coding {
  *     already names LOINC, use it directly.
  *  2. Otherwise translate the local code through the sender's ConceptMap; on a
  *     hit, emit the LOINC coding plus the original local coding for provenance.
- *  3. On a miss, throw code/unmapped_observation_code. The message errors and
- *     the unmapped-code queue (Code mappings screen) is derived from that error;
- *     once a human maps the code, retrying the message resolves it.
+ *  2b. A match MAY carry no target. `targetCode` is optional precisely so that
+ *     equivalence `unmatched`/`disjoint` can say "someone looked, and there is no
+ *     LOINC concept for this code" — which is a different fact from no element at
+ *     all. Publishing the local coding alone is then the correct answer; throwing
+ *     would put a reviewed code back in the queue every time the feed sends it.
+ *  3. On a miss — no element — throw code/unmapped_observation_code. The message
+ *     errors and the unmapped-code queue (Code mappings screen) is derived from that
+ *     error; once a human maps the code, retrying the message resolves it.
  *
  * The error message is human-readable AND parseable (the read API extracts
  * code/display/system/map from it) — keep the `· field ·` layout stable.
@@ -51,14 +56,26 @@ export async function resolveObservationCode(ce: CE, ctx: CodeMappingContext): P
 
   const conceptMapId = generateConceptMapId(ctx.sender);
   const mapped = await ctx.translate(conceptMapId, localCode);
-  if (mapped) {
-    const local: Coding = {
-      code: localCode,
-      ...(ce.$2_text && { display: ce.$2_text }),
-      ...(ce.$3_system && { system: ce.$3_system }),
-    };
+
+  // Hoisted, because both outcomes below publish it: the local coding is what carries
+  // provenance next to a LOINC target, and it is the whole answer without one.
+  const local: Coding = {
+    code: localCode,
+    ...(ce.$2_text && { display: ce.$2_text }),
+    ...(ce.$3_system && { system: ce.$3_system }),
+  };
+
+  // 2. mapped
+  if (mapped?.targetCode) {
     const text = mapped.targetDisplay ?? ce.$2_text;
     return { coding: [loincCoding(mapped.targetCode, mapped.targetDisplay), local], ...(text && { text }) };
+  }
+
+  // 2b. MATCHED, AND DELIBERATELY NOT MAPPED — see the header. Testing `mapped` alone here
+  // used to be enough because `targetCode` was required; it is optional as of engine 1.13.0,
+  // and this branch is the behaviour that optionality was introduced to allow.
+  if (mapped) {
+    return { coding: [local], ...(ce.$2_text && { text: ce.$2_text }) };
   }
 
   // 3. unmapped — parseable message (see API unmappedCodes extraction)
