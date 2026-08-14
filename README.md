@@ -70,7 +70,7 @@ shows a "no credentials" banner instead of answering.
 
 | Path | Set in `.env` | Billing |
 | --- | --- | --- |
-| **Reuse host login** (default; Linux/Windows dev) | `CLAUDE_CONFIG_DIR=${HOME:-${USERPROFILE}}/.claude` — bind-mounts your existing login into the container | Your existing session |
+| **Reuse host login** (default; Linux/Windows dev) | `CLAUDE_CONFIG_DIR=${HOME}/.claude` — bind-mounts your existing login into the container | Your existing session |
 | **Subscription token** (any OS) | `CLAUDE_CODE_OAUTH_TOKEN` — run `claude setup-token` on the host (macOS: `./scripts/setup-claude-mac.sh` does it for you) | Claude Pro/Max subscription |
 | **API key** | `ANTHROPIC_API_KEY=sk-ant-…` | Pay-per-token |
 
