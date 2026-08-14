@@ -99,14 +99,19 @@ services:
       # clobber — or get clobbered by — the host's node_modules on the bind mount.
       - workspace-node-modules:/workspace/node_modules
       # Assistant auth option 3 (dev only, Linux/Windows hosts): reuse your host
-      # Claude Code login instead of minting a token. Point CLAUDE_CONFIG_DIR in .env
-      # at your host login dir (e.g. ${HOME}/.claude) and it's bind-mounted here — no
-      # docker-compose edit needed. Left unset it defaults to an empty managed volume,
-      # so nothing from the host is exposed and the assistant falls back to the token/
-      # key env above. Caveats: macOS keeps creds in the Keychain (not a dir), so this
-      # can't work there — run ./scripts/setup-claude-mac.sh to mint a token instead;
-      # and do NOT append `:ro` — Claude refreshes the token and must write it back.
-      - ${CLAUDE_CONFIG_DIR:-claude-login}:/root/.claude
+      # Claude Code login instead of minting a token. CLAUDE_CONFIG_DIR points at the
+      # host login dir and it's bind-mounted here — no docker-compose edit needed.
+      # .env.example ships it SET (to ${HOME:-${USERPROFILE}}/.claude), so a fresh
+      # copy reuses the host login; comment it out there and this falls back to an
+      # empty managed volume, exposing nothing. Caveats: the mount carries the whole
+      # dir (settings, projects/ transcripts, MCP tokens) into the container; macOS
+      # keeps creds in the Keychain (not a dir), so this can't work there — run
+      # ./scripts/setup-claude-mac.sh to mint a token instead; and do NOT append
+      # `:ro` — Claude refreshes the token and must write it back.
+      # The target must be the image's HOME (/home/bun) — Claude Code resolves its
+      # config dir from $HOME, and the `user: "0:0"` override above changes the uid
+      # but NOT $HOME, so a mount at /root/.claude is silently ignored.
+      - ${CLAUDE_CONFIG_DIR:-claude-login}:/home/bun/.claude
 
   aidbox:
     image: healthsamurai/aidboxone:latest
@@ -152,6 +157,6 @@ services:
 volumes:
   pg-data:
   workspace-node-modules:
-  # Default target for the assistant's /root/.claude when CLAUDE_CONFIG_DIR is unset:
+  # Default target for the assistant's /home/bun/.claude when CLAUDE_CONFIG_DIR is unset:
   # an empty managed volume, so no host login is exposed unless you opt in via .env.
   claude-login:
