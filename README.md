@@ -65,24 +65,30 @@ The Interbox Helm chart itself lives in
 
 The dashboard's assistant is a Claude Code agent running **inside the container**,
 which has no `~/.claude` of its own — so you hand it credentials through `.env`.
-It's optional: leave everything blank and the dashboard still works, the assistant
-just shows a "no credentials" banner instead of answering. Pick one path:
+It's optional: clear all three and the dashboard still works, the assistant just
+shows a "no credentials" banner instead of answering.
 
 | Path | Set in `.env` | Billing |
 | --- | --- | --- |
+| **Reuse host login** (default; Linux/Windows dev) | `CLAUDE_CONFIG_DIR=${HOME:-${USERPROFILE}}/.claude` — bind-mounts your existing login into the container | Your existing session |
 | **Subscription token** (any OS) | `CLAUDE_CODE_OAUTH_TOKEN` — run `claude setup-token` on the host (macOS: `./scripts/setup-claude-mac.sh` does it for you) | Claude Pro/Max subscription |
 | **API key** | `ANTHROPIC_API_KEY=sk-ant-…` | Pay-per-token |
-| **Reuse host login** (Linux/Windows dev) | `CLAUDE_CONFIG_DIR=${HOME}/.claude` — bind-mounts your existing login into the container | Your existing session |
 
 Notes:
 
+- `.env.example` ships the **reuse host login** path enabled, so a fresh copy
+  works on a host that already has Claude Code. It is `.env`-driven — no
+  `docker-compose.yaml` edit.
+- That mount hands the container the **whole** config dir: your Claude settings,
+  your session transcripts under `projects/`, and any MCP OAuth tokens the login
+  file carries. Comment `CLAUDE_CONFIG_DIR` out to expose nothing — it then falls
+  back to an empty managed volume — and use a token or API key instead.
+- A token or API key **outranks** the mounted login, so a leftover
+  `CLAUDE_CODE_OAUTH_TOKEN` silently wins over your host session.
 - **macOS** keeps Claude Code creds in the **Keychain**, not in a file, so the
   reuse-host-login path can't work there — use the subscription token instead
   (`./scripts/setup-claude-mac.sh` mints one; needs the Claude Code CLI + a
   Pro/Max plan).
-- The reuse-host-login path is `.env`-driven — no `docker-compose.yaml` edit.
-  Left unset, `CLAUDE_CONFIG_DIR` defaults to an empty managed volume, so nothing
-  from your host is exposed.
 
 ## Author pipelines
 
