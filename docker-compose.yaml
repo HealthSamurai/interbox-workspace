@@ -101,7 +101,7 @@ services:
       # Assistant auth option 3 (dev only, Linux/Windows hosts): reuse your host
       # Claude Code login instead of minting a token. CLAUDE_CONFIG_DIR points at the
       # host login dir and it's bind-mounted here — no docker-compose edit needed.
-      # .env.example ships it SET (to ${HOME:-${USERPROFILE}}/.claude), so a fresh
+      # .env.example ships it SET (to ${HOME}/.claude), so a fresh
       # copy reuses the host login; comment it out there and this falls back to an
       # empty managed volume, exposing nothing. Caveats: the mount carries the whole
       # dir (settings, projects/ transcripts, MCP tokens) into the container; macOS
