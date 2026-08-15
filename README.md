@@ -46,6 +46,27 @@ fault injection, and the generator CLI. It's a self-contained package with its o
 dependencies — deliberately outside the root install, so it costs you nothing if
 you never use it.
 
+## Edit pipelines from the dashboard
+
+The dashboard's **Repository** tab browses this checkout. It can also edit it —
+saving straight into the directory compose mounts, which the engine picks up
+within two seconds, so the loop is edit → save → running.
+
+`INTERBOX_WORKSPACE_ACCESS=apply` in `.env` is what turns that on, and
+`.env.example` already sets it — so the Quick start above is all it takes. Skip
+the `.env` and the engine falls back to `read` (browse only) and the editor does
+not appear. Worth knowing what `apply` grants before you run this
+somewhere shared: the dashboard has no login of its own, and compose publishes
+3001 on every interface, so anyone who can open it can change the code this
+engine runs.
+
+Edits live in your browser until you press **Save**, and committing what you
+saved stays yours to do, in your own git. A deployment works the other way round:
+the engine owns a clone, so the dashboard commits and pushes a branch instead —
+see **The Workspace** in the
+[docs](https://www.health-samurai.io/docs/interbox) for both, and for what each
+access level allows.
+
 ## Deploy on Kubernetes
 
 For a cluster deployment with the dashboard properly secured — internal ingress,

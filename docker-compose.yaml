@@ -73,9 +73,23 @@ services:
       DATABASE_URL: postgres://postgres:postgres@pg:5432/interbox
       MLLP_HOST: 0.0.0.0
       MLLP_PORT: "2575"
-      # Run THIS checkout in local mode — the bind mount below is the live tree.
+      # Run THIS checkout — the bind mount below is the live tree. `worktree` says
+      # so outright rather than leaving it to the URL scheme: the engine bundles
+      # the directory exactly as it stands, uncommitted edits and all, and never
+      # checks anything out or resets anything. (`clone` is the other mode, used by
+      # deployments, where the engine owns a copy it refreshes from a remote.)
       INTERBOX_WORKSPACE_GIT_URL: file:///workspace
+      INTERBOX_WORKSPACE_MODE: worktree
       INTERBOX_WORKSPACE_POLL_MS: "2000" # snappy hot reload in dev
+      # What the dashboard may do to this checkout:
+      #   read  (default) browse files, history and diffs — nothing else.
+      #   apply           edit files and SAVE them straight into this directory,
+      #                   which the engine then runs within POLL_MS.
+      # `apply` is the one that suits a workspace you are developing, but it is
+      # opt-in because the dashboard has no login of its own and this compose file
+      # publishes port 3001 on every interface — on a shared machine that is more
+      # than you. Set INTERBOX_WORKSPACE_ACCESS=apply in .env to turn it on.
+      INTERBOX_WORKSPACE_ACCESS: ${INTERBOX_WORKSPACE_ACCESS:-read}
       # Pipeline sender target.
       AIDBOX_URL: http://aidbox:8080
       # Client interbox authenticates as — id defaults to root; set a scoped one for least privilege.
