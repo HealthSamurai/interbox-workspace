@@ -1,6 +1,6 @@
 {
   "name": "interbox-workspace",
-  "version": "1.18.0+0",
+  "version": "1.18.1+0",
   "license": "MIT",
   "private": true,
   "type": "module",
