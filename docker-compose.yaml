@@ -86,10 +86,30 @@ services:
       #   apply           edit files and SAVE them straight into this directory,
       #                   which the engine then runs within POLL_MS.
       # `apply` is the one that suits a workspace you are developing, but it is
-      # opt-in because the dashboard has no login of its own and this compose file
-      # publishes port 3001 on every interface — on a shared machine that is more
-      # than you. Set INTERBOX_WORKSPACE_ACCESS=apply in .env to turn it on.
+      # opt-in because this compose file publishes port 3001 on every interface and
+      # the login below is OFF by default — on a shared machine that is more than
+      # you. Set INTERBOX_WORKSPACE_ACCESS=apply in .env to turn it on.
       INTERBOX_WORKSPACE_ACCESS: ${INTERBOX_WORKSPACE_ACCESS:-read}
+
+      # ── Dashboard sign-in ──────────────────────────────────────────────────
+      # From 1.20 the dashboard has a login of its own, ON by default. It is
+      # turned OFF here, because this is a dev stack on your own machine and a
+      # login you have to set up before `docker compose up` works is a login
+      # people will disable rather than configure.
+      #
+      # That trade is only right on loopback. If this stack ever becomes
+      # reachable by anyone else — a shared box, a tailnet, a port forward —
+      # set INTERBOX_AUTH_ENABLED=true and a password in .env. Both, not one:
+      # the gate refuses to start with nothing able to sign in, and the
+      # dashboard reaches message content, a SQL console and a shell agent.
+      INTERBOX_AUTH_ENABLED: ${INTERBOX_AUTH_ENABLED:-false}
+      INTERBOX_AUTH_ADMIN_PASSWORD: ${INTERBOX_AUTH_ADMIN_PASSWORD:-}
+      # Required from 1.20 whether or not the login is on: it is also the origin
+      # the API answers for, and a request arriving with any other Host is
+      # refused. Change it if you reach the dashboard as anything other than
+      # localhost — the port is published on every interface, so visiting
+      # http://<your-lan-ip>:3001 while this says localhost answers 421.
+      INTERBOX_PUBLIC_URL: ${INTERBOX_PUBLIC_URL:-http://localhost:3001}
       # Pipeline sender target.
       AIDBOX_URL: http://aidbox:8080
       # Client interbox authenticates as — id defaults to root; set a scoped one for least privilege.
