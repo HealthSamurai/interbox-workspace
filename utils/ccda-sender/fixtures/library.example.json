@@ -1,0 +1,7 @@
+{
+  "endpoint": "http://localhost:2880/ccda",
+  "roots": [
+    "/absolute/path/to/a/directory/of/documents",
+    { "dir": "/another/directory", "label": "A heading of your choosing" }
+  ]
+}

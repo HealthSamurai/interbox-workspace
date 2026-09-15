@@ -13,8 +13,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
-      # Scoped to test/ by bunfig.toml, so this never reaches into
-      # utils/hl7v2-simulator/ — that package is checked by the job below.
+      # Scoped to test/ by bunfig.toml, so this never reaches into the
+      # self-contained packages under utils/ — each has its own job below.
       - run: bun test
 
   # The bundled HL7v2 simulator (utils/hl7v2-simulator) is a self-contained
@@ -26,6 +26,21 @@ jobs:
     defaults:
       run:
         working-directory: utils/hl7v2-simulator
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun test
+
+  # The bundled C-CDA sender (utils/ccda-sender) is self-contained for the same
+  # reason as the simulator above: its own lockfile, its own install, so a
+  # workspace that never sends a C-CDA carries none of it.
+  ccda-sender:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: utils/ccda-sender
     steps:
       - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2

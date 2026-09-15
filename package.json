@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "interbox-cli": "interbox",
-    "hl7v2:simulator": "bun install --cwd utils/hl7v2-simulator && bun run --cwd utils/hl7v2-simulator ui"
+    "hl7v2:simulator": "bun install --cwd utils/hl7v2-simulator && bun run --cwd utils/hl7v2-simulator ui",
+    "ccda:sender": "bun install --cwd utils/ccda-sender && bun run --cwd utils/ccda-sender ui"
   },
   "dependencies": {
     "@health-samurai/interbox": "^1.12.1"
