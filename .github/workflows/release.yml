@@ -145,7 +145,9 @@ jobs:
       # Generated here instead of a committed cliff.toml — this is a customer-
       # facing repo, keep the file count down. tag_pattern is anchored on
       # "v<digit>" so this only ever diffs against this repo's own release tags
-      # (v1.2.0+0, v1.2.0+1, ...).
+      # (v1.2.0+0, v1.2.0+1, ...). Breaking commits go under "Upgrade Notes",
+      # the heading `interbox workspace sync` reads in copies; the HTML comment
+      # sorts it first and is stripped from the output.
       - name: Write git-cliff config
         run: |
           cat > cliff.toml <<'EOF'
@@ -153,9 +155,9 @@ jobs:
           header = ""
           body = """
           {% for group, commits in commits | group_by(attribute="group") %}
-          ### {{ group | upper_first }}
+          ### {{ group | striptags | trim | upper_first }}
           {% for commit in commits -%}
-          - {{ commit.message | upper_first | trim }}
+          - {{ commit.message | split(pat="\n") | first | upper_first | trim }}
           {% endfor %}
           {% endfor %}
           """
@@ -166,6 +168,7 @@ jobs:
           conventional_commits = true
           filter_unconventional = false
           commit_parsers = [
+            { field = "breaking", pattern = "^true$", group = "<!-- 0 -->Upgrade Notes" },
             { message = "^feat", group = "Features" },
             { message = "^fix", group = "Bug Fixes" },
             { message = "^perf", group = "Performance" },

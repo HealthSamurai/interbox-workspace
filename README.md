@@ -166,3 +166,68 @@ Tests live in `test/` — `bun test` is scoped to that directory (see
 `bunfig.toml`), so a test file placed next to the code it covers will not run.
 The bundled simulator under `utils/` is a separate package with its own
 dependencies and its own suite; see its README.
+
+## Track upstream releases
+
+In a copy of this repo, a daily job keeps one PR open from the `upstream-sync`
+branch that brings `main` up to the latest upstream release. Set the variable
+`INTERBOX_UPSTREAM_SYNC=off` to stop it. If the PR
+includes a release with breaking changes, it opens as a draft labelled
+`breaking-change`, with the upgrade notes in its description.
+
+A release that changes CI definitions (`.github/workflows/` or
+`azure-pipelines/`) is never pushed by the job. On GitHub the job opens an
+issue instead, and on Azure the run fails. Both give you the command to run
+locally once you have looked at those changes. The jobs run the CLI version
+pinned in `bun.lock`, so that version only changes when you merge a sync PR.
+
+A copy made before these files existed needs one sync from a local checkout,
+with the latest `@health-samurai/interbox` release as `<version>`:
+
+```bash
+bunx @health-samurai/interbox@<version> workspace sync
+```
+
+It pushes `upstream-sync` with your own git credentials and prints the PR link
+and description. On Azure, delete that branch once its PR completes, because
+the pipeline can only rebuild a branch it created.
+
+### GitHub
+
+[`.github/workflows/upstream-sync.yml`](.github/workflows/upstream-sync.yml) needs:
+
+- *Allow GitHub Actions to create and approve pull requests* turned on under
+  *Settings → Actions → General*. If it's greyed out, an organization owner has
+  to allow it in the organization settings first.
+- A ruleset on the default branch and on the branch the engine deploys from
+  (`INTERBOX_WORKSPACE_GIT_REF`). It should require a pull request with at
+  least one approval and *Require approval of the most recent reviewable push*,
+  require the `test` and `simulator` checks, block force pushes and deletion,
+  and give GitHub Actions no bypass.
+
+Optional repository variables: `INTERBOX_UPSTREAM_SYNC=off` turns the job off,
+and `INTERBOX_UPSTREAM_URL` points it at another upstream.
+
+### Azure DevOps
+
+[`azure-pipelines/`](azure-pipelines/) needs:
+
+- On the repo, **Create branch** and **Contribute to pull requests** for
+  `<Project> Build Service (<org>)`, and nothing more. Whoever creates a branch
+  gets Contribute and Force push on it, which covers the sync branch.
+- *Limit job authorization scope to current project for non-release pipelines*
+  and *Protect access to repositories in YAML pipelines* turned on under
+  *Project settings → Pipelines → Settings*.
+- Both pipelines, created from a checkout of `main`:
+
+  ```bash
+  az pipelines create --name ci --yml-path azure-pipelines/ci.yml
+  az pipelines create --name upstream-sync --yml-path azure-pipelines/upstream-sync.yml
+  ```
+
+- Branch policies on `main`: `ci` as build validation, at least one reviewer,
+  requestors can't approve their own changes, the most recent pusher can't
+  approve, and votes reset on new pushes.
+
+The same two variables work as pipeline variables. Define them as not settable
+at queue time.

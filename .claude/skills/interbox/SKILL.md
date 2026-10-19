@@ -47,7 +47,7 @@ authoritative** (this may drift as the SDK adds skills):
 | Triage / inspect / resolve the error queue | `interbox-check-errors` |
 | Show what changed in the workspace (rendered diff) | `interbox-diff` |
 | SDK API reference — exact export shapes (pipeline DSL, builtins, mappers) | `interbox-reference` |
-| Upgrade the SDK to a newer version (careful — explicit request only) | `interbox-upgrade` |
+| Check for, or sync to, a newer upstream workspace release (upgrade pull request) | `interbox-workspace-sync` |
 
 If nothing above fits, run `skills list` and read the descriptions — they say
 exactly when each applies.
