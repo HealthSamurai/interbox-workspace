@@ -1,7 +1,10 @@
 import { test, expect } from "bun:test";
-import type { ConceptMapMatch, MapperContext } from "@health-samurai/interbox";
+import type { ConceptMapMatch } from "@health-samurai/interbox";
 import type { CE } from "@health-samurai/interbox/hl7v2";
-import { resolveObservationCode } from "../src/mappers/v2-to-fhir/code-mapping/observation-code-resolver.ts";
+import {
+  resolveObservationCode,
+  type Terminology,
+} from "../src/mappers/v2-to-fhir/code-mapping/observation-code-resolver.ts";
 import { generateConceptMapId } from "../src/mappers/v2-to-fhir/code-mapping/mapping-types.ts";
 
 const sender = { sendingApplication: "LABCORP", sendingFacility: "HOSPA" };
@@ -11,7 +14,7 @@ const CM_ID = generateConceptMapId(sender);
 // ConceptMapMatch values: `equivalence` is always carried and `targetCode` is OPTIONAL, which
 // is the distinction the resolver has to act on — absent means the map says this code has no
 // LOINC target, and that is not the same as the map not knowing the code at all.
-function fakeTranslate(entries: Record<string, ConceptMapMatch>): MapperContext["translate"] {
+function fakeTranslate(entries: Record<string, ConceptMapMatch>): Terminology["translate"] {
   return async (cmId: string, code: string) => entries[`${cmId}|${code}`];
 }
 

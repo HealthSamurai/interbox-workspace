@@ -1,16 +1,18 @@
 import type { CE } from "@health-samurai/interbox/hl7v2";
 import type { CodeableConcept, Coding } from "@health-samurai/interbox/fhir/4.0.1";
-import { domainError, type MapperContext } from "@health-samurai/interbox";
+import { domainError } from "@health-samurai/interbox";
+import type { RowContext } from "@health-samurai/interbox/chain";
 import type { Sender } from "../support/msh.ts";
 import { generateConceptMapId, LOINC_SYSTEM } from "./mapping-types.ts";
 
+export type Terminology = Pick<RowContext, "translate">;
+
 // Threaded from the ORU converter down to the OBX converter. When present, OBX-3
-// is resolved to LOINC via the engine's terminology (MapperContext.translate);
+// is resolved to LOINC via the engine's terminology (ctx.translate);
 // when absent (offline tests, non-ORU messages), the OBX converter keeps its raw
 // passthrough behavior.
-export interface CodeMappingContext {
+export interface CodeMappingContext extends Terminology {
   sender: Sender;
-  translate: MapperContext["translate"];
 }
 
 // HL7v2 "name of coding system" values that already denote LOINC — such a code

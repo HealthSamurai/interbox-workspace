@@ -2,7 +2,8 @@
 
 A **worked, runnable reference** for deploying Interbox on Kubernetes with the
 dashboard properly locked down: an internal-style **ingress**, **TLS**, and an
-**SSO login gate** in front (the dashboard has no built-in auth). It runs on
+**SSO login gate** in front. (The dashboard has had a login of its own since
+1.20; the workspace's `docker-compose.yaml` turns it off by default.) It runs on
 [k3d](https://k3d.io) (k3s in Docker) for local evaluation — the same chart and
 wiring you'd use on a real cluster (see [Production swaps](#production-swaps)).
 
