@@ -56,9 +56,11 @@ within two seconds, so the loop is edit → save → running.
 `.env.example` already sets it — so the Quick start above is all it takes. Skip
 the `.env` and the engine falls back to `read` (browse only) and the editor does
 not appear. Worth knowing what `apply` grants before you run this
-somewhere shared: the dashboard has no login of its own, and compose publishes
-3001 on every interface, so anyone who can open it can change the code this
-engine runs.
+somewhere shared: the dashboard has had a login of its own since 1.20, but
+compose turns it off and publishes 3001 on every interface, so anyone who can
+open it can change the code this engine runs. To turn the login on, set
+`INTERBOX_AUTH_ENABLED=true` and an `INTERBOX_AUTH_ADMIN_PASSWORD` in `.env`;
+`.env.example` shows how.
 
 Edits live in your browser until you press **Save**, and committing what you
 saved stays yours to do, in your own git. A deployment works the other way round:
@@ -69,9 +71,10 @@ access level allows.
 
 ## Deploy on Kubernetes
 
+The dashboard has had a login of its own since 1.20; **Securing Dashboard
+Access** in the [docs](https://www.health-samurai.io/docs/interbox) covers it.
 For a cluster deployment with the dashboard properly secured — internal ingress,
-TLS, and an SSO login gate (the dashboard has no built-in auth) — see
-[`k8s/`](k8s/):
+TLS, and an SSO login gate in front of it — see [`k8s/`](k8s/):
 
 - [`k8s/k3d/`](k8s/k3d/) — a **runnable, one-command** reference on
   [k3d](https://k3d.io) (local). Stands up the full secure stack (ingress-nginx +
@@ -114,30 +117,58 @@ Notes:
 ## Author pipelines
 
 Pipeline definitions for the Interbox engine. The engine has no built-in
-topology — it loads the pipelines declared here at boot.
+topology — it loads the pipelines declared here into its own runtime, and
+loads them again when they change, without a restart.
 
 Pipelines are authored against [`@health-samurai/interbox`](https://www.npmjs.com/package/@health-samurai/interbox).
-A pipeline wires the engine's built-in stages (`source → mapper → sender`) by
-`type` string + config; the engine owns the implementations. Secrets and
-deployment values are referenced with `env()` and resolved from the engine's
-environment, so definitions stay portable and secret-free.
+A pipeline is a chain: one source, any number of steps, one store, any number
+of steps, one sender. Every part is referenced by value, so each step's input
+is type-checked against the previous step's output. Secrets and deployment
+values are referenced with `env()` and resolved from the engine's environment,
+so definitions stay portable and secret-free.
+
+The template's pipeline, in `src/pipelines/hl7-to-aidbox/index.ts`:
 
 ```ts
-import { env, pipeline } from "@health-samurai/interbox";
-
 pipeline("hl7-to-aidbox")
-  .source({ id: "mllp-default", type: "mllp", config: { /* … */ } })
-  .mapper({ type: "v2-to-fhir", config: {} })
-  .sender({ type: "aidbox", config: { /* … */ } });
+  .source(mllpSource({ host: env("MLLP_HOST"), port: env("MLLP_PORT") }))
+  .step((raws) => raws.withSearchText((raw) => raw))
+  .store(postgresStore({ codec: "text" }), {
+    index: { message_type: "btree", event_type: "btree", patient_id: "btree" },
+    search: "trgm",
+  })
+  .step(hl7v2Parser())
+  .step(v2ToFhir)
+  .step(fhirItems())
+  .step(skipUnchanged())
+  .sender(
+    aidbox({
+      url: env("AIDBOX_URL"),
+      auth: { kind: "basic", user: env("AIDBOX_CLIENT_ID", "root"), password: env("AIDBOX_CLIENT_SECRET") },
+    }),
+  );
 ```
+
+The store keeps each MLLP message as raw text, and only then does the source
+answer `AA`, so a Retry after a parser fix parses the original again. After
+the store, `hl7v2Parser()` parses the message, `v2ToFhir` maps it to FHIR
+resources, `fhirItems()` keys each one for Aidbox, and `skipUnchanged()` drops a
+resource identical to the version already queued or delivered. `v2ToFhir` is
+the mapping step in `src/mappers/v2-to-fhir/`: it routes each message to its
+converter and adds one `Provenance` per message, targeting everything the
+message produced.
 
 `src/index.ts` imports every pipeline module (for its registration side effect)
 and re-exports the registry the engine reads back:
 
 ```ts
 import "./pipelines";
-export { PipelineRegistry } from "@health-samurai/interbox";
+export { ChainRegistry } from "@health-samurai/interbox/chain";
 ```
+
+See **Pipelines** and **Steps, store and senders** in the
+[docs](https://www.health-samurai.io/docs/interbox) for the methods a step can
+use and what each part of the chain does.
 
 ## How the engine loads it
 
@@ -149,12 +180,27 @@ one self-contained bundle, and imports that:
   https; `INTERBOX_WORKSPACE_GIT_REF` picks the branch.
 - **local** — a `file://` URL (or bare path) to a checkout. Bundles the **live
   working tree** in place (uncommitted edits included), with no clone or install,
-  for a fast edit → restart loop. The checkout must already have its deps
+  for a fast edit → hot-reload loop. The checkout must already have its deps
   installed.
 
-Pipelines load once at engine boot; restart the engine to pick up changes.
+The URL scheme only picks a default. `INTERBOX_WORKSPACE_MODE` sets the
+lifecycle: `clone` means the engine owns a copy it may fetch, check out and
+reset, while `worktree`, which `docker-compose.yaml` sets, means it bundles the
+directory as it stands and never checks anything out or resets anything.
+
+A change reloads into the engine's own runtime; the engine is not restarted. It
+looks for changes every `INTERBOX_WORKSPACE_POLL_MS` (2 seconds in
+`docker-compose.yaml`), and **Sync now** in the dashboard's Repository tab
+reloads at once instead of waiting for the poll. The new workspace is built
+before the running pipelines are swapped for it, so a change that fails to load
+leaves the old pipelines running, and the dashboard shows why.
 
 ## Develop
+
+Working on this workspace locally needs [Bun](https://bun.sh) 1.4 or newer.
+Older Bun cannot read `bun.lock`: `bun install` ignores it, resolves every
+dependency again and rewrites it, and `bun install --frozen-lockfile`, as CI
+runs it, fails.
 
 ```bash
 bun install
@@ -166,6 +212,18 @@ Tests live in `test/` — `bun test` is scoped to that directory (see
 `bunfig.toml`), so a test file placed next to the code it covers will not run.
 The bundled simulator under `utils/` is a separate package with its own
 dependencies and its own suite; see its README.
+
+`bun run e2e` checks the pipeline end to end against a running stack: it sends
+an ADT^A01 and an ORU^R01 over MLLP, expects `AA` for each, and waits for the
+Patient and the glucose Observation to appear in Aidbox. It needs the stack
+from `docker compose up` with both licenses activated, since the pipeline stays
+paused until then. It reaches MLLP at `localhost:2575`, Aidbox at
+`http://localhost:8080` as `AIDBOX_CLIENT_ID` / `AIDBOX_CLIENT_SECRET`, and the
+dashboard API at `INTERBOX_PUBLIC_URL`. Only those Aidbox credentials and
+`INTERBOX_PUBLIC_URL` are read from `.env`, like the stack's own settings.
+`E2E_MLLP_HOST`, `E2E_MLLP_PORT` and `E2E_AIDBOX_URL` point it elsewhere, and
+`E2E_TIMEOUT_MS` (90 seconds by default) is how long each check waits for its
+result.
 
 ## Track upstream releases
 

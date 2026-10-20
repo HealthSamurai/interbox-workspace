@@ -1,24 +1,22 @@
-import { env, pipeline } from "@health-samurai/interbox";
-import { aidboxSender, hl7v2Parser, mllpSource } from "@health-samurai/interbox/builtins";
+import { env } from "@health-samurai/interbox";
+import { aidbox, fhirItems, skipUnchanged } from "@health-samurai/interbox/aidbox";
+import { mllpSource, pipeline, postgresStore } from "@health-samurai/interbox/chain";
+import { hl7v2Parser } from "@health-samurai/interbox/hl7v2";
+import { v2ToFhir } from "../../mappers/v2-to-fhir/index.ts";
 
-import { v2ToFhirMapper } from "../../mappers/v2-to-fhir/index.ts";
-
-// Ingest HL7v2 over MLLP, map each message to FHIR, and write the resources to
-// Aidbox. Every stage is referenced by value — built-in source/parser/sender
-// descriptors and the workspace mapper — so types (incl. the source↔mapper
-// parser match) are checked at compile time. Deployment values come from env().
 pipeline("hl7-to-aidbox")
-  .source(
-    mllpSource({
-      id: "mllp-default",
-      host: env("MLLP_HOST"),
-      port: env("MLLP_PORT"),
-      parser: hl7v2Parser({ skipZSegments: false }),
-    }),
-  )
-  .mapper(v2ToFhirMapper())
+  .source(mllpSource({ host: env("MLLP_HOST"), port: env("MLLP_PORT") }))
+  .step((raws) => raws.withSearchText((raw) => raw))
+  .store(postgresStore({ codec: "text" }), {
+    index: { message_type: "btree", event_type: "btree", patient_id: "btree" },
+    search: "trgm",
+  })
+  .step(hl7v2Parser())
+  .step(v2ToFhir)
+  .step(fhirItems())
+  .step(skipUnchanged())
   .sender(
-    aidboxSender({
+    aidbox({
       url: env("AIDBOX_URL"),
       auth: { kind: "basic", user: env("AIDBOX_CLIENT_ID", "root"), password: env("AIDBOX_CLIENT_SECRET") },
     }),

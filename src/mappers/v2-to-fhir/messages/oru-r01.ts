@@ -52,8 +52,7 @@ import {
 } from "../segments/obx-observation.ts";
 import { convertOBRToDiagnosticReport } from "../segments/obr-diagnosticreport.ts";
 import { convertNTEsToAnnotation } from "../segments/nte-annotation.ts";
-import type { MapperContext } from "@health-samurai/interbox";
-import type { CodeMappingContext } from "../code-mapping/observation-code-resolver.ts";
+import type { CodeMappingContext, Terminology } from "../code-mapping/observation-code-resolver.ts";
 
 interface OBRGroup {
   obr: HL7v2Segment;
@@ -392,7 +391,7 @@ async function processOBRGroup(
  */
 export async function convertORU_R01(
   parsed: HL7v2Segment[],
-  mapperCtx?: MapperContext,
+  terminology?: Terminology,
 ): Promise<DomainResource[]> {
   const mshSegment = findSegment(parsed, "MSH");
   if (!mshSegment) {
@@ -403,10 +402,10 @@ export async function convertORU_R01(
     );
   }
   const sender = senderFromMsh(fromMSH(mshSegment));
-  // Code-mapping context: only when terminology is supplied (live mapper run).
+  // Code-mapping context: only when terminology is supplied (the step's ctx).
   // Absent in offline tests → OBX-3 keeps raw passthrough.
-  const ctx: CodeMappingContext | undefined = mapperCtx
-    ? { sender, translate: mapperCtx.translate }
+  const ctx: CodeMappingContext | undefined = terminology
+    ? { sender, translate: terminology.translate }
     : undefined;
 
   validateOBRPresence(parsed);
