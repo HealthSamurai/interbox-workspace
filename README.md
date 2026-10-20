@@ -175,11 +175,12 @@ branch that brings `main` up to the latest upstream release. Set the variable
 includes a release with breaking changes, it opens as a draft labelled
 `breaking-change`, with the upgrade notes in its description.
 
-A release that changes CI definitions (`.github/workflows/` or
-`azure-pipelines/`) is never pushed by the job. On GitHub the job opens an
-issue instead, and on Azure the run fails. Both give you the command to run
-locally once you have looked at those changes. The jobs run the CLI version
-pinned in `bun.lock`, so that version only changes when you merge a sync PR.
+A release that changes CI definitions for the job's own platform, such as
+`.github/workflows/` on GitHub or `azure-pipelines/` on Azure, is never pushed
+by the job. On GitHub the job opens an issue instead, and on Azure the run
+fails. Both give you the command to run locally once you have looked at those
+changes. The jobs run the CLI version pinned in `bun.lock`, so that version only
+changes when you merge a sync PR.
 
 A copy made before these files existed needs one sync from a local checkout,
 with the latest `@health-samurai/interbox` release as `<version>`:
@@ -215,9 +216,10 @@ and `INTERBOX_UPSTREAM_URL` points it at another upstream.
 - On the repo, **Create branch** and **Contribute to pull requests** for
   `<Project> Build Service (<org>)`, and nothing more. Whoever creates a branch
   gets Contribute and Force push on it, which covers the sync branch.
-- *Limit job authorization scope to current project for non-release pipelines*
-  and *Protect access to repositories in YAML pipelines* turned on under
-  *Project settings → Pipelines → Settings*.
+- *Limit job authorization scope to current project for non-release pipelines*,
+  *Protect access to repositories in YAML pipelines* and *Limit variables that
+  can be set at queue time* turned on under *Project settings → Pipelines →
+  Settings*.
 - Both pipelines, created from a checkout of `main`:
 
   ```bash
