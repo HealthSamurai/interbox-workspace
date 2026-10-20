@@ -1,0 +1,68 @@
+name: Upstream sync
+
+# Keeps one PR open (branch `upstream-sync`) that brings this copy up to the
+# latest release of the upstream HealthSamurai/interbox-workspace; see "Track
+# upstream releases" in README.md. On by default in every copy: set the
+# repository variable INTERBOX_UPSTREAM_SYNC=off to turn it off. A no-op in the
+# upstream repo itself.
+
+on:
+  schedule:
+    - cron: "23 4 * * *" # daily; off the top of the hour, when GitHub delays scheduled runs most
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: upstream-sync
+
+jobs:
+  sync:
+    if: |
+      !(github.server_url == 'https://github.com' &&
+        github.repository == 'HealthSamurai/interbox-workspace') &&
+      vars.INTERBOX_UPSTREAM_SYNC != 'off'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # push the upstream-sync branch
+      pull-requests: write # open/update the PR and its labels
+      issues: write # the fallback issue when the branch can't be pushed or the PR opened
+    env:
+      BUN_VERSION: 1.4.3 # bun.lock needs Bun 1.4+; same pin as azure-pipelines/
+    outputs:
+      dispatch-ci: ${{ steps.sync.outputs.dispatch-ci }}
+    steps:
+      # From npm rather than a third-party action, and before checkout, so
+      # nothing but first-party code runs while the write token is around.
+      - run: npm install -g "bun@$BUN_VERSION"
+      # Tag, not SHA: the workflow token can't push workflow changes, so every
+      # SHA bump would mean a manual sync in every copy.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # finding the last synced release walks history
+      # The CLI is the version bun.lock pins (integrity-checked), so it only
+      # changes when a sync PR is merged.
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - id: sync
+        run: ./node_modules/.bin/interbox workspace sync --platform github --into "$DEFAULT_BRANCH"
+        env:
+          # A schedule event has no repository payload; it always runs on the default branch.
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          INTERBOX_UPSTREAM_URL: ${{ vars.INTERBOX_UPSTREAM_URL }}
+
+  # Pushes made with GITHUB_TOKEN start no workflow runs, so CI on the sync
+  # branch is dispatched here, from a job that holds nothing else.
+  dispatch-ci:
+    needs: sync
+    # !cancelled(): the CLI writes dispatch-ci even when it fails after pushing.
+    if: ${{ !cancelled() && needs.sync.outputs.dispatch-ci == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - run: gh workflow run ci.yml --ref upstream-sync --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -4,12 +4,21 @@ on:
   push:
     branches: [main]
   pull_request:
+  # upstream-sync.yml dispatches this on its branch: pushes made with
+  # GITHUB_TOKEN start no push/pull_request runs.
+  workflow_dispatch:
+
+# Read-only, and checkouts don't keep the token: no job here pushes.
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
@@ -28,6 +37,8 @@ jobs:
         working-directory: utils/hl7v2-simulator
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
@@ -41,13 +52,19 @@ jobs:
   # released & mirrored here (the v<core>+0 tag exists), and never use +0. PR-only
   # so it never fires on the engine's direct +0 push; skips when the version is
   # untouched (the resting state IS <engine>+0 between workspace changes).
+  # Canonical repo only: a copy's version follows upstream syncs, which move the
+  # engine core, and a copy has no upstream tags to check against.
   guard-version:
-    if: github.event_name == 'pull_request'
+    if: |
+      github.event_name == 'pull_request' &&
+      github.server_url == 'https://github.com' &&
+      github.repository == 'HealthSamurai/interbox-workspace'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0 # need the PR base commit + all tags (engine baselines)
+          persist-credentials: false
       - name: Validate the version bump
         run: |
           HEAD=$(jq -r .version package.json)

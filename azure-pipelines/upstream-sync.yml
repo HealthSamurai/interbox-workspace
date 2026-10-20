@@ -1,0 +1,40 @@
+# Keeps one PR open (branch `upstream-sync`) that brings this copy up to the
+# latest release of the upstream HealthSamurai/interbox-workspace; see "Track
+# upstream releases" in README.md. On by default: set the pipeline variable
+# INTERBOX_UPSTREAM_SYNC=off to turn it off.
+
+trigger: none
+pr: none
+
+schedules:
+  - cron: "23 4 * * *" # daily, UTC
+    displayName: Daily upstream sync
+    branches:
+      include: [main]
+    always: true # what changes is upstream, not this repo
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  BUN_VERSION: 1.4.3 # bun.lock needs Bun 1.4+
+
+jobs:
+  - job: sync
+    condition: ne(variables['INTERBOX_UPSTREAM_SYNC'], 'off')
+    timeoutInMinutes: 15
+    steps:
+      # Before checkout, so nothing else runs while the token sits in .git/config.
+      - script: npm install -g bun@$(BUN_VERSION)
+        displayName: Install Bun
+      - checkout: self
+        fetchDepth: 0 # finding the last synced release walks history
+        persistCredentials: true # the sync pushes with the build service's token
+      # The CLI is the version bun.lock pins (integrity-checked), so it only
+      # changes when a sync PR is merged.
+      - script: bun install --frozen-lockfile --ignore-scripts
+        displayName: Install the pinned CLI
+      - script: ./node_modules/.bin/interbox workspace sync --platform azure --into main
+        displayName: Sync with upstream
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken) # secret, so never in the env unless mapped

@@ -1,0 +1,39 @@
+# Azure Pipelines version of .github/workflows/ci.yml. Azure Repos ignores `pr:`,
+# so PRs into main run this through a build validation policy (see README.md).
+
+trigger:
+  branches:
+    include: [main]
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  BUN_VERSION: 1.4.3 # bun.lock needs Bun 1.4+
+
+jobs:
+  - job: test
+    steps:
+      - script: npm install -g bun@$(BUN_VERSION)
+        displayName: Install Bun
+      - script: bun install --frozen-lockfile
+        displayName: Install dependencies
+      - script: bun run typecheck
+        displayName: Typecheck
+      - script: bun test # scoped to test/ by bunfig.toml; the simulator has its own job
+        displayName: Test
+
+  # The simulator is a self-contained package with its own lockfile.
+  - job: simulator
+    steps:
+      - script: npm install -g bun@$(BUN_VERSION)
+        displayName: Install Bun
+      - script: bun install --frozen-lockfile
+        displayName: Install dependencies
+        workingDirectory: utils/hl7v2-simulator
+      - script: bun run typecheck
+        displayName: Typecheck
+        workingDirectory: utils/hl7v2-simulator
+      - script: bun test
+        displayName: Test
+        workingDirectory: utils/hl7v2-simulator
