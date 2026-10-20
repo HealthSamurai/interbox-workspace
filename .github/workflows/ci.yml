@@ -4,9 +4,10 @@ on:
   push:
     branches: [main]
   pull_request:
-  # upstream-sync.yml dispatches this on its branch: pushes made with
-  # GITHUB_TOKEN start no push/pull_request runs.
-  workflow_dispatch:
+    # ready_for_review: upstream-sync PRs open as drafts, and a person marking
+    # one ready is what starts CI on it (runs the workflow token starts don't
+    # count as checks on a pull request).
+    types: [opened, synchronize, reopened, ready_for_review]
 
 # Read-only, and checkouts don't keep the token: no job here pushes.
 permissions:
