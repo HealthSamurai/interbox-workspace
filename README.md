@@ -171,9 +171,9 @@ dependencies and its own suite; see its README.
 
 In a copy of this repo, a daily job keeps one PR open from the `upstream-sync`
 branch that brings `main` up to the latest upstream release. Set the variable
-`INTERBOX_UPSTREAM_SYNC=off` to stop it. If the PR
-includes a release with breaking changes, it opens as a draft labelled
-`breaking-change`, with the upgrade notes in its description.
+`INTERBOX_UPSTREAM_SYNC=off` to stop it. When the PR includes a release with
+breaking changes, it is labelled `breaking-change` and lists the upgrade notes
+in its description.
 
 A release that changes CI definitions for the job's own platform, such as
 `.github/workflows/` on GitHub or `azure-pipelines/` on Azure, is never pushed
@@ -206,6 +206,12 @@ the pipeline can only rebuild a branch it created.
   require the `test` and `simulator` checks, block force pushes and deletion,
   and give GitHub Actions no bypass.
 
+The PR opens as a draft, and CI starts when you mark it ready for review.
+GitHub doesn't count checks from runs that the workflow token starts, so this
+is the run your required checks wait for. When the job pushes a newer release
+to the branch, the PR goes back to draft. In a repo without draft PRs it opens
+ready instead; close and reopen it to start CI.
+
 Optional repository variables: `INTERBOX_UPSTREAM_SYNC=off` turns the job off,
 and `INTERBOX_UPSTREAM_URL` points it at another upstream.
 
@@ -230,6 +236,8 @@ and `INTERBOX_UPSTREAM_URL` points it at another upstream.
 - Branch policies on `main`: `ci` as build validation, at least one reviewer,
   requestors can't approve their own changes, the most recent pusher can't
   approve, and votes reset on new pushes.
+
+Here a release with breaking changes opens as a draft PR.
 
 The same two variables work as pipeline variables. Define them as not settable
 at queue time.
