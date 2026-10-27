@@ -32,6 +32,7 @@ const context: StepContext = {
   translate: unused("terminology"),
   translateFor: unused("terminology"),
   conceptMapFor: unused("terminology"),
+  lookup: unused("lookup"),
 };
 
 function itemsOf(outcome: UnitOutcome | undefined): Emitted[] {

@@ -41,6 +41,7 @@ const readsNothing: StepContext = {
   translate: refusal("translates no code"),
   translateFor: refusal("translates no code"),
   conceptMapFor: refusal("resolves no concept map"),
+  lookup: refusal("looks nothing up"),
 };
 
 function itemsOf(outcome: UnitOutcome | undefined): unknown[] {

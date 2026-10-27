@@ -35,6 +35,7 @@ const readsNothing: StepContext = {
   translate: refused,
   translateFor: refused,
   conceptMapFor: refused,
+  lookup: refused,
 };
 
 const exportsOf = (module: object): Record<string, unknown> => ({ ...module });
