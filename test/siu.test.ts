@@ -28,7 +28,7 @@ const MEDITECH_S12 = [
 
 async function convert(raw: string): Promise<Record<string, unknown>[]> {
   const segments = parseHl7v2(raw) as unknown as HL7v2Segment[];
-  return (await convertToFhir(segments)) as Record<string, unknown>[];
+  return (await convertToFhir(segments)) as unknown as Record<string, unknown>[];
 }
 
 function pick<T>(resources: Record<string, unknown>[], resourceType: string): T[] {

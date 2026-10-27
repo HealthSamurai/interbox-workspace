@@ -63,6 +63,8 @@ services:
     # Production runs non-root via the Helm chart's securityContext; this override is
     # dev-only convenience.
     user: "0:0"
+    # Must outlast the engine's INTERBOX_STOP_GRACE_MS (10 s default) by 5 s, or a stop kills it before it releases its work.
+    stop_grace_period: 15s
     depends_on:
       pg:
         condition: service_healthy

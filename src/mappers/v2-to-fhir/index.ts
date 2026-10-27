@@ -1,22 +1,8 @@
-/**
- * HL7v2 → FHIR mapper — the default sample. Routes on MSH-9 to per-message
- * converters (segments/ + messages/), emitting flat FHIR resource arrays with
- * deterministic ids. This is yours to extend: add message types to the switch,
- * tweak the segment/datatype converters, or fork it entirely.
- *
- * The engine parses each inbound message and calls map() with the parsed
- * segments and a MapperContext (terminology). One mapper drains ALL received
- * rows (mappers compete via SKIP LOCKED), so routing lives here.
- */
-import {
-  defineMapper,
-  domainError,
-  provenanceFor,
-  type MapperContext,
-} from "@health-samurai/interbox";
-import { fromMSH, type HL7v2Segment } from "@health-samurai/interbox/hl7v2";
-import { hl7v2Parser } from "@health-samurai/interbox/builtins";
-import type { Resource } from "@health-samurai/interbox/fhir";
+import { domainError, provenanceId } from "@health-samurai/interbox";
+import { defineStep, type Batch, type RowContext } from "@health-samurai/interbox/chain";
+import type { Provenance, Resource } from "@health-samurai/interbox/fhir";
+import { fromMSH, type HL7v2Message, type HL7v2Segment } from "@health-samurai/interbox/hl7v2";
+import type { Terminology } from "./code-mapping/observation-code-resolver.ts";
 import { convertADT_A01 } from "./messages/adt-a01.ts";
 import { convertADT_A03 } from "./messages/adt-a03.ts";
 import { convertADT_A08 } from "./messages/adt-a08.ts";
@@ -33,8 +19,8 @@ import { findSegment } from "./support/segments.ts";
  */
 export async function convertToFhir(
   segments: HL7v2Segment[],
-  ctx?: MapperContext,
-): Promise<unknown[]> {
+  ctx?: Terminology,
+): Promise<Resource[]> {
   const mshSegment = findSegment(segments, "MSH");
   if (!mshSegment) {
     throw domainError("parse", "missing_msh", "message has no MSH segment");
@@ -84,26 +70,26 @@ export async function convertToFhir(
   }
 }
 
-export const v2ToFhirMapper = defineMapper({
-  type: "v2-to-fhir",
-  parser: hl7v2Parser,
-  // The hl7v2Parser descriptor types `input` as HL7v2Segment[] — no cast needed.
-  async map(_config, input, ctx) {
-    const resources = await convertToFhir(input, ctx);
+type Identified = Resource & { readonly id: string };
 
-    // Provenance the destination can hold. Interbox records which message
-    // produced each resource on the queue row itself and sends nothing of its own,
-    // so if you want that visible in your FHIR server, emit it — one Provenance
-    // per inbound message, targeting everything the message produced.
-    //
-    // Its `target` references make the sender ship it in the same bundle as those
-    // resources, and its id is derived from the message, so re-running a message
-    // overwrites its own record instead of piling up duplicates.
-    //
-    // Returns undefined when nothing addressable was produced; dropping it then
-    // matters, because a resource without resourceType + id fails the whole
-    // message. Delete this block if you don't want Provenance at the destination.
-    const provenance = provenanceFor(ctx, resources as Resource[]);
-    return provenance ? [...resources, provenance] : resources;
-  },
-});
+const isIdentified = (resource: Resource): resource is Identified => typeof resource.id === "string";
+
+function provenanceOf(ctx: RowContext, targets: readonly Identified[]): Provenance {
+  const unit = ctx.unit;
+  if (unit === undefined) throw new Error("v2ToFhir runs after the store, where every row has its unit");
+  return {
+    resourceType: "Provenance",
+    id: provenanceId(unit),
+    recorded: unit.createdAt.toISOString(),
+    agent: [{ who: { display: "Interbox" } }],
+    target: targets.map((resource) => ({ reference: `${resource.resourceType}/${resource.id}` })),
+  };
+}
+
+async function resourcesWithProvenance(msg: HL7v2Message, ctx: RowContext): Promise<Resource[]> {
+  const resources = await convertToFhir(msg, ctx);
+  const targets = resources.filter(isIdentified);
+  return targets.length === 0 ? resources : [...resources, provenanceOf(ctx, targets)];
+}
+
+export const v2ToFhir = defineStep("v2-to-fhir", (msgs: Batch<HL7v2Message>) => msgs.flatMap(resourcesWithProvenance));
