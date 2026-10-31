@@ -1,4 +1,5 @@
 name: npm publish
+run-name: npm publish ${{ inputs.version }}
 
 # Publishes the @health-samurai/interbox SDK. The engine's release pipeline builds and signs the
 # tarball, stages it on a draft Release here, and starts this workflow; this repo is the package's
