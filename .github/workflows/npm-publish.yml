@@ -1,0 +1,90 @@
+name: npm publish
+run-name: npm publish ${{ inputs.version }}
+
+# Publishes the @health-samurai/interbox SDK. The engine's release pipeline builds and signs the
+# tarball, stages it on a draft Release here, and starts this workflow; this repo is the package's
+# trusted publisher on npm, so no npm token exists anywhere. A copy of this template never runs it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Draft Release holding interbox-<version>.tgz and its signature bundle"
+        required: true
+      version:
+        description: "Exact SDK version the tarball must carry"
+        required: true
+      sha256:
+        description: "sha256 of the tarball, as the release pipeline computed it"
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'HealthSamurai/interbox-workspace'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # a draft Release is visible only with push access
+      id-token: write # npm trusted publishing (OIDC)
+    env:
+      RELEASE_TAG: ${{ inputs.release_tag }}
+      VERSION: ${{ inputs.version }}
+      SHA256: ${{ inputs.sha256 }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check the inputs
+        run: |
+          set -euo pipefail
+          printf '%s' "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$' || { echo "::error::not a version: $VERSION"; exit 1; }
+          printf '%s' "$SHA256" | grep -qE '^[0-9a-f]{64}$' || { echo "::error::not a sha256: $SHA256"; exit 1; }
+          printf '%s' "$RELEASE_TAG" | grep -qE '^v[0-9A-Za-z.+-]+$' || { echo "::error::not a release tag: $RELEASE_TAG"; exit 1; }
+
+      - name: Download the staged tarball
+        run: |
+          set -euo pipefail
+          gh release download "$RELEASE_TAG" -R "$GITHUB_REPOSITORY" -D sdk \
+            -p "interbox-$VERSION.tgz" -p "interbox-$VERSION.tgz.sigstore.json"
+
+      - name: Check the checksum and the package inside
+        run: |
+          set -euo pipefail
+          echo "$SHA256  sdk/interbox-$VERSION.tgz" | sha256sum -c -
+          manifest=$(tar -xzOf "sdk/interbox-$VERSION.tgz" package/package.json)
+          name=$(jq -r .name <<< "$manifest")
+          version=$(jq -r .version <<< "$manifest")
+          [ "$name" = "@health-samurai/interbox" ] || { echo "::error::the tarball holds $name"; exit 1; }
+          [ "$version" = "$VERSION" ] || { echo "::error::the tarball holds version $version, not $VERSION"; exit 1; }
+
+      - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+
+      - name: Verify the release pipeline's signature
+        run: |
+          cosign verify-blob \
+            --key https://storage.googleapis.com/interbox-signing-keys/cosign.pub \
+            --bundle "sdk/interbox-$VERSION.tgz.sigstore.json" \
+            "sdk/interbox-$VERSION.tgz"
+
+      # Node 24 bundles npm 11, which trusted publishing needs; bun publish has no OIDC support.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      # Provenance would attest a build from this repo; the SDK is built elsewhere.
+      - name: Publish
+        env:
+          NPM_CONFIG_PROVENANCE: "false"
+        run: |
+          set -euo pipefail
+          if npm view "@health-samurai/interbox@$VERSION" version > /dev/null 2>&1; then
+            echo "@health-samurai/interbox@$VERSION is already on npm"
+            exit 0
+          fi
+          npm publish "./sdk/interbox-$VERSION.tgz" --access public
