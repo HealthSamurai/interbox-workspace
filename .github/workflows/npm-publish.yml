@@ -77,10 +77,12 @@ jobs:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
 
-      # Provenance would attest a build from this repo; the SDK is built elsewhere.
+      # Provenance would attest a build from this repo; the SDK is built elsewhere. npm logs why it
+      # refused this workflow as a trusted publisher only at verbose; otherwise it ends in a bare E404.
       - name: Publish
         env:
           NPM_CONFIG_PROVENANCE: "false"
+          NPM_CONFIG_LOGLEVEL: verbose
         run: |
           set -euo pipefail
           if npm view "@health-samurai/interbox@$VERSION" version > /dev/null 2>&1; then
