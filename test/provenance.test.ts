@@ -29,6 +29,7 @@ const context: StepContext = {
   state: unused("state"),
   sender: { queued: unused("sender queue") },
   units: { count: unused("units"), find: unused("units") },
+  files: { open: unused("files") },
   translate: unused("terminology"),
   translateFor: unused("terminology"),
   conceptMapFor: unused("terminology"),

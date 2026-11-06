@@ -32,6 +32,7 @@ const readsNothing: StepContext = {
   state: refused,
   sender: { queued: refused },
   units: { count: refused, find: refused },
+  files: { open: refused },
   translate: refused,
   translateFor: refused,
   conceptMapFor: refused,
