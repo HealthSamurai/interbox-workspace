@@ -47,7 +47,7 @@ jobs:
 
   # Guard the version scheme for workspace-only PRs. Workspace versions are
   # `<engine X.Y.Z>+<N>`: N=0 is the engine-mirrored baseline (interbox's
-  # publish.yml direct-pushes it), N>=1 is a workspace-only release. A PR that
+  # release pipeline pushes it), N>=1 is a workspace-only release. A PR that
   # changes the version must: keep the engine core (advancing it is the mirror's
   # job), increment +N by exactly 1, land on an engine version that was actually
   # released & mirrored here (the v<core>+0 tag exists), and never use +0. PR-only
@@ -80,7 +80,7 @@ jobs:
           BASE_CORE=${BASE%+*}; BASE_N=${BASE##*+}
 
           if [ "$HEAD_N" -eq 0 ]; then
-            echo "::error::$BASE -> $HEAD: +0 is reserved for engine-mirrored baselines (interbox's publish.yml). Bump the +N counter instead."
+            echo "::error::$BASE -> $HEAD: +0 is reserved for engine-mirrored baselines (interbox's release pipeline). Bump the +N counter instead."
             exit 1
           fi
           if [ "$HEAD_CORE" != "$BASE_CORE" ]; then

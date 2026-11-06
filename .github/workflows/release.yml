@@ -2,9 +2,8 @@ name: Release
 
 # interbox-workspace releases. package.json's `version` is "<engine version>+N":
 # interbox's own release pipeline bumps this to "+0" whenever the engine
-# releases (baseline, no workspace-only changes yet — see interbox's
-# publish.yml, "Sync workspace version" step); a workspace-only fix (no engine
-# change involved) bumps N. One continuous release sequence either way — this
+# releases (baseline, no workspace-only changes yet); a workspace-only fix (no
+# engine change involved) bumps N. One continuous release sequence either way — this
 # workflow doesn't care which kind of bump it is, it just reacts to a new
 # version.
 #
@@ -20,13 +19,13 @@ name: Release
 #     downstream jobs check out that exact commit (needs.version.outputs.sha).
 #
 # The `push` trigger still fires on every push to main that touches
-# package.json — a merged PR OR interbox's publish.yml "Sync workspace version"
-# step (which pushes with a PAT, so it DOES trigger this). A push that doesn't
+# package.json — a merged PR OR interbox's release pipeline (which pushes with a
+# PAT, so it DOES trigger this). A push that doesn't
 # move the version to an unreleased value is a no-op — the is_new tag check
 # below gates it.
 #
 # NOTE on the engine-mirrored +0 bump: +0 releases are OWNED by interbox's
-# publish.yml (it pushes the version bump here AND cuts `v<ver>+0` itself). This
+# release pipeline (it pushes the version bump here AND cuts `v<ver>+0` itself). This
 # workflow explicitly SKIPS any `+0` version (see the version check) so the two
 # never race over the same tag — release.yml only ever cuts workspace-only `+N`
 # (N>=1) releases. The scheme is also enforced on the authoring side: ci.yml's
@@ -115,7 +114,7 @@ jobs:
           VERSION=$(jq -r .version package.json)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           if [[ "$VERSION" == *"+0" ]]; then
-            echo "Version $VERSION is an engine-mirrored +0 baseline — interbox's publish.yml owns +0 releases. Skipping here."
+            echo "Version $VERSION is an engine-mirrored +0 baseline — interbox's release pipeline owns +0 releases. Skipping here."
             echo "is_new=false" >> "$GITHUB_OUTPUT"
           elif git rev-parse "v$VERSION" >/dev/null 2>&1; then
             echo "Version $VERSION already released. Skipping."
