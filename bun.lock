@@ -16,7 +16,7 @@
   "packages": {
     "@atomic-ehr/hl7v2": ["@atomic-ehr/hl7v2@0.0.1", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-qUOYUX6lI9cdb98ThXBcCWqruFVFzG8H6NnOTlS2Rgg7kSenjxwpDEBh8pjvmhaiWAfUqY/B7W0+agmxIoJRWg=="],
 
-    "@health-samurai/interbox": ["@health-samurai/interbox@2.4.0", "", { "dependencies": { "@atomic-ehr/hl7v2": "^0.0.1", "fast-xml-parser": "^5.12.0", "pg-connection-string": "^2.14.0" }, "peerDependencies": { "typescript": "^5" }, "bin": { "interbox": "dist/cli.js" } }, "sha512-8e/joCOTqk1gNQ3cX7rN5eUElw8ILS1WOXvMnTpUuDZ4at83pld8JJqIGRi3n5b8Vjp6EXxKKlK5ItQCqkq0Rg=="],
+    "@health-samurai/interbox": ["@health-samurai/interbox@2.4.2", "", { "dependencies": { "@atomic-ehr/hl7v2": "^0.0.1", "fast-xml-parser": "^5.12.0", "pg-connection-string": "^2.14.0" }, "peerDependencies": { "typescript": "^5" }, "bin": { "interbox": "dist/cli.js" } }, "sha512-9I+hq9e72dk0mmSvUxzvtsaJHIxtUcrHzw3KashYUKuodtIgBQ0Srmu6tEqNQRrOCrGwt0Tz72w20Nth7VRvBA=="],
 
     "@nodable/entities": ["@nodable/entities@3.1.0", "", {}, "sha512-LsS/DjHr+uDM647Gru/cA8+J3a3HfhttwCKLyuoyN7yXTFCxKBtSgMQBvrW9yNPa2/zDRUNuGPaH5QUFoa4arQ=="],
 
