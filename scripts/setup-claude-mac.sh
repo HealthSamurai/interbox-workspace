@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Provision the dashboard assistant's Claude auth for local dev on macOS.
 #
-# The assistant is a Claude Code agent running inside the interbox container,
+# The assistant is a Claude Code agent running inside the workspace container,
 # which has no ~/.claude of its own. On Linux/Windows you can bind-mount the
 # host login (docker-compose option 3), but macOS keeps Claude Code creds in
 # the Keychain, not in a file — so that mount is empty there. Instead we mint a

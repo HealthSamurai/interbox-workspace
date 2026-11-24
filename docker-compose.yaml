@@ -1,9 +1,11 @@
 # ── Interbox dev stack ───────────────────────────────────────────────────────
 # Runs the whole product against THIS workspace checkout, with hot reload:
 #
-#   interbox   the all-in-one image (engine + API + dashboard). Mounts this repo
-#              at /workspace and runs it in local mode (file:///workspace), so
-#              edits to src/ hot-reload into the running pipeline.
+#   interbox   the all-in-one image (engine + API + dashboard). Runs the
+#              workspace build the workspace service publishes.
+#   workspace  the same image as the workspace service. Mounts this repo at
+#              /workspace (file:///workspace) and publishes a new build whenever
+#              a file changes, so edits hot-reload into the running pipeline.
 #   pg         one stock Postgres 18 cluster, shared: Interbox and Aidbox each own
 #              a database in it (interbox, aidbox), created first-boot by compose/.
 #   aidbox     the FHIR server the pipeline's sender targets.
@@ -21,6 +23,59 @@
 #      INTERBOX_LICENSE in .env or click through the dashboard's activation
 #      screen (portal OAuth). Until then the dashboard shows the activation gate.
 #   4. send HL7v2 over MLLP to localhost:2575 and watch messages flow.
+
+# Settings both Interbox services read. The workspace service bundles and checks
+# the workspace with them, and the interbox service runs it with them.
+x-interbox-env: &interbox-env
+  DATABASE_URL: postgres://postgres:postgres@pg:5432/interbox
+  MLLP_HOST: 0.0.0.0
+  MLLP_PORT: "2575"
+  # Run THIS checkout — the bind mount on the workspace service is the live tree.
+  # `worktree` says so outright rather than leaving it to the URL scheme: the
+  # workspace service bundles the directory exactly as it stands, uncommitted
+  # edits and all, and never checks anything out or resets anything. (`clone` is
+  # the other mode, used by deployments, where it owns a copy it refreshes from a
+  # remote.)
+  INTERBOX_WORKSPACE_GIT_URL: file:///workspace
+  INTERBOX_WORKSPACE_MODE: worktree
+  INTERBOX_WORKSPACE_POLL_MS: "2000" # snappy hot reload in dev
+  # What the dashboard may do to this checkout:
+  #   read  (default) browse files, history and diffs — nothing else.
+  #   apply           edit files and SAVE them straight into this directory,
+  #                   which the workspace service publishes and Interbox runs
+  #                   within a few seconds.
+  # `apply` is the one that suits a workspace you are developing, but it is
+  # opt-in because this compose file publishes port 3001 on every interface and
+  # the login below is OFF by default — on a shared machine that is more than
+  # you. Set INTERBOX_WORKSPACE_ACCESS=apply in .env to turn it on.
+  INTERBOX_WORKSPACE_ACCESS: ${INTERBOX_WORKSPACE_ACCESS:-read}
+
+  # ── Dashboard sign-in ──────────────────────────────────────────────────
+  # From 1.20 the dashboard has a login of its own, ON by default. It is
+  # turned OFF here, because this is a dev stack on your own machine and a
+  # login you have to set up before `docker compose up` works is a login
+  # people will disable rather than configure.
+  #
+  # That trade is only right on loopback. If this stack ever becomes
+  # reachable by anyone else — a shared box, a tailnet, a port forward —
+  # set INTERBOX_AUTH_ENABLED=true and a password in .env. Both, not one:
+  # the gate refuses to start with nothing able to sign in, and the
+  # dashboard reaches message content, a SQL console and a shell agent.
+  INTERBOX_AUTH_ENABLED: ${INTERBOX_AUTH_ENABLED:-false}
+  INTERBOX_AUTH_ADMIN_PASSWORD: ${INTERBOX_AUTH_ADMIN_PASSWORD:-}
+  # Required from 1.20 whether or not the login is on: it is also the origin
+  # the API answers for, and a request arriving with any other Host is
+  # refused. Change it if you reach the dashboard as anything other than
+  # localhost — the port is published on every interface, so visiting
+  # http://<your-lan-ip>:3001 while this says localhost answers 421.
+  INTERBOX_PUBLIC_URL: ${INTERBOX_PUBLIC_URL:-http://localhost:3001}
+  # Pipeline sender target.
+  AIDBOX_URL: http://aidbox:8080
+  # Client interbox authenticates as — id defaults to root; set a scoped one for least privilege.
+  AIDBOX_CLIENT_ID: ${AIDBOX_CLIENT_ID:-root}
+  AIDBOX_CLIENT_SECRET: ${AIDBOX_CLIENT_SECRET:-secret}
+  # License: env activation (or use the dashboard's activation screen instead).
+  INTERBOX_LICENSE: ${INTERBOX_LICENSE:-}
 
 services:
   pg:
@@ -55,14 +110,11 @@ services:
     # All-in-one engine + API + dashboard — published image (you don't need the
     # engine source). INTERBOX_VERSION (.env) is the engine version knob; in the
     # dev image the SDK rides along, so this one tag pins engine + SDK together.
-    # To update: bump INTERBOX_VERSION, then `docker compose pull interbox && up -d`.
+    # To update: bump INTERBOX_VERSION, then `docker compose pull && up -d`.
+    # It runs the build the workspace service publishes to Postgres, not this
+    # checkout directly, and passes the dashboard's repository, assistant and
+    # workspace-action requests on to the workspace service.
     image: ${INTERBOX_REGISTRY:-healthsamurai}/interbox:${INTERBOX_VERSION:-edge}
-    # The image runs as non-root (uid 1000). For local dev we mount this checkout at
-    # /workspace and keep node_modules in a named volume — both root-owned on the host
-    # side — so run the dev container as root to keep bun install / SDK-link writable.
-    # Production runs non-root via the Helm chart's securityContext; this override is
-    # dev-only convenience.
-    user: "0:0"
     # Must outlast the engine's INTERBOX_STOP_GRACE_MS (10 s default) by 5 s, or a stop kills it before it releases its work.
     stop_grace_period: 15s
     depends_on:
@@ -72,53 +124,29 @@ services:
       - "3001:3001" # dashboard + API (same origin)
       - "2575:2575" # MLLP ingest
     environment:
-      DATABASE_URL: postgres://postgres:postgres@pg:5432/interbox
-      MLLP_HOST: 0.0.0.0
-      MLLP_PORT: "2575"
-      # Run THIS checkout — the bind mount below is the live tree. `worktree` says
-      # so outright rather than leaving it to the URL scheme: the engine bundles
-      # the directory exactly as it stands, uncommitted edits and all, and never
-      # checks anything out or resets anything. (`clone` is the other mode, used by
-      # deployments, where the engine owns a copy it refreshes from a remote.)
-      INTERBOX_WORKSPACE_GIT_URL: file:///workspace
-      INTERBOX_WORKSPACE_MODE: worktree
-      INTERBOX_WORKSPACE_POLL_MS: "2000" # snappy hot reload in dev
-      # What the dashboard may do to this checkout:
-      #   read  (default) browse files, history and diffs — nothing else.
-      #   apply           edit files and SAVE them straight into this directory,
-      #                   which the engine then runs within POLL_MS.
-      # `apply` is the one that suits a workspace you are developing, but it is
-      # opt-in because this compose file publishes port 3001 on every interface and
-      # the login below is OFF by default — on a shared machine that is more than
-      # you. Set INTERBOX_WORKSPACE_ACCESS=apply in .env to turn it on.
-      INTERBOX_WORKSPACE_ACCESS: ${INTERBOX_WORKSPACE_ACCESS:-read}
+      <<: *interbox-env
+      INTERBOX_WORKSPACE_SERVICE_URL: http://workspace:3001
 
-      # ── Dashboard sign-in ──────────────────────────────────────────────────
-      # From 1.20 the dashboard has a login of its own, ON by default. It is
-      # turned OFF here, because this is a dev stack on your own machine and a
-      # login you have to set up before `docker compose up` works is a login
-      # people will disable rather than configure.
-      #
-      # That trade is only right on loopback. If this stack ever becomes
-      # reachable by anyone else — a shared box, a tailnet, a port forward —
-      # set INTERBOX_AUTH_ENABLED=true and a password in .env. Both, not one:
-      # the gate refuses to start with nothing able to sign in, and the
-      # dashboard reaches message content, a SQL console and a shell agent.
-      INTERBOX_AUTH_ENABLED: ${INTERBOX_AUTH_ENABLED:-false}
-      INTERBOX_AUTH_ADMIN_PASSWORD: ${INTERBOX_AUTH_ADMIN_PASSWORD:-}
-      # Required from 1.20 whether or not the login is on: it is also the origin
-      # the API answers for, and a request arriving with any other Host is
-      # refused. Change it if you reach the dashboard as anything other than
-      # localhost — the port is published on every interface, so visiting
-      # http://<your-lan-ip>:3001 while this says localhost answers 421.
-      INTERBOX_PUBLIC_URL: ${INTERBOX_PUBLIC_URL:-http://localhost:3001}
-      # Pipeline sender target.
-      AIDBOX_URL: http://aidbox:8080
-      # Client interbox authenticates as — id defaults to root; set a scoped one for least privilege.
-      AIDBOX_CLIENT_ID: ${AIDBOX_CLIENT_ID:-root}
-      AIDBOX_CLIENT_SECRET: ${AIDBOX_CLIENT_SECRET:-secret}
-      # License: env activation (or use the dashboard's activation screen instead).
-      INTERBOX_LICENSE: ${INTERBOX_LICENSE:-}
+  workspace:
+    # The workspace service: the same image, started with the `workspace`
+    # command. It holds THIS checkout, bundles it, checks the bundle and
+    # publishes it to Postgres whenever a file changes, and the interbox service
+    # loads it from there within a few seconds. It also runs the dashboard
+    # assistant and workspace actions. Nothing reaches it from your host: the
+    # interbox service forwards to it.
+    image: ${INTERBOX_REGISTRY:-healthsamurai}/interbox:${INTERBOX_VERSION:-edge}
+    command: workspace
+    # The image runs as non-root (uid 1000). For local dev we mount this checkout at
+    # /workspace and keep node_modules in a named volume — both root-owned on the host
+    # side — so run the dev container as root to keep bun install / SDK-link writable.
+    # Production runs non-root via the Helm chart's securityContext; this override is
+    # dev-only convenience.
+    user: "0:0"
+    depends_on:
+      pg:
+        condition: service_healthy
+    environment:
+      <<: *interbox-env
       # Dashboard assistant (Claude Code over ACP) auth — pick ONE (all blank = the
       # dashboard still works, the assistant just can't answer). The container has no
       # ~/.claude of its own, so hand it credentials one of three ways:

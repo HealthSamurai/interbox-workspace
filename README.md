@@ -49,8 +49,9 @@ you never use it.
 ## Edit pipelines from the dashboard
 
 The dashboard's **Repository** tab browses this checkout. It can also edit it —
-saving straight into the directory compose mounts, which the engine picks up
-within two seconds, so the loop is edit → save → running.
+saving straight into the directory compose mounts, which the workspace service
+publishes and the engine runs within a few seconds, so the loop is edit → save →
+running.
 
 `INTERBOX_WORKSPACE_ACCESS=apply` in `.env` is what turns that on, and
 `.env.example` already sets it — so the Quick start above is all it takes. Skip
